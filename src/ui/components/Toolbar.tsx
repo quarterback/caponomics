@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { serializeRuleset, encodeRulesetToHash } from '../../engine/serialize'
+import { serializeModel, encodeModelToHash } from '../../engine/expansion/serialize'
 import { CURRENCY_LIST, currencySymbol, type Currency } from '../../engine/format'
 import { REMIXES } from '../remixes'
 import { useStore } from '../state/store'
+import { useExpansion } from '../state/expansionStore'
 
 function useTheme(): [string, () => void] {
   const [theme, setTheme] = useState<string>(() => localStorage.getItem('cap-theme') ?? 'auto')
@@ -18,6 +20,7 @@ function useTheme(): [string, () => void] {
 
 export function Toolbar({ onAbout }: { onAbout: () => void }) {
   const { ruleset, forked, loadRulesetObject, loadRemix, setCurrency } = useStore()
+  const { tab, setTab, model, forked: modelForked, loadModelObject } = useExpansion()
   const currency = ruleset.currency ?? 'USD'
   const [theme, cycleTheme] = useTheme()
   const [menu, setMenu] = useState<null | 'remix'>(null)
@@ -25,6 +28,8 @@ export function Toolbar({ onAbout }: { onAbout: () => void }) {
   const [importText, setImportText] = useState('')
   const [copied, setCopied] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
+
+  const onCap = tab === 'cap'
 
   useEffect(() => {
     const close = (e: MouseEvent) => {
@@ -35,22 +40,24 @@ export function Toolbar({ onAbout }: { onAbout: () => void }) {
   }, [])
 
   const save = () => {
-    const blob = new Blob([serializeRuleset(ruleset)], { type: 'application/json' })
+    const json = onCap ? serializeRuleset(ruleset) : serializeModel(model)
+    const id = onCap ? ruleset.id || 'ruleset' : model.id || 'expansion-model'
+    const blob = new Blob([json], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `${ruleset.id || 'ruleset'}.caponomics.json`
+    a.download = `${id}.caponomics.json`
     a.click()
     URL.revokeObjectURL(url)
   }
 
   const copyLink = async () => {
-    const hash = encodeRulesetToHash(ruleset)
-    const url = `${location.origin}${location.pathname}#r=${hash}`
+    const frag = onCap ? `r=${encodeRulesetToHash(ruleset)}` : `x=${encodeModelToHash(model)}`
+    const url = `${location.origin}${location.pathname}#${frag}`
     try {
       await navigator.clipboard.writeText(url)
     } catch {
-      location.hash = `r=${hash}`
+      location.hash = frag
     }
     setCopied(true)
     setTimeout(() => setCopied(false), 1400)
@@ -58,11 +65,13 @@ export function Toolbar({ onAbout }: { onAbout: () => void }) {
 
   const doImport = () => {
     try {
-      loadRulesetObject(JSON.parse(importText))
+      const parsed = JSON.parse(importText)
+      if (onCap) loadRulesetObject(parsed)
+      else loadModelObject(parsed)
       setImportOpen(false)
       setImportText('')
     } catch {
-      alert('That doesn’t look like valid ruleset JSON.')
+      alert(onCap ? 'That doesn’t look like valid ruleset JSON.' : 'That doesn’t look like valid expansion-model JSON.')
     }
   }
 
@@ -76,53 +85,66 @@ export function Toolbar({ onAbout }: { onAbout: () => void }) {
         <small>salary cap imagineering</small>
       </div>
 
+      <div className="seg toolbar__tabs" role="tablist">
+        <button role="tab" data-active={onCap} onClick={() => setTab('cap')}>
+          Cap System
+        </button>
+        <button role="tab" data-active={!onCap} onClick={() => setTab('expansion')}>
+          Expansion Draft
+        </button>
+      </div>
+
       <div className="toolbar__spacer" />
 
       <div className="toolbar__ruleset">
-        <span>system</span>
-        <strong>{ruleset.name}</strong>
-        {forked && (
+        <span>{onCap ? 'system' : 'model'}</span>
+        <strong>{onCap ? ruleset.name : model.name}</strong>
+        {(onCap ? forked : modelForked) && (
           <span className="pchip" data-cur="tools" title="Edited from a preset">
             forked
           </span>
         )}
       </div>
 
-      <select
-        className="cur-select mono"
-        value={currency}
-        onChange={(e) => setCurrency(e.target.value as Currency)}
-        title="Display currency (converts money to this currency)"
-      >
-        {CURRENCY_LIST.map((c) => (
-          <option key={c} value={c}>
-            {currencySymbol(c)} {c}
-          </option>
-        ))}
-      </select>
+      {onCap && (
+        <select
+          className="cur-select mono"
+          value={currency}
+          onChange={(e) => setCurrency(e.target.value as Currency)}
+          title="Display currency (converts money to this currency)"
+        >
+          {CURRENCY_LIST.map((c) => (
+            <option key={c} value={c}>
+              {currencySymbol(c)} {c}
+            </option>
+          ))}
+        </select>
+      )}
 
-      <div className="menu" ref={menuRef}>
-        <button className="btn btn--sm" onClick={() => setMenu(menu === 'remix' ? null : 'remix')}>
-          Remixes ▾
-        </button>
-        {menu === 'remix' && (
-          <div className="menu__pop">
-            {REMIXES.map((r) => (
-              <button
-                key={r.id}
-                className="menu__item"
-                onClick={() => {
-                  loadRemix(r.build(), r.rosterId)
-                  setMenu(null)
-                }}
-              >
-                {r.label}
-                <small>{r.description}</small>
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
+      {onCap && (
+        <div className="menu" ref={menuRef}>
+          <button className="btn btn--sm" onClick={() => setMenu(menu === 'remix' ? null : 'remix')}>
+            Remixes ▾
+          </button>
+          {menu === 'remix' && (
+            <div className="menu__pop">
+              {REMIXES.map((r) => (
+                <button
+                  key={r.id}
+                  className="menu__item"
+                  onClick={() => {
+                    loadRemix(r.build(), r.rosterId)
+                    setMenu(null)
+                  }}
+                >
+                  {r.label}
+                  <small>{r.description}</small>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       <button className="btn btn--sm" onClick={() => setImportOpen(true)}>
         Import
@@ -144,14 +166,14 @@ export function Toolbar({ onAbout }: { onAbout: () => void }) {
         <div className="modal-backdrop" onClick={() => setImportOpen(false)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <div className="card__head">
-              <span className="card__title">Import a ruleset</span>
+              <span className="card__title">{onCap ? 'Import a ruleset' : 'Import an expansion model'}</span>
               <button className="btn--icon" style={{ marginLeft: 'auto' }} onClick={() => setImportOpen(false)}>
                 ✕
               </button>
             </div>
             <div className="card__body" style={{ display: 'grid', gap: 'var(--s3)' }}>
               <textarea
-                placeholder="Paste ruleset JSON (from Save)…"
+                placeholder={onCap ? 'Paste ruleset JSON (from Save)…' : 'Paste expansion-model JSON (from Save)…'}
                 value={importText}
                 onChange={(e) => setImportText(e.target.value)}
               />
