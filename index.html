@@ -3,15 +3,37 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2300B7E0'/%3E%3Ctext x='16' y='23' font-size='20' font-family='Arial,sans-serif' font-weight='700' text-anchor='middle' fill='%2304222b'%3E%24%3C/text%3E%3C/svg%3E"
-    />
+    <link rel="icon" type="image/png" href="./src/images/capseye.png" />
+    <link rel="apple-touch-icon" href="./src/images/capseye.png" />
     <meta
       name="description"
-      content="caponomics — design a salary cap system out of composable mechanics and test any roster against it. A calculator, not a prescription."
+      content="Design a salary cap system out of composable mechanics — hard caps, aprons, luxury taxes, floors, max contracts — then test any roster against it. Mix and match across leagues at any scale. A calculator, not a prescription."
     />
     <title>caponomics — Salary Cap Imagineering</title>
+
+    <!-- Open Graph / social share card.
+         og:image is root-relative so it resolves on whatever host serves the
+         site. Once the production domain is known, set og:url (and, for the
+         strictest scrapers like Twitter, an absolute og:image/twitter:image). -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="caponomics" />
+    <meta property="og:title" content="caponomics — Salary Cap Imagineering" />
+    <meta
+      property="og:description"
+      content="Design a salary cap system out of composable mechanics — then test any roster against it. The NBA trade machine, but for cap-system construction. A calculator, not a prescription."
+    />
+    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:image:width" content="2400" />
+    <meta property="og:image:height" content="1260" />
+    <meta property="og:image:alt" content="caponomics — design a salary cap system, test any roster, any league." />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="caponomics — Salary Cap Imagineering" />
+    <meta
+      name="twitter:description"
+      content="Design a salary cap system out of composable mechanics — then test any roster against it. Mix and match across leagues at any scale."
+    />
+    <meta name="twitter:image" content="/og-image.png" />
   </head>
   <body>
     <div id="root"></div>
