@@ -3,7 +3,7 @@ import type { LeagueSummary as Summary } from '../../../engine/summary'
 import { useStore } from '../../state/store'
 
 export function LeagueSummary({ s }: { s: Summary }) {
-  const cur = useStore((st) => st.league.currency ?? 'USD')
+  const cur = useStore((st) => st.ruleset.currency ?? 'USD')
   const stat = (label: string, value: string, tone?: 'good' | 'bad' | 'warn', sub?: string) => (
     <div className="tile">
       <div className="tile__label">{label}</div>

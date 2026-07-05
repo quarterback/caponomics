@@ -14,6 +14,7 @@
 
 import { MODULE_MAP } from './catalog'
 import { baseSalaryCharges, computeTotals } from './charges'
+import { fxRate } from './format'
 import type { EnvironmentState, EvalContext } from './module'
 import type {
   ComplianceReport,
@@ -68,7 +69,10 @@ function evaluateTeamYear(
   }
 
   // ── Phase 2: charge (engine base charges first, then modules) ─────────────
-  ctx.charges = baseSalaryCharges(team, year)
+  // Convert the league's payrolls into the ruleset's currency so a cap authored
+  // in one currency can be tested against a league priced in another.
+  const factor = fxRate(league.currency ?? 'USD', ruleset.currency ?? 'USD')
+  ctx.charges = baseSalaryCharges(team, year, factor)
   ctx.totals = computeTotals(ctx.charges, team, year)
   for (const inst of modules) {
     const def = MODULE_MAP[inst.kind]!

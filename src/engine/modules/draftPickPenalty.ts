@@ -54,7 +54,7 @@ export const draftPickPenalty: CapModuleDef = {
     if (line === null) return result()
     if (ctx.totals.capSalary <= line) return result()
     const effect = str(p, 'effect', 'freeze')
-    const cur = ctx.league.currency
+    const cur = (ctx.ruleset.currency ?? 'USD')
     const desc =
       effect === 'dropSpots'
         ? `1st-round pick drops ${num(p, 'dropSpots', 10)} spots (spending over ${fmtMoney(line, cur)}).`

@@ -93,7 +93,7 @@ export const luxuryTax: CapModuleDef = {
     const total = tax + surcharge
 
     const readouts = [{ label: 'Tax owed', value: total, format: 'money' as const, module: 'luxuryTax' }]
-    const cur = ctx.league.currency
+    const cur = (ctx.ruleset.currency ?? 'USD')
     const reasons = [{ severity: 'info' as const, module: 'luxuryTax', message: `In the tax by ${fmtMoney(overage, cur)}; owes ${fmtMoney(total, cur)}${surcharge ? ` (incl. ${fmtMoney(surcharge, cur)} repeater)` : ''}.` }]
     return result({ readouts, reasons, penalties: [{ currency: 'money', amount: total, description: 'Luxury tax owed.', module: 'luxuryTax' }] })
   },

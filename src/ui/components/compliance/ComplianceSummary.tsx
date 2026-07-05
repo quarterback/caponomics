@@ -3,7 +3,7 @@ import type { TeamYearReport } from '../../../engine/types'
 import { useStore } from '../../state/store'
 
 export function ComplianceSummary({ report }: { report: TeamYearReport }) {
-  const cur = useStore((s) => s.league.currency ?? 'USD')
+  const cur = useStore((s) => s.ruleset.currency ?? 'USD')
   const errors = report.reasons.filter((r) => r.severity === 'error')
   const warnings = report.reasons.filter((r) => r.severity === 'warning')
   const infos = report.reasons.filter((r) => r.severity === 'info')

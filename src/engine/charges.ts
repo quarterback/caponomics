@@ -2,12 +2,14 @@
 import type { CapCharge, Team, LeagueYear, TeamYearTotals } from './types'
 
 /** Turn each contract's salary for `year` into a base CapCharge. Runs before any
- *  module, so even a blank ruleset produces a cap sheet. */
-export function baseSalaryCharges(team: Team, year: LeagueYear): CapCharge[] {
+ *  module, so even a blank ruleset produces a cap sheet. Salaries are scaled by
+ *  `fxFactor` to convert from the league's currency into the ruleset's. */
+export function baseSalaryCharges(team: Team, year: LeagueYear, fxFactor = 1): CapCharge[] {
   const charges: CapCharge[] = []
   for (const c of team.roster) {
-    const amount = c.salaryByYear[year]
-    if (amount === undefined) continue
+    const raw = c.salaryByYear[year]
+    if (raw === undefined) continue
+    const amount = fxFactor === 1 ? raw : Math.round(raw * fxFactor)
     charges.push({
       year,
       amount,

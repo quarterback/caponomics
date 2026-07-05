@@ -65,7 +65,7 @@ export function Chips({
 /** Money input that accepts shorthand (240M, 1.5m, 68000000) and echoes the
  *  parsed value. Commits on blur / Enter so typing isn't fought by re-render. */
 export function MoneyInput({ value, onChange }: { value: number; onChange: (v: number) => void }) {
-  const cur = useStore((s) => s.league.currency ?? 'USD')
+  const cur = useStore((s) => s.ruleset.currency ?? 'USD')
   const [text, setText] = useState(String(value))
   useEffect(() => setText(String(value)), [value])
   const commit = () => {

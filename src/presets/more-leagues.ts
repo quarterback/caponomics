@@ -18,7 +18,7 @@ export const cfl = preset('cfl', 'CFL', 'football', [
   m('salaryFloor', { mode: 'fixed', value: 4_750_000, penalty: 'payShortfall' }),
   m('minimumSalary', { mode: 'flat', flat: 70_000 }),
   m('rosterLimits', { min: 0, max: 45 }),
-])
+], 'CAD')
 
 export const aleague = preset('aleague', 'A-League (Australia)', 'soccer', [
   m('capFormula', { mode: 'fixed', fixedCap: 2_550_000 }),
@@ -29,7 +29,7 @@ export const aleague = preset('aleague', 'A-League (Australia)', 'soccer', [
     title: 'Marquee & exception rules',
     note: 'The A-League permits designated marquee players outside the cap; modeled here as an allocation allowance.',
   }),
-])
+], 'AUD')
 
 export const ipl = preset('ipl', 'IPL (auction purse)', 'cricket', [
   m('capFormula', { mode: 'fixed', fixedCap: 1_200_000_000 }),
@@ -39,4 +39,4 @@ export const ipl = preset('ipl', 'IPL (auction purse)', 'cricket', [
     title: 'Auction & retention',
     note: 'IPL uses an auction purse with player retention rules rather than a wage cap; modeled here as a hard spend ceiling.',
   }),
-])
+], 'INR')

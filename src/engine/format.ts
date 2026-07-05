@@ -22,6 +22,31 @@ export function currencySymbol(cur: Currency = 'USD'): string {
   return CURRENCIES[cur]?.symbol ?? '$'
 }
 
+export const CURRENCY_LIST: Currency[] = ['USD', 'EUR', 'GBP', 'AUD', 'CAD', 'INR']
+
+// Approximate USD value of one unit of each currency. Illustrative — the tool is
+// scale-agnostic, so these just make cross-currency comparisons roughly sane.
+const USD_PER: Record<Currency, number> = {
+  USD: 1,
+  EUR: 1.08,
+  GBP: 1.27,
+  AUD: 0.66,
+  CAD: 0.73,
+  INR: 0.012,
+}
+
+/** Unrounded conversion factor from one currency to another. */
+export function fxRate(from: Currency = 'USD', to: Currency = 'USD'): number {
+  if (from === to) return 1
+  return USD_PER[from] / USD_PER[to]
+}
+
+/** Convert a raw amount from one currency to another (illustrative FX). */
+export function fx(v: number, from: Currency = 'USD', to: Currency = 'USD'): number {
+  if (from === to) return v
+  return Math.round((v * USD_PER[from]) / USD_PER[to])
+}
+
 export function fmtMoney(v: number, cur: Currency = 'USD'): string {
   const def = CURRENCIES[cur] ?? CURRENCIES.USD
   const s = def.symbol

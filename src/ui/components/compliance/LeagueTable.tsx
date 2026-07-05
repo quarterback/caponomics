@@ -7,7 +7,7 @@ type SortKey = 'team' | 'payroll' | 'vsCap' | 'tax' | 'floor' | 'apron' | 'statu
 
 export function LeagueTable({ rows }: { rows: TeamRow[] }) {
   const { selectedTeamId, selectTeam } = useStore()
-  const cur = useStore((s) => s.league.currency ?? 'USD')
+  const cur = useStore((s) => s.ruleset.currency ?? 'USD')
   const [sort, setSort] = useState<{ key: SortKey; dir: 1 | -1 }>({ key: 'payroll', dir: -1 })
 
   const sorted = useMemo(() => {

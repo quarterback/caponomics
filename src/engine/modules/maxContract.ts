@@ -61,7 +61,7 @@ export const maxContract: CapModuleDef = {
       if (salary > maxAllowed) {
         legal = false
         const name = ctx.league.players[c.playerId]?.name ?? c.playerId
-        reasons.push({ severity: 'error', module: 'maxContract', message: `${name} at ${fmtMoney(salary, ctx.league.currency)} exceeds the ${pct}%-of-cap max (${fmtMoney(maxAllowed, ctx.league.currency)}).` })
+        reasons.push({ severity: 'error', module: 'maxContract', message: `${name} at ${fmtMoney(salary, (ctx.ruleset.currency ?? 'USD'))} exceeds the ${pct}%-of-cap max (${fmtMoney(maxAllowed, (ctx.ruleset.currency ?? 'USD'))}).` })
       }
     }
     return result({ legal, reasons })

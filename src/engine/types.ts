@@ -90,6 +90,9 @@ export interface Ruleset {
   id: string
   name: string
   sport?: string
+  /** The currency the ruleset's money figures are in and results display in
+   *  (default USD). Persisted in shared links. */
+  currency?: Currency
   seasonYears: LeagueYear[]
   modules: ModuleInstance[]
   meta?: {

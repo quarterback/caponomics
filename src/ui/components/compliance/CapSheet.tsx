@@ -1,5 +1,6 @@
 import { fmtMoney, fmtMoneyExact } from '../../../engine/format'
 import type { League, TeamYearReport } from '../../../engine/types'
+import { useStore } from '../../state/store'
 
 const TYPE_LABEL: Record<string, string> = {
   base: 'Player salaries',
@@ -11,7 +12,7 @@ const TYPE_LABEL: Record<string, string> = {
 }
 
 export function CapSheet({ report, league }: { report: TeamYearReport; league: League }) {
-  const cur = league.currency ?? 'USD'
+  const cur = useStore((s) => s.ruleset.currency ?? 'USD')
   // Group charges by type; base is the big list of players.
   const groups = new Map<string, typeof report.capSheet>()
   for (const ch of report.capSheet) {
