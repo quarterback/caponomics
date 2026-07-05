@@ -10,8 +10,8 @@
   /* Overbit is the figures/mono face; JetBrains Mono is a fallback for glyphs it
      lacks (e.g. CJK 억/万). */
   --font-mono: 'Overbit', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-  --font-wordmark: 'Amerik', var(--font-sans);
-  --font-display: 'Amerik', var(--font-sans);
+  --font-wordmark: var(--font-sans);
+  --font-display: var(--font-sans);
 
   /* Spacing — 8px grid */
   --s1: 4px;
