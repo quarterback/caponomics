@@ -1,19 +1,23 @@
+import { useState } from 'react'
 import { PresetRail } from './sidebar/PresetRail'
 import { RulesetBuilder } from './workspace/RulesetBuilder'
-import { CompliancePanel } from './compliance/CompliancePanel'
+import { LeaguePanel } from './compliance/LeaguePanel'
 import { Toolbar } from './Toolbar'
+import { About } from './About'
 
 export function AppShell() {
+  const [aboutOpen, setAboutOpen] = useState(false)
   return (
     <div className="shell">
-      <Toolbar />
+      <Toolbar onAbout={() => setAboutOpen(true)} />
       <div className="shell__body">
         <PresetRail />
         <div className="col">
           <RulesetBuilder />
         </div>
-        <CompliancePanel />
+        <LeaguePanel />
       </div>
+      {aboutOpen && <About onClose={() => setAboutOpen(false)} />}
     </div>
   )
 }

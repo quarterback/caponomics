@@ -15,7 +15,7 @@ function useTheme(): [string, () => void] {
   return [theme, cycle]
 }
 
-export function Toolbar() {
+export function Toolbar({ onAbout }: { onAbout: () => void }) {
   const { ruleset, forked, loadRulesetObject, loadRemix } = useStore()
   const [theme, cycleTheme] = useTheme()
   const [menu, setMenu] = useState<null | 'remix'>(null)
@@ -117,6 +117,9 @@ export function Toolbar() {
       </button>
       <button className="btn btn--sm btn--primary" onClick={copyLink}>
         {copied ? 'Copied!' : 'Copy link'}
+      </button>
+      <button className="btn btn--ghost btn--sm" onClick={onAbout}>
+        About
       </button>
       <button className="btn--icon" title={`Theme: ${themeLabel}`} onClick={cycleTheme} aria-label="Toggle theme">
         {theme === 'dark' ? '☾' : theme === 'light' ? '☀' : '◐'}
