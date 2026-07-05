@@ -100,3 +100,63 @@ export const NHL_OPTS: GenOpts = {
   starCount: 9,
   weights: [0.18, 0.16, 0.14, 0.12, 0.1, 0.09, 0.08, 0.07, 0.06],
 }
+export const WNBA_OPTS: GenOpts = {
+  rosterSize: 12,
+  minSalary: 66_000,
+  positions: ['G', 'G', 'F', 'F', 'C'],
+  starCount: 5,
+  weights: [0.26, 0.23, 0.2, 0.17, 0.14],
+}
+export const PWHL_OPTS: GenOpts = {
+  rosterSize: 23,
+  minSalary: 35_000,
+  positions: ['F', 'F', 'D', 'D', 'G'],
+  starCount: 6,
+  weights: [0.24, 0.2, 0.17, 0.15, 0.13, 0.11],
+}
+export const MLS_OPTS: GenOpts = {
+  rosterSize: 28,
+  minSalary: 90_000,
+  positions: ['GK', 'DF', 'DF', 'MF', 'MF', 'FW'],
+  starCount: 8,
+  weights: [0.24, 0.18, 0.15, 0.12, 0.1, 0.08, 0.07, 0.06],
+}
+export const NWSL_OPTS: GenOpts = {
+  rosterSize: 26,
+  minSalary: 40_000,
+  positions: ['GK', 'DF', 'DF', 'MF', 'MF', 'FW'],
+  starCount: 7,
+  weights: [0.24, 0.2, 0.16, 0.13, 0.11, 0.09, 0.07],
+}
+// European football: annual wage bills, no cap — the point is testing an
+// invented cap against them.
+export const SOCCER_OPTS: GenOpts = {
+  rosterSize: 25,
+  minSalary: 900_000,
+  positions: ['GK', 'DF', 'DF', 'DF', 'MF', 'MF', 'MF', 'FW', 'FW'],
+  starCount: 12,
+  weights: [0.14, 0.12, 0.11, 0.1, 0.09, 0.08, 0.08, 0.07, 0.06, 0.06, 0.05, 0.04],
+}
+export const CFL_OPTS: GenOpts = {
+  rosterSize: 45,
+  minSalary: 70_000,
+  positions: ['QB', 'RB', 'WR', 'OL', 'DL', 'LB', 'DB', 'K'],
+  starCount: 10,
+  weights: [0.16, 0.12, 0.11, 0.1, 0.1, 0.09, 0.08, 0.08, 0.08, 0.08],
+}
+export const ALEAGUE_OPTS: GenOpts = {
+  rosterSize: 23,
+  minSalary: 90_000,
+  positions: ['GK', 'DF', 'DF', 'MF', 'MF', 'FW'],
+  starCount: 7,
+  weights: [0.24, 0.2, 0.16, 0.13, 0.11, 0.09, 0.07],
+}
+// IPL cricket: an auction purse (in rupees), not a wage cap. Squad ~20, salaries
+// in crore. positions are cricket roles.
+export const IPL_OPTS: GenOpts = {
+  rosterSize: 20,
+  minSalary: 2_000_000,
+  positions: ['BAT', 'BOWL', 'AR', 'WK'],
+  starCount: 8,
+  weights: [0.2, 0.17, 0.14, 0.12, 0.1, 0.1, 0.09, 0.08],
+}

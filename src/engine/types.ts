@@ -8,6 +8,8 @@
 // exact. Financials are scale-agnostic: a "cap" can be $300,000,000 or $40.
 // ─────────────────────────────────────────────────────────────────────────────
 
+import type { Currency } from './format'
+
 /** Integer dollars. No cents, no floats. */
 export type Money = number
 
@@ -64,6 +66,8 @@ export interface League {
   name: string
   /** Optional sport label, purely informational. */
   sport?: string
+  /** Display currency for this league's money (default USD). */
+  currency?: Currency
   players: Record<string, Player>
   teams: Team[]
   seasonYears: LeagueYear[]

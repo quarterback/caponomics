@@ -54,12 +54,13 @@ export const draftPickPenalty: CapModuleDef = {
     if (line === null) return result()
     if (ctx.totals.capSalary <= line) return result()
     const effect = str(p, 'effect', 'freeze')
+    const cur = ctx.league.currency
     const desc =
       effect === 'dropSpots'
-        ? `1st-round pick drops ${num(p, 'dropSpots', 10)} spots (spending over ${fmtMoney(line)}).`
+        ? `1st-round pick drops ${num(p, 'dropSpots', 10)} spots (spending over ${fmtMoney(line, cur)}).`
         : effect === 'forfeit'
-          ? `Forfeits a 1st-round pick (spending over ${fmtMoney(line)}).`
-          : `Freezes its 1st-round pick ${num(p, 'yearsOut', 7)} drafts out (spending over ${fmtMoney(line)}).`
+          ? `Forfeits a 1st-round pick (spending over ${fmtMoney(line, cur)}).`
+          : `Freezes its 1st-round pick ${num(p, 'yearsOut', 7)} drafts out (spending over ${fmtMoney(line, cur)}).`
     return result({
       reasons: [{ severity: 'warning', module: 'draftPickPenalty', message: desc }],
       penalties: [{ currency: 'assets', description: desc, module: 'draftPickPenalty' }],

@@ -11,6 +11,7 @@ const TYPE_LABEL: Record<string, string> = {
 }
 
 export function CapSheet({ report, league }: { report: TeamYearReport; league: League }) {
+  const cur = league.currency ?? 'USD'
   // Group charges by type; base is the big list of players.
   const groups = new Map<string, typeof report.capSheet>()
   for (const ch of report.capSheet) {
@@ -28,7 +29,7 @@ export function CapSheet({ report, league }: { report: TeamYearReport; league: L
           <div className="capsheet__group" key={type}>
             <div className="capsheet__grouphead">
               <span>{TYPE_LABEL[type] ?? type}</span>
-              <span className="mono">{fmtMoney(subtotal)}</span>
+              <span className="mono">{fmtMoney(subtotal, cur)}</span>
             </div>
             {sorted.map((c, i) => {
               const p = c.playerId ? league.players[c.playerId] : undefined
@@ -38,8 +39,8 @@ export function CapSheet({ report, league }: { report: TeamYearReport; league: L
                     {p?.name ?? c.note ?? 'Charge'}
                     {p && <span className="pos">{p.pos}</span>}
                   </span>
-                  <span className="amt mono" title={fmtMoneyExact(c.amount)}>
-                    {fmtMoney(c.amount)}
+                  <span className="amt mono" title={fmtMoneyExact(c.amount, cur)}>
+                    {fmtMoney(c.amount, cur)}
                   </span>
                 </div>
               )
@@ -49,7 +50,7 @@ export function CapSheet({ report, league }: { report: TeamYearReport; league: L
       })}
       <div className="capsheet__total">
         <span>Total cap salary</span>
-        <span className="mono">{fmtMoneyExact(report.totals.capSalary)}</span>
+        <span className="mono">{fmtMoneyExact(report.totals.capSalary, cur)}</span>
       </div>
     </div>
   )

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { fmtMoney, parseMoney } from '../../engine/format'
+import { useStore } from '../state/store'
 
 export function Segmented({
   value,
@@ -64,6 +65,7 @@ export function Chips({
 /** Money input that accepts shorthand (240M, 1.5m, 68000000) and echoes the
  *  parsed value. Commits on blur / Enter so typing isn't fought by re-render. */
 export function MoneyInput({ value, onChange }: { value: number; onChange: (v: number) => void }) {
+  const cur = useStore((s) => s.league.currency ?? 'USD')
   const [text, setText] = useState(String(value))
   useEffect(() => setText(String(value)), [value])
   const commit = () => {
@@ -81,7 +83,7 @@ export function MoneyInput({ value, onChange }: { value: number; onChange: (v: n
         onKeyDown={(e) => e.key === 'Enter' && commit()}
         spellCheck={false}
       />
-      <span className="input__echo mono">{fmtMoney(parseMoney(text) ?? value)}</span>
+      <span className="input__echo mono">{fmtMoney(parseMoney(text) ?? value, cur)}</span>
     </div>
   )
 }

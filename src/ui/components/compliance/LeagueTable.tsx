@@ -7,6 +7,7 @@ type SortKey = 'team' | 'payroll' | 'vsCap' | 'tax' | 'floor' | 'apron' | 'statu
 
 export function LeagueTable({ rows }: { rows: TeamRow[] }) {
   const { selectedTeamId, selectTeam } = useStore()
+  const cur = useStore((s) => s.league.currency ?? 'USD')
   const [sort, setSort] = useState<{ key: SortKey; dir: 1 | -1 }>({ key: 'payroll', dir: -1 })
 
   const sorted = useMemo(() => {
@@ -58,15 +59,15 @@ export function LeagueTable({ rows }: { rows: TeamRow[] }) {
               onClick={() => selectTeam(r.teamId)}
             >
               <td data-align="l" className="tname">{r.teamName}</td>
-              <td className="mono">{fmtMoney(r.payroll)}</td>
+              <td className="mono">{fmtMoney(r.payroll, cur)}</td>
               <td className="mono" data-tone={r.vsCap !== null && r.vsCap > 0 ? 'bad' : undefined}>
-                {r.vsCap === null ? '—' : r.vsCap > 0 ? `+${fmtMoney(r.vsCap)}` : `−${fmtMoney(-r.vsCap)}`}
+                {r.vsCap === null ? '—' : r.vsCap > 0 ? `+${fmtMoney(r.vsCap, cur)}` : `−${fmtMoney(-r.vsCap, cur)}`}
               </td>
               <td className="mono" data-tone={r.tax > 0 ? 'warn' : undefined}>
-                {r.tax > 0 ? fmtMoney(r.tax) : '—'}
+                {r.tax > 0 ? fmtMoney(r.tax, cur) : '—'}
               </td>
               <td className="mono" data-tone={r.floorGap > 0 ? 'bad' : undefined}>
-                {r.floorGap > 0 ? `−${fmtMoney(r.floorGap)}` : 'OK'}
+                {r.floorGap > 0 ? `−${fmtMoney(r.floorGap, cur)}` : 'OK'}
               </td>
               <td>
                 {r.apronLevel > 0 ? <span className="apron-badge">A{r.apronLevel}</span> : <span className="dim">—</span>}

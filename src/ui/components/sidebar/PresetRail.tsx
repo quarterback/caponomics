@@ -1,5 +1,5 @@
 import { PRESETS } from '../../../presets'
-import { ROSTERS } from '../../../data/rosters'
+import { ROSTERS, ROSTER_GROUPS } from '../../../data/rosters'
 import { useStore } from '../../state/store'
 import { ModulePalette } from './ModulePalette'
 
@@ -24,16 +24,21 @@ export function PresetRail() {
       </div>
 
       <div className="rail__group">
-        <div className="rail__label">Roster to test</div>
-        {ROSTERS.map((r) => (
-          <button
-            key={r.id}
-            className="preset-btn"
-            data-active={rosterId === r.id}
-            onClick={() => loadRoster(r.id)}
-          >
-            <strong>{r.label}</strong>
-          </button>
+        <div className="rail__label">Leagues to test</div>
+        {ROSTER_GROUPS.map((group) => (
+          <div className="rail__subgroup" key={group}>
+            <div className="rail__sublabel">{group}</div>
+            {ROSTERS.filter((r) => r.group === group).map((r) => (
+              <button
+                key={r.id}
+                className="preset-btn preset-btn--row"
+                data-active={rosterId === r.id}
+                onClick={() => loadRoster(r.id)}
+              >
+                <strong>{r.label}</strong>
+              </button>
+            ))}
+          </div>
         ))}
       </div>
 

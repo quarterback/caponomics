@@ -54,7 +54,8 @@ export const salaryFloor: CapModuleDef = {
     if (shortfall > 0) {
       const penalty = str(p, 'penalty', 'payShortfall')
       const hard = p['hardFloor'] === true
-      const reasons = [{ severity: (hard ? 'error' : 'warning') as 'error' | 'warning', module: 'salaryFloor', message: `Below the floor by ${fmtMoney(shortfall)} (${fmtMoney(spend)} / ${fmtMoney(floor)}).` }]
+      const cur = ctx.league.currency
+      const reasons = [{ severity: (hard ? 'error' : 'warning') as 'error' | 'warning', module: 'salaryFloor', message: `Below the floor by ${fmtMoney(shortfall, cur)} (${fmtMoney(spend, cur)} / ${fmtMoney(floor, cur)}).` }]
       const penalties =
         penalty === 'none'
           ? []

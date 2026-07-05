@@ -53,7 +53,7 @@ export const hardCap: CapModuleDef = {
       return result({
         legal: false,
         readouts,
-        reasons: [{ severity: 'error', module: 'hardCap', message: `Over the hard cap by ${fmtMoney(over)} (${fmtMoney(measure)} / ${fmtMoney(ceiling)}).` }],
+        reasons: [{ severity: 'error', module: 'hardCap', message: `Over the hard cap by ${fmtMoney(over, ctx.league.currency)} (${fmtMoney(measure, ctx.league.currency)} / ${fmtMoney(ceiling, ctx.league.currency)}).` }],
       })
     }
     return result({ readouts })

@@ -63,7 +63,7 @@ export const minimumSalary: CapModuleDef = {
       if (salary < min) {
         legal = false
         const name = ctx.league.players[c.playerId]?.name ?? c.playerId
-        reasons.push({ severity: 'error', module: 'minimumSalary', message: `${name} at ${fmtMoney(salary)} is below the minimum (${fmtMoney(min)}).` })
+        reasons.push({ severity: 'error', module: 'minimumSalary', message: `${name} at ${fmtMoney(salary, ctx.league.currency)} is below the minimum (${fmtMoney(min, ctx.league.currency)}).` })
       }
     }
     return result({ legal, reasons })

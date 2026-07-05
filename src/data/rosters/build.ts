@@ -1,3 +1,4 @@
+import type { Currency } from '../../engine/format'
 import type { Contract, League, Player } from '../../engine/types'
 
 export interface StarInput {
@@ -18,6 +19,7 @@ export interface RosterFixtureInput {
   id: string
   name: string
   sport: string
+  currency?: Currency
   year: number
   teams: TeamInput[]
 }
@@ -41,7 +43,15 @@ export function buildLeague(input: RosterFixtureInput): League {
     while (roster.length < fillTo) add(`Reserve ${k++}`, 'R', fillSalary, 1)
     return { id: t.id, name: t.name, roster, flags: [] }
   })
-  return { id: input.id, name: input.name, sport: input.sport, players, teams, seasonYears: [input.year] }
+  return {
+    id: input.id,
+    name: input.name,
+    sport: input.sport,
+    currency: input.currency ?? 'USD',
+    players,
+    teams,
+    seasonYears: [input.year],
+  }
 }
 
 function slug(s: string): string {
