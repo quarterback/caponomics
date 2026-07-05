@@ -28,6 +28,20 @@ npm test           # engine unit tests (Vitest)
 Fully client-side (React + TypeScript + Vite). No backend — all cap math runs in the browser and it
 deploys as a static site.
 
+## Deploy (Vercel / Netlify)
+
+It's a static SPA, so hosting is zero-infrastructure. Config for both platforms is committed:
+
+- **Vercel** — Import the repo at [vercel.com/new](https://vercel.com/new). `vercel.json` sets the
+  Vite framework preset, `npm run build`, `dist/` output, and SPA fallback. Nothing to configure.
+- **Netlify** — "Add new site → Import an existing project" at
+  [app.netlify.com](https://app.netlify.com/start). `netlify.toml` sets the build command, publish
+  dir, Node version, and SPA redirect.
+
+Either platform auto-builds on every push to the branch. The build is portable (relative asset
+paths via `base: './'`), so it also works from a GitHub Pages project subpath if you'd rather host
+there.
+
 ## How it's built
 
 The extensibility spine is a flat catalog of small **mechanic modules**, each keyed by a string
