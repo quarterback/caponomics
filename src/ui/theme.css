@@ -123,6 +123,15 @@
   --cat-roster: #7c3aed;
   --cat-penalty: var(--error);
   --cat-misc: var(--text-3);
+
+  /* Expansion-draft rule categories */
+  --cat-protection: var(--steel);
+  --cat-exemption: var(--success);
+  --cat-exposure: var(--tangerine);
+  --cat-selection: var(--brand);
+  --cat-rounds: #7c3aed;
+  --cat-financial: var(--baltic);
+  --cat-special: var(--text-3);
 }
 
 * {

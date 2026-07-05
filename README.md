@@ -58,8 +58,17 @@ The extensibility spine is a flat catalog of small **mechanic modules**, each ke
 - `src/data/rosters/` — sample rosters (decoupled from rulesets; any roster runs against any system).
 - `src/ui/` — the React app shell (sidebar palette · workspace ruleset builder · compliance panel).
 
+There's also a second surface built on the same spine: the **Expansion Draft** tab
+(`src/engine/expansion/`), a rules *constructor* for expansion-draft models. Compose protection
+schemes, exemptions, exposure minimums, selection limits, rounds, and financial windows from the
+same kind of mix-and-match modules; load historical presets (NHL 2021, WNBA 2026 two-team, MLS,
+NBA 1988–2004, NFL 2002, MLB 1992/1997) or invent your own. It renders the model as a
+plain-language rulebook — with side-by-side comparison against any preset — and deliberately
+runs no "who would get picked" simulation. See `docs/expansion-draft-plan.md`.
+
 ## Status
 
-MVP: **construct a cap system + check roster compliance.** A live trade/transaction sandbox,
-side-by-side system comparison, and the transaction-derived modules (proration/dead money, buyouts,
-retention, exceptions) are designed-for but deferred. See `docs/mvp-plan.md`.
+MVP: **construct a cap system + check roster compliance**, plus the expansion-draft rules
+constructor. A live trade/transaction sandbox, side-by-side system comparison, and the
+transaction-derived modules (proration/dead money, buyouts, retention, exceptions) are
+designed-for but deferred. See `docs/mvp-plan.md`.
