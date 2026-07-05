@@ -17,6 +17,8 @@ export const MODULE_CATALOG: CapModuleDef[] = [
   M.draftPickPenalty,
   M.retainedRights,
   M.amnesty,
+  M.exception,
+  M.designatedPlayer,
   M.deadMoney,
   M.passThrough,
 ]
