@@ -972,3 +972,176 @@
   outline: none;
   border-color: var(--brand);
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Mobile / small screens (≤ 760px)
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 760px) {
+  html,
+  body,
+  #root {
+    height: auto;
+    min-height: 100%;
+  }
+  .shell {
+    height: auto;
+    min-height: 100%;
+    /* Force the single implicit column to the viewport (not max-content of the
+       widest child), so nothing stretches the page wider than the screen. */
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .shell__body {
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: none;
+    padding: var(--s3);
+    gap: var(--s3);
+    overflow: visible;
+    min-width: 0;
+    max-width: 100%;
+  }
+  .col {
+    overflow: visible;
+    min-width: 0;
+    max-width: 100%;
+  }
+  /* Pickers first (compact chips), then results, then the builder. */
+  .shell__body > .col:nth-child(1) { order: 1; }
+  .shell__body > .col:nth-child(3) { order: 2; }
+  .shell__body > .col:nth-child(2) { order: 3; }
+
+  /* Toolbar: wrap, drop non-essential text, keep controls reachable. */
+  .toolbar {
+    flex-wrap: wrap;
+    gap: var(--s2);
+    padding: var(--s2) var(--s3);
+  }
+  .toolbar__brand {
+    font-size: 15px;
+  }
+  .toolbar__brand small,
+  .toolbar__ruleset,
+  .toolbar__spacer {
+    display: none;
+  }
+  .toolbar .btn,
+  .toolbar .cur-select {
+    padding: 5px 9px;
+    font-size: 12px;
+  }
+  .card__body {
+    padding: var(--s3);
+  }
+
+  /* Sidebar → compact wrapping chips */
+  .rail__items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .rail__group + .rail__group {
+    margin-top: var(--s3);
+  }
+  .rail__subgroup + .rail__subgroup {
+    margin-top: var(--s2);
+  }
+  .rail__items .preset-btn {
+    flex: 0 0 auto;
+    width: auto;
+    flex-direction: row;
+    padding: 6px 12px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--r-pill);
+    margin-bottom: 0;
+  }
+  .rail__items .preset-btn span {
+    display: none;
+  }
+  .rail__items .preset-btn strong {
+    font-size: 12.5px;
+  }
+  /* Palette items wrap into chips too */
+  .palette__cat {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+  .palette__cat h4 {
+    flex-basis: 100%;
+    margin-bottom: 2px;
+  }
+  .palette__item {
+    width: auto;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--r-pill);
+    padding: 6px 10px;
+  }
+
+  /* League table → cards */
+  .ltable-wrap {
+    border: none;
+    overflow: visible;
+  }
+  .ltable,
+  .ltable tbody,
+  .ltable tr,
+  .ltable td {
+    display: block;
+    width: 100%;
+  }
+  .ltable thead {
+    display: none;
+  }
+  .ltable tbody tr {
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    margin-bottom: var(--s2);
+    padding: var(--s2) var(--s3);
+    background: var(--surface);
+  }
+  .ltable tbody tr[data-active='true'] {
+    box-shadow: inset 3px 0 0 var(--brand);
+    background: color-mix(in srgb, var(--brand) 8%, var(--surface));
+  }
+  .ltable tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: right;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    white-space: normal;
+  }
+  .ltable tbody td:last-child {
+    border-bottom: none;
+  }
+  .ltable tbody td::before {
+    content: attr(data-label);
+    color: var(--text-3);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    text-align: left;
+  }
+  .ltable tbody td.tname {
+    justify-content: flex-start;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 2px 0 8px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 4px;
+  }
+  .ltable tbody td.tname::before {
+    content: none;
+  }
+
+  /* About modal full-height on phones */
+  .about__body {
+    padding: var(--s4);
+  }
+  .modal {
+    max-height: 90vh;
+  }
+}
