@@ -1,4 +1,4 @@
-# caponomics
+# Cap Buffet
 
 **Salary Cap Imagineering** — a sport-agnostic salary-cap *system constructor* and compliance
 checker. Think "the NBA Trade Machine, but for cap-*system construction*." Compose a cap system out

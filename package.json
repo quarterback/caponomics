@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Salary Cap Imagineering — a sport-agnostic cap-system constructor + compliance checker",
+  "description": "Cap Buffet — Salary Cap Imagineering — a sport-agnostic cap-system constructor + compliance checker",
   "engines": {
     "node": ">=18"
   },
