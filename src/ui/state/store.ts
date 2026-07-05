@@ -2,6 +2,8 @@ import { create } from 'zustand'
 import { evaluateRuleset } from '../../engine/evaluate'
 import { makeInstance, MODULE_MAP } from '../../engine/catalog'
 import { deserializeRuleset } from '../../engine/serialize'
+import { convertRulesetMoney } from '../../engine/currency'
+import type { Currency } from '../../engine/format'
 import { PRESET_MAP, DEFAULT_PRESET_ID } from '../../presets'
 import { ROSTER_MAP } from '../../data/rosters'
 import type { ComplianceReport, League, Ruleset } from '../../engine/types'
@@ -35,6 +37,7 @@ interface CapState {
   moveModule: (instanceId: string, dir: -1 | 1) => void
   updateParam: (instanceId: string, key: string, value: unknown) => void
   renameRuleset: (name: string) => void
+  setCurrency: (currency: Currency) => void
 }
 
 const initialPreset = cloneRuleset(PRESET_MAP[DEFAULT_PRESET_ID]!)
@@ -143,5 +146,13 @@ export const useStore = create<CapState>((set, get) => {
       }),
 
     renameRuleset: (name) => mutate((r) => { r.name = name }, { fork: false }),
+
+    setCurrency: (currency) => {
+      const r = cloneRuleset(get().ruleset)
+      const from = r.currency ?? 'USD'
+      if (from !== currency) convertRulesetMoney(r, from, currency)
+      r.currency = currency
+      set({ ruleset: r, report: recompute(get().league, r) })
+    },
   }
 })

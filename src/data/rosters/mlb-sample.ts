@@ -1,4 +1,32 @@
 import { buildLeague } from './build'
+import { genTeam, MLB_OPTS } from './generate'
+
+// The rest of the league — real names, generated depth, payroll targets chosen
+// to spread across the cap (contenders over, small markets under the floor).
+const generatedTeams = (
+  [
+    ['BOS', 'Boston Red Sox', 208_000_000],
+    ['TOR', 'Toronto Blue Jays', 200_000_000],
+    ['BAL', 'Baltimore Orioles', 158_000_000],
+    ['CLE', 'Cleveland Guardians', 104_000_000],
+    ['DET', 'Detroit Tigers', 150_000_000],
+    ['KC', 'Kansas City Royals', 128_000_000],
+    ['MIN', 'Minnesota Twins', 142_000_000],
+    ['CWS', 'Chicago White Sox', 76_000_000],
+    ['SEA', 'Seattle Mariners', 156_000_000],
+    ['TEX', 'Texas Rangers', 196_000_000],
+    ['LAA', 'Los Angeles Angels', 174_000_000],
+    ['ATL', 'Atlanta Braves', 232_000_000],
+    ['WSH', 'Washington Nationals', 112_000_000],
+    ['MIA', 'Miami Marlins', 72_000_000],
+    ['CHC', 'Chicago Cubs', 190_000_000],
+    ['MIL', 'Milwaukee Brewers', 118_000_000],
+    ['STL', 'St. Louis Cardinals', 166_000_000],
+    ['CIN', 'Cincinnati Reds', 114_000_000],
+    ['ARI', 'Arizona Diamondbacks', 176_000_000],
+    ['COL', 'Colorado Rockies', 130_000_000],
+  ] as [string, string, number][]
+).map(([id, name, target], i) => genTeam(id, name, target, 4100 + i * 131, MLB_OPTS))
 
 // Four teams tuned to exercise the MLB-2026 preset against a real spread:
 //  • Dodgers  — over the $300M hard cap + top tax tier; Ohtani above the 16% max
@@ -8,7 +36,7 @@ import { buildLeague } from './build'
 // Illustrative salaries (not official). It's a calculator, not a prescription.
 export const mlbSample = buildLeague({
   id: 'mlb-sample',
-  name: 'MLB Sample (4 teams)',
+  name: 'MLB — all 30 teams',
   sport: 'baseball',
   year: 2026,
   teams: [
@@ -82,5 +110,97 @@ export const mlbSample = buildLeague({
         { name: 'JP Sears', pos: 'SP', salary: 3_000_000, service: 4 },
       ],
     },
+    {
+      id: 'NYM',
+      name: 'New York Mets',
+      fillTo: 26,
+      stars: [
+        { name: 'Juan Soto', pos: 'OF', salary: 51_000_000, service: 8 },
+        { name: 'Francisco Lindor', pos: 'SS', salary: 34_000_000, service: 11 },
+        { name: 'Pete Alonso', pos: '1B', salary: 25_000_000, service: 7 },
+        { name: 'Sean Manaea', pos: 'SP', salary: 21_000_000, service: 9 },
+        { name: 'Brandon Nimmo', pos: 'OF', salary: 20_000_000, service: 10 },
+        { name: 'Kodai Senga', pos: 'SP', salary: 20_000_000, service: 4 },
+        { name: 'Edwin Díaz', pos: 'RP', salary: 20_000_000, service: 9 },
+        { name: 'Frankie Montas', pos: 'SP', salary: 17_000_000, service: 9 },
+        { name: 'Jeff McNeil', pos: '2B', salary: 12_000_000, service: 7 },
+        { name: 'David Peterson', pos: 'SP', salary: 8_000_000, service: 6 },
+      ],
+    },
+    {
+      id: 'PHI',
+      name: 'Philadelphia Phillies',
+      fillTo: 26,
+      stars: [
+        { name: 'Zack Wheeler', pos: 'SP', salary: 38_000_000, service: 10 },
+        { name: 'Trea Turner', pos: 'SS', salary: 27_000_000, service: 11 },
+        { name: 'Bryce Harper', pos: '1B', salary: 26_000_000, service: 15 },
+        { name: 'Aaron Nola', pos: 'SP', salary: 25_000_000, service: 12 },
+        { name: 'J.T. Realmuto', pos: 'C', salary: 20_000_000, service: 12 },
+        { name: 'Kyle Schwarber', pos: 'DH', salary: 20_000_000, service: 11 },
+        { name: 'Nick Castellanos', pos: 'OF', salary: 20_000_000, service: 12 },
+        { name: 'Cristopher Sánchez', pos: 'SP', salary: 8_000_000, service: 5 },
+        { name: 'Alec Bohm', pos: '3B', salary: 8_000_000, service: 5 },
+      ],
+    },
+    {
+      id: 'SD',
+      name: 'San Diego Padres',
+      fillTo: 26,
+      stars: [
+        { name: 'Manny Machado', pos: '3B', salary: 34_000_000, service: 13 },
+        { name: 'Fernando Tatis Jr.', pos: 'OF', salary: 25_000_000, service: 6 },
+        { name: 'Xander Bogaerts', pos: 'SS', salary: 25_000_000, service: 12 },
+        { name: 'Yu Darvish', pos: 'SP', salary: 21_000_000, service: 13 },
+        { name: 'Luis Arraez', pos: '2B', salary: 14_000_000, service: 7 },
+        { name: 'Dylan Cease', pos: 'SP', salary: 14_000_000, service: 6 },
+        { name: 'Michael King', pos: 'SP', salary: 8_000_000, service: 5 },
+        { name: 'Jackson Merrill', pos: 'OF', salary: 7_000_000, service: 2 },
+      ],
+    },
+    {
+      id: 'HOU',
+      name: 'Houston Astros',
+      fillTo: 26,
+      stars: [
+        { name: 'José Altuve', pos: '2B', salary: 30_000_000, service: 14 },
+        { name: 'Yordan Alvarez', pos: 'DH', salary: 30_000_000, service: 6 },
+        { name: 'Josh Hader', pos: 'RP', salary: 19_000_000, service: 9 },
+        { name: 'Framber Valdez', pos: 'SP', salary: 18_000_000, service: 6 },
+        { name: 'Lance McCullers Jr.', pos: 'SP', salary: 17_000_000, service: 9 },
+        { name: 'Ryan Pressly', pos: 'RP', salary: 14_000_000, service: 11 },
+        { name: 'Cristian Javier', pos: 'SP', salary: 10_000_000, service: 5 },
+        { name: 'Jeremy Peña', pos: 'SS', salary: 8_000_000, service: 4 },
+      ],
+    },
+    {
+      id: 'SF',
+      name: 'San Francisco Giants',
+      fillTo: 26,
+      stars: [
+        { name: 'Willy Adames', pos: 'SS', salary: 28_000_000, service: 9 },
+        { name: 'Matt Chapman', pos: '3B', salary: 27_000_000, service: 11 },
+        { name: 'Logan Webb', pos: 'SP', salary: 25_000_000, service: 6 },
+        { name: 'Robbie Ray', pos: 'SP', salary: 25_000_000, service: 11 },
+        { name: 'Justin Verlander', pos: 'SP', salary: 15_000_000, service: 19 },
+        { name: 'Jung Hoo Lee', pos: 'OF', salary: 8_000_000, service: 2 },
+        { name: 'Wilmer Flores', pos: '1B', salary: 6_000_000, service: 11 },
+      ],
+    },
+    {
+      id: 'PIT',
+      name: 'Pittsburgh Pirates',
+      fillTo: 24,
+      fillSalary: 900_000,
+      stars: [
+        { name: 'Bryan Reynolds', pos: 'OF', salary: 15_000_000, service: 8 },
+        { name: 'Mitch Keller', pos: 'SP', salary: 15_000_000, service: 7 },
+        { name: "Ke'Bryan Hayes", pos: '3B', salary: 8_000_000, service: 6 },
+        { name: 'David Bednar', pos: 'RP', salary: 6_000_000, service: 6 },
+        { name: 'Andrew McCutchen', pos: 'DH', salary: 5_000_000, service: 17 },
+        { name: 'Paul Skenes', pos: 'SP', salary: 3_000_000, service: 2 },
+      ],
+    },
+    ...generatedTeams,
   ],
 })

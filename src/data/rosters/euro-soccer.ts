@@ -1,0 +1,126 @@
+import { buildLeague } from './build'
+import { genTeam, SOCCER_OPTS } from './generate'
+
+// European football: annual gross wage bills. No cap exists — the point is to
+// invent one and see who it would catch. Figures are illustrative.
+function league(id: string, name: string, currency: 'GBP' | 'EUR', seedBase: number, teams: [string, string, number][]) {
+  return buildLeague({
+    id,
+    name,
+    sport: 'soccer',
+    currency,
+    year: 2026,
+    teams: teams.map(([tid, tname, target], i) => genTeam(tid, tname, target, seedBase + i * 79, SOCCER_OPTS)),
+  })
+}
+
+export const eplLeague = league('epl-league', 'Premier League — 20 clubs', 'GBP', 3100, [
+  ['MCI', 'Manchester City', 400_000_000],
+  ['MUN', 'Manchester United', 300_000_000],
+  ['CHE', 'Chelsea', 320_000_000],
+  ['LIV', 'Liverpool', 300_000_000],
+  ['ARS', 'Arsenal', 280_000_000],
+  ['TOT', 'Tottenham Hotspur', 220_000_000],
+  ['NEW', 'Newcastle United', 200_000_000],
+  ['AVL', 'Aston Villa', 190_000_000],
+  ['WHU', 'West Ham United', 160_000_000],
+  ['BHA', 'Brighton', 130_000_000],
+  ['EVE', 'Everton', 140_000_000],
+  ['WOL', 'Wolves', 120_000_000],
+  ['FUL', 'Fulham', 110_000_000],
+  ['CRY', 'Crystal Palace', 110_000_000],
+  ['BRE', 'Brentford', 100_000_000],
+  ['NFO', 'Nottingham Forest', 115_000_000],
+  ['BOU', 'Bournemouth', 95_000_000],
+  ['LEE', 'Leeds United', 90_000_000],
+  ['BUR', 'Burnley', 85_000_000],
+  ['SUN', 'Sunderland', 80_000_000],
+])
+
+export const laLigaLeague = league('laliga-league', 'La Liga — 20 clubs', 'EUR', 3300, [
+  ['RMA', 'Real Madrid', 400_000_000],
+  ['BAR', 'Barcelona', 360_000_000],
+  ['ATM', 'Atlético Madrid', 250_000_000],
+  ['SEV', 'Sevilla', 130_000_000],
+  ['VAL', 'Valencia', 110_000_000],
+  ['VIL', 'Villarreal', 120_000_000],
+  ['ATH', 'Athletic Club', 130_000_000],
+  ['RSO', 'Real Sociedad', 125_000_000],
+  ['BET', 'Real Betis', 115_000_000],
+  ['GIR', 'Girona', 90_000_000],
+  ['CEL', 'Celta Vigo', 80_000_000],
+  ['OSA', 'Osasuna', 70_000_000],
+  ['GET', 'Getafe', 65_000_000],
+  ['RAY', 'Rayo Vallecano', 60_000_000],
+  ['MLL', 'Mallorca', 62_000_000],
+  ['ALA', 'Alavés', 58_000_000],
+  ['ESP', 'Espanyol', 60_000_000],
+  ['LEG', 'Leganés', 50_000_000],
+  ['VLL', 'Real Valladolid', 48_000_000],
+  ['ELC', 'Elche', 46_000_000],
+])
+
+export const serieALeague = league('seriea-league', 'Serie A — 20 clubs', 'EUR', 3500, [
+  ['JUV', 'Juventus', 200_000_000],
+  ['INT', 'Inter Milan', 185_000_000],
+  ['MIL', 'AC Milan', 175_000_000],
+  ['NAP', 'Napoli', 155_000_000],
+  ['ROM', 'Roma', 145_000_000],
+  ['LAZ', 'Lazio', 130_000_000],
+  ['ATA', 'Atalanta', 135_000_000],
+  ['FIO', 'Fiorentina', 100_000_000],
+  ['BOL', 'Bologna', 90_000_000],
+  ['TOR', 'Torino', 80_000_000],
+  ['UDI', 'Udinese', 70_000_000],
+  ['GEN', 'Genoa', 65_000_000],
+  ['CAG', 'Cagliari', 60_000_000],
+  ['COM', 'Como', 62_000_000],
+  ['VER', 'Hellas Verona', 55_000_000],
+  ['LEC', 'Lecce', 52_000_000],
+  ['PAR', 'Parma', 54_000_000],
+  ['PIS', 'Pisa', 48_000_000],
+  ['CRE', 'Cremonese', 46_000_000],
+  ['SAS', 'Sassuolo', 58_000_000],
+])
+
+export const bundesligaLeague = league('bundesliga-league', 'Bundesliga — 18 clubs', 'EUR', 3700, [
+  ['BAY', 'Bayern Munich', 320_000_000],
+  ['DOR', 'Borussia Dortmund', 200_000_000],
+  ['RBL', 'RB Leipzig', 180_000_000],
+  ['LEV', 'Bayer Leverkusen', 165_000_000],
+  ['STU', 'VfB Stuttgart', 110_000_000],
+  ['FRA', 'Eintracht Frankfurt', 115_000_000],
+  ['WOB', 'VfL Wolfsburg', 105_000_000],
+  ['BMG', 'Borussia M’gladbach', 95_000_000],
+  ['HOF', 'Hoffenheim', 85_000_000],
+  ['FRE', 'Freiburg', 80_000_000],
+  ['BRE', 'Werder Bremen', 70_000_000],
+  ['MAI', 'Mainz 05', 65_000_000],
+  ['AUG', 'Augsburg', 62_000_000],
+  ['UNI', 'Union Berlin', 68_000_000],
+  ['KOL', 'FC Köln', 60_000_000],
+  ['HAM', 'Hamburger SV', 58_000_000],
+  ['HEI', 'Heidenheim', 45_000_000],
+  ['STP', 'St. Pauli', 44_000_000],
+])
+
+export const ligue1League = league('ligue1-league', 'Ligue 1 — 18 clubs', 'EUR', 3900, [
+  ['PSG', 'Paris Saint-Germain', 400_000_000],
+  ['MAR', 'Marseille', 150_000_000],
+  ['MON', 'Monaco', 140_000_000],
+  ['LYO', 'Lyon', 125_000_000],
+  ['LIL', 'Lille', 110_000_000],
+  ['NIC', 'Nice', 100_000_000],
+  ['REN', 'Rennes', 105_000_000],
+  ['LEN', 'Lens', 90_000_000],
+  ['STR', 'Strasbourg', 70_000_000],
+  ['NAN', 'Nantes', 65_000_000],
+  ['TOU', 'Toulouse', 60_000_000],
+  ['BRE', 'Brest', 58_000_000],
+  ['AUX', 'Auxerre', 50_000_000],
+  ['LHA', 'Le Havre', 46_000_000],
+  ['ANG', 'Angers', 45_000_000],
+  ['MET', 'Metz', 44_000_000],
+  ['LOR', 'Lorient', 48_000_000],
+  ['PAR', 'Paris FC', 52_000_000],
+])

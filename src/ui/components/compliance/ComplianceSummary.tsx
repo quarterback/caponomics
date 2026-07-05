@@ -1,7 +1,9 @@
 import { fmtMoney } from '../../../engine/format'
 import type { TeamYearReport } from '../../../engine/types'
+import { useStore } from '../../state/store'
 
 export function ComplianceSummary({ report }: { report: TeamYearReport }) {
+  const cur = useStore((s) => s.ruleset.currency ?? 'USD')
   const errors = report.reasons.filter((r) => r.severity === 'error')
   const warnings = report.reasons.filter((r) => r.severity === 'warning')
   const infos = report.reasons.filter((r) => r.severity === 'info')
@@ -23,7 +25,7 @@ export function ComplianceSummary({ report }: { report: TeamYearReport }) {
           <div className="penalty-chips">
             {report.penalties.map((p, i) => (
               <span className="pchip" data-cur={p.currency} key={i} title={p.description}>
-                {p.currency === 'money' && p.amount !== undefined ? fmtMoney(p.amount) : p.currency}
+                {p.currency === 'money' && p.amount !== undefined ? fmtMoney(p.amount, cur) : p.currency}
                 {p.currency !== 'money' ? '' : ' tax'}
               </span>
             ))}

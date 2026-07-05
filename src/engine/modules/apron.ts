@@ -63,7 +63,7 @@ export const apron: CapModuleDef = {
         .join(', ')
       return result({
         readouts,
-        reasons: [{ severity: 'warning', module: 'apron', message: `Over apron ${level} by ${fmtMoney(-distance)}. Active restrictions: ${labels || 'none'}.` }],
+        reasons: [{ severity: 'warning', module: 'apron', message: `Over apron ${level} by ${fmtMoney(-distance, (ctx.ruleset.currency ?? 'USD'))}. Active restrictions: ${labels || 'none'}.` }],
         penalties: active.length ? [{ currency: 'tools', description: `Apron ${level}: ${labels}`, module: 'apron' }] : [],
       })
     }

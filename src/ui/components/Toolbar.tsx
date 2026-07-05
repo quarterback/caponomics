@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { serializeRuleset, encodeRulesetToHash } from '../../engine/serialize'
+import { CURRENCY_LIST, currencySymbol, type Currency } from '../../engine/format'
 import { REMIXES } from '../remixes'
 import { useStore } from '../state/store'
 
@@ -15,8 +16,9 @@ function useTheme(): [string, () => void] {
   return [theme, cycle]
 }
 
-export function Toolbar() {
-  const { ruleset, forked, loadRulesetObject, loadRemix } = useStore()
+export function Toolbar({ onAbout }: { onAbout: () => void }) {
+  const { ruleset, forked, loadRulesetObject, loadRemix, setCurrency } = useStore()
+  const currency = ruleset.currency ?? 'USD'
   const [theme, cycleTheme] = useTheme()
   const [menu, setMenu] = useState<null | 'remix'>(null)
   const [importOpen, setImportOpen] = useState(false)
@@ -86,6 +88,19 @@ export function Toolbar() {
         )}
       </div>
 
+      <select
+        className="cur-select mono"
+        value={currency}
+        onChange={(e) => setCurrency(e.target.value as Currency)}
+        title="Display currency (converts money to this currency)"
+      >
+        {CURRENCY_LIST.map((c) => (
+          <option key={c} value={c}>
+            {currencySymbol(c)} {c}
+          </option>
+        ))}
+      </select>
+
       <div className="menu" ref={menuRef}>
         <button className="btn btn--sm" onClick={() => setMenu(menu === 'remix' ? null : 'remix')}>
           Remixes ▾
@@ -117,6 +132,9 @@ export function Toolbar() {
       </button>
       <button className="btn btn--sm btn--primary" onClick={copyLink}>
         {copied ? 'Copied!' : 'Copy link'}
+      </button>
+      <button className="btn btn--ghost btn--sm" onClick={onAbout}>
+        About
       </button>
       <button className="btn--icon" title={`Theme: ${themeLabel}`} onClick={cycleTheme} aria-label="Toggle theme">
         {theme === 'dark' ? '☾' : theme === 'light' ? '☀' : '◐'}

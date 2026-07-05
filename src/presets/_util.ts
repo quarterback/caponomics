@@ -1,4 +1,5 @@
 import { MODULE_MAP } from '../engine/catalog'
+import type { Currency } from '../engine/format'
 import type { ModuleInstance, Ruleset } from '../engine/types'
 
 let counter = 0
@@ -21,7 +22,8 @@ export function preset(
   name: string,
   sport: string,
   modules: ModuleInstance[],
+  currency: Currency = 'USD',
   year = 2026,
 ): Ruleset {
-  return { schemaVersion: 1, id, name, sport, seasonYears: [year], modules }
+  return { schemaVersion: 1, id, name, sport, currency, seasonYears: [year], modules }
 }

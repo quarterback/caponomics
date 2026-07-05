@@ -64,11 +64,13 @@ export function deserializeRuleset(input: string | unknown): Ruleset {
   const modules = Array.isArray(raw.modules)
     ? raw.modules.map(coerceInstance).filter((m): m is ModuleInstance => m !== null)
     : []
+  const validCurrencies = ['USD', 'EUR', 'GBP', 'AUD', 'CAD', 'INR']
   return {
     schemaVersion: SCHEMA_VERSION,
     id: typeof raw.id === 'string' ? raw.id : 'custom',
     name: typeof raw.name === 'string' ? raw.name : 'Custom Ruleset',
     sport: typeof raw.sport === 'string' ? raw.sport : undefined,
+    currency: typeof raw.currency === 'string' && validCurrencies.includes(raw.currency) ? raw.currency : 'USD',
     seasonYears: Array.isArray(raw.seasonYears) && raw.seasonYears.length
       ? raw.seasonYears.filter((y): y is number => typeof y === 'number')
       : [2026],

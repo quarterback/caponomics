@@ -10,11 +10,19 @@
 }
 .shell__body {
   display: grid;
-  grid-template-columns: 264px minmax(0, 1fr) 400px;
+  grid-template-columns: 256px 400px minmax(0, 1fr);
   gap: var(--s4);
   padding: var(--s4);
   min-height: 0;
   overflow: hidden;
+}
+@media (max-width: 1320px) {
+  .shell__body {
+    grid-template-columns: 240px minmax(0, 1fr);
+  }
+  .shell__body > .col:last-child {
+    grid-column: 1 / -1;
+  }
 }
 .col {
   min-height: 0;
@@ -767,4 +775,200 @@
   display: block;
   color: var(--text-3);
   font-size: 11px;
+}
+
+/* ── League summary tiles ── */
+.lsummary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--s2);
+}
+.tile__sub {
+  font-size: 11px;
+  color: var(--text-3);
+  margin-top: 2px;
+}
+
+/* ── League table ── */
+.ltable-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+}
+.ltable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.ltable thead th {
+  position: sticky;
+  top: 0;
+  background: var(--surface-2);
+  color: var(--text-3);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  text-align: right;
+  padding: 9px 12px;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border);
+}
+.ltable thead th[data-align='l'] {
+  text-align: left;
+}
+.ltable thead th:hover {
+  color: var(--text);
+}
+.sort-caret {
+  margin-left: 3px;
+  color: var(--brand);
+}
+.ltable tbody td {
+  padding: 8px 12px;
+  text-align: right;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.ltable tbody td[data-align='l'] {
+  text-align: left;
+}
+.ltable tbody tr {
+  cursor: pointer;
+  transition: background var(--transition);
+}
+.ltable tbody tr:hover {
+  background: var(--surface-2);
+}
+.ltable tbody tr[data-active='true'] {
+  background: color-mix(in srgb, var(--brand) 10%, transparent);
+  box-shadow: inset 3px 0 0 var(--brand);
+}
+.ltable tbody tr:last-child td {
+  border-bottom: none;
+}
+.ltable .tname {
+  font-weight: 500;
+  color: var(--text);
+}
+.ltable td[data-tone='bad'] {
+  color: var(--error);
+}
+.ltable td[data-tone='warn'] {
+  color: var(--warning);
+}
+.ltable .dim {
+  color: var(--text-3);
+}
+.apron-badge {
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: var(--r-pill);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--warning);
+  background: var(--warning-bg);
+}
+.pen-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--tangerine);
+  margin-left: 6px;
+  vertical-align: middle;
+}
+.status-txt {
+  margin-left: 7px;
+  font-weight: 500;
+}
+.status-txt[data-legal='true'] {
+  color: var(--success);
+}
+.status-txt[data-legal='false'] {
+  color: var(--error);
+}
+
+/* ── About ── */
+.modal--wide {
+  width: min(760px, 100%);
+}
+.about__body {
+  padding: var(--s5);
+  overflow-y: auto;
+}
+.about__lede {
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--text);
+  margin: 0 0 var(--s4);
+}
+.about__body h3 {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--brand-ink);
+  margin: var(--s5) 0 var(--s2);
+}
+.about__body p {
+  color: var(--text-2);
+  line-height: 1.6;
+  margin: 0 0 var(--s2);
+  font-size: 14px;
+}
+.about__body ol {
+  color: var(--text-2);
+  line-height: 1.6;
+  padding-left: var(--s5);
+  margin: 0;
+}
+.about__body ol li {
+  margin-bottom: 4px;
+}
+.about__foot {
+  margin-top: var(--s5) !important;
+  padding-top: var(--s4);
+  border-top: 1px solid var(--border);
+  font-size: 12.5px !important;
+  color: var(--text-3) !important;
+}
+
+/* Grouped roster rail */
+.rail__subgroup + .rail__subgroup {
+  margin-top: var(--s3);
+}
+.rail__sublabel {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  opacity: 0.75;
+  margin: 0 0 4px var(--s1);
+}
+.preset-btn--row {
+  flex-direction: row;
+  align-items: center;
+  padding: 6px 11px;
+}
+.preset-btn--row strong {
+  font-weight: 500;
+  font-size: 12.5px;
+}
+
+/* Currency selector */
+.cur-select {
+  padding: 5px 8px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 12px;
+  cursor: pointer;
+}
+.cur-select:focus {
+  outline: none;
+  border-color: var(--brand);
 }
