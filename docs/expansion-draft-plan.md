@@ -78,11 +78,14 @@ language**. Categories:
 
 ### Presets (`src/presets/expansion/`)
 
-NHL 2021 Kraken · WNBA 2026 Toronto & Portland (two-team) · WNBA 2024 Golden State ·
-MLS 2024 San Diego · NBA 2004 Charlotte · NFL 2002 Houston · MLB 1997 Arizona & Tampa Bay
-(multi-round) — plus two caponomics originals proving mix-and-match: the **Hydra Protocol**
-(2 teams, protect 4, 3 snake rounds with escalating re-protection) and the **Mercy Draft**
-(protect 20, heavy compensation, no side deals) — and a blank canvas.
+Modern: NHL 2021 Kraken · WNBA 2026 Toronto & Portland (two-team) · WNBA 2024 Golden State ·
+MLS 2024 San Diego. Historical (kept for their signature mechanics, not their quality):
+NBA 2004 Charlotte · NFL 2002 Houston (dollar-or-count floor, pull-backs) · MLB 1997 and
+MLB 1992 (the multi-round re-protection accordion) · NBA 1995 Toronto & Vancouver (shared-pool
+two-team) · NBA 1988–89 four-team wave (the *sequential* staggered alternative). Plus two
+caponomics originals proving mix-and-match — the **Hydra Protocol** (2 teams, protect 4, 3 snake
+rounds with escalating re-protection) and the **Mercy Draft** (protect 20, heavy compensation, no
+side deals) — and a blank canvas.
 
 ### UI
 
@@ -93,6 +96,11 @@ rendered as grouped plain-language rules plus roster-free "at a glance" stats (p
 picks per team, rounds, a loss-limit-aware upper bound on selections). Models serialize to JSON and
 share-links (`#x=`) exactly like rulesets (`#r=`); Save/Import/Copy-link in the toolbar follow the
 active tab. The `ModuleCard` was genericized so both tabs share one card/param-form implementation.
+
+A **Compare with…** selector in the summary panel renders any preset's rulebook side by side with
+the working model — the point being old-vs-new contrasts (load MLB 1992 next to NHL 2021 and the
+missing exposure-quality and financial-window rules are the whole story of why old drafts were
+awful).
 
 ### Future (unbuilt, compatible)
 

@@ -62,8 +62,9 @@ There's also a second surface built on the same spine: the **Expansion Draft** t
 (`src/engine/expansion/`), a rules *constructor* for expansion-draft models. Compose protection
 schemes, exemptions, exposure minimums, selection limits, rounds, and financial windows from the
 same kind of mix-and-match modules; load historical presets (NHL 2021, WNBA 2026 two-team, MLS,
-NBA, NFL 2002, MLB 1997) or invent your own. It renders the model as a plain-language rulebook —
-deliberately no "who would get picked" simulation. See `docs/expansion-draft-plan.md`.
+NBA 1988–2004, NFL 2002, MLB 1992/1997) or invent your own. It renders the model as a
+plain-language rulebook — with side-by-side comparison against any preset — and deliberately
+runs no "who would get picked" simulation. See `docs/expansion-draft-plan.md`.
 
 ## Status
 

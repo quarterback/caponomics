@@ -70,6 +70,20 @@ describe('expansion presets', () => {
     expect(s.stats.find((x) => x.label === 'Protected / team')?.value).toBe('11 or 9')
   })
 
+  it('the old drafts are presets too, with their signature mechanics', () => {
+    // MLB 1992: the multi-round accordion.
+    const mlb = summarizeModel(EXPANSION_PRESET_MAP['exp-mlb-1992']!, 26).sections.flatMap((x) => x.lines).join(' ')
+    expect(mlb).toMatch(/3 rounds/)
+    expect(mlb).toMatch(/protects 3 additional players/)
+    // NBA 1995: shared pool, everyone loses at most one.
+    const nba95 = summarizeModel(EXPANSION_PRESET_MAP['exp-nba-1995']!, 27).sections.flatMap((x) => x.lines).join(' ')
+    expect(nba95).toMatch(/shared unprotected pool/)
+    expect(nba95).toMatch(/loses more than 1 player/)
+    // NBA 1988–89: the sequential (staggered) alternative.
+    const nba88 = summarizeModel(EXPANSION_PRESET_MAP['exp-nba-1988']!, 23).sections.flatMap((x) => x.lines).join(' ')
+    expect(nba88).toMatch(/separate drafts in sequence/)
+  })
+
   it('the two-team WNBA preset reads as a shared-pool draft', () => {
     const w = EXPANSION_PRESET_MAP['exp-wnba-2026']!
     expect(w.teamsAdded).toBe(2)

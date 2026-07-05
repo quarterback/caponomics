@@ -11,8 +11,11 @@ interface ExpansionState {
   tab: AppTab
   model: ExpansionModel
   forked: boolean
+  /** Preset id shown side-by-side with the working model (null = off). */
+  compareId: string | null
 
   setTab: (tab: AppTab) => void
+  setCompareId: (id: string | null) => void
   loadPreset: (id: string) => void
   loadModelObject: (m: ExpansionModel, forked?: boolean) => void
 
@@ -43,8 +46,11 @@ export const useExpansion = create<ExpansionState>((set, get) => {
     tab: 'cap',
     model: initialModel,
     forked: false,
+    compareId: null,
 
     setTab: (tab) => set({ tab }),
+
+    setCompareId: (id) => set({ compareId: id && EXPANSION_PRESET_MAP[id] ? id : null }),
 
     loadPreset: (id) => {
       const preset = EXPANSION_PRESET_MAP[id]

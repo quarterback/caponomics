@@ -61,7 +61,14 @@ function statList(model: ExpansionModel, existingTeams: number | null): ModelSta
   const loss = findParams(model, 'lossLimit')
   if (loss) stats.push({ label: 'Max lost / team', value: String(num(loss, 'maxLost', 0)) })
 
-  if (quota && existingTeams !== null) {
+  // Roster targets state the selection count outright; only fall back to
+  // quota/loss-limit arithmetic when the model has no explicit target.
+  const targets = findParams(model, 'rosterTargets')
+  if (targets) {
+    const min = num(targets, 'minSize', 0)
+    const max = num(targets, 'maxSize', 0)
+    stats.push({ label: 'Selections / new team', value: min === max ? String(min) : `${min}–${max}` })
+  } else if (quota && existingTeams !== null) {
     const quotaBound = num(quota, 'count', 1) * existingTeams * roundCount
     // A loss limit caps the whole pool: existingTeams × maxLost players move
     // in total, shared across every new team.

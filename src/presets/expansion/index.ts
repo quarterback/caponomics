@@ -110,13 +110,60 @@ const mls2024 = model('exp-mls-2024', 'MLS 2024 — San Diego', 'soccer', 1, [
 ])
 
 // ─── MLB 1997 — Arizona & Tampa Bay ──────────────────────────────────────────
-// The multi-round ancestor: two teams, three rounds, re-protection between.
+// The multi-round accordion: two teams, three rounds, re-protection between.
 const mlb1997 = model('exp-mlb-1997', 'MLB 1997 — Arizona & Tampa Bay', 'baseball', 2, [
   x('protectionScheme', { mode: 'flat', flatCount: 15 }),
   x('youngPlayerExemption', { maxYears: 2, unsignedPicks: true }),
   x('selectionQuota', { perTeam: 'atMost', count: 1 }),
+  x('rosterTargets', { minSize: 35, maxSize: 35 }),
   x('rounds', { count: 3, reProtect: 3, order: 'alternating' }),
   x('multiTeamFormat', { pool: 'shared', firstPickRotates: true }),
+])
+
+// ─── MLB 1992 — Colorado & Florida ───────────────────────────────────────────
+// Same accordion template five years earlier — the first time both leagues'
+// teams were pooled into one expansion draft.
+const mlb1992 = model('exp-mlb-1992', 'MLB 1992 — Colorado & Florida', 'baseball', 2, [
+  x('protectionScheme', { mode: 'flat', flatCount: 15 }),
+  x('selectionQuota', { perTeam: 'atMost', count: 1 }),
+  x('rosterTargets', { minSize: 36, maxSize: 36 }),
+  x('rounds', { count: 3, reProtect: 3, order: 'alternating' }),
+  x('multiTeamFormat', { pool: 'shared', firstPickRotates: true }),
+  x('houseRule', {
+    title: 'One pooled draft',
+    note: 'All 26 existing clubs from both leagues exposed players into a single pool — the first MLB expansion draft to do so.',
+  }),
+])
+
+// ─── NBA 1995 — Toronto & Vancouver ──────────────────────────────────────────
+// The NBA's shared-pool two-team draft: protect 8, each incumbent loses at
+// most one, the two new teams alternate picks.
+const nba1995 = model('exp-nba-1995', 'NBA 1995 — Toronto & Vancouver', 'basketball', 2, [
+  x('protectionScheme', { mode: 'flat', flatCount: 8 }),
+  x('exposureMinimums', { quotas: [{ pos: 'player', count: 1 }], underContract: false, minGames: 0, minGamesTwoSeasons: 0 }),
+  x('selectionQuota', { perTeam: 'atMost', count: 1 }),
+  x('lossLimit', { maxLost: 1 }),
+  x('multiTeamFormat', { pool: 'shared', firstPickRotates: true }),
+  x('expansionCapRamp', { year1Pct: 66, year2Pct: 75 }),
+  x('houseRule', {
+    title: 'Lottery handicap',
+    note: 'The expansion franchises were barred from winning the No. 1 overall lottery pick in their early seasons — a concession outside the draft itself.',
+  }),
+])
+
+// ─── NBA 1988–89 — Charlotte, Miami, Orlando, Minnesota ─────────────────────
+// The staggered wave: four teams over two consecutive years, run as two
+// separate two-team drafts with lists re-protected in between — the
+// sequential alternative to a shared pool.
+const nba1988 = model('exp-nba-1988', 'NBA 1988–89 — the four-team wave', 'basketball', 4, [
+  x('protectionScheme', { mode: 'flat', flatCount: 8 }),
+  x('exposureMinimums', { quotas: [{ pos: 'player', count: 1 }], underContract: false, minGames: 0, minGamesTwoSeasons: 0 }),
+  x('selectionQuota', { perTeam: 'atMost', count: 1 }),
+  x('multiTeamFormat', { pool: 'sequential', firstPickRotates: false }),
+  x('houseRule', {
+    title: 'Staggered entry',
+    note: 'Run as two separate two-team drafts a year apart — Charlotte & Miami in 1988, Orlando & Minnesota in 1989 — with protection lists redone between them.',
+  }),
 ])
 
 // ─── caponomics originals — proof of mix-and-match ───────────────────────────
@@ -159,6 +206,9 @@ export const EXPANSION_PRESETS: ExpansionModel[] = [
   nba2004,
   nfl2002,
   mlb1997,
+  nba1995,
+  mlb1992,
+  nba1988,
   hydra,
   mercy,
   blank,
