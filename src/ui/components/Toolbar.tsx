@@ -81,7 +81,7 @@ export function Toolbar({ onAbout }: { onAbout: () => void }) {
     <header className="toolbar">
       <div className="toolbar__brand">
         <span className="dot" />
-        caponomics
+        Cap Buffet
         <small>salary cap imagineering</small>
       </div>
 

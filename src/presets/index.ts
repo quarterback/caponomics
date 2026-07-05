@@ -1,5 +1,6 @@
 import type { Ruleset } from '../engine/types'
 import { mlb2026 } from './mlb2026'
+import { mlbCbt } from './mlb-cbt'
 import { nba2026 } from './nba2026'
 import { nfl } from './nfl'
 import { nhl } from './nhl'
@@ -11,7 +12,7 @@ import { blank } from './blank'
 
 /** Order shown in the preset rail — hero first. */
 export const PRESETS: Ruleset[] = [
-  mlb2026, nba2026, nfl, nhl, mls, nwsl, pwhl, wnba, cfl, aleague, ipl, kbo, npb, blank,
+  mlb2026, mlbCbt, nba2026, nfl, nhl, mls, nwsl, pwhl, wnba, cfl, aleague, ipl, kbo, npb, blank,
 ]
 
 export const PRESET_MAP: Record<string, Ruleset> = Object.fromEntries(

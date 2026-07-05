@@ -3,14 +3,14 @@ export function About({ onClose }: { onClose: () => void }) {
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal modal--wide about" onClick={(e) => e.stopPropagation()}>
         <div className="card__head">
-          <span className="card__title">About caponomics</span>
+          <span className="card__title">About Cap Buffet</span>
           <button className="btn--icon" style={{ marginLeft: 'auto' }} onClick={onClose} aria-label="Close">
             ✕
           </button>
         </div>
         <div className="about__body">
           <p className="about__lede">
-            caponomics is a <strong>salary-cap system laboratory</strong>. Design a cap out of
+            Cap Buffet is a <strong>salary-cap system laboratory</strong>. Design a cap out of
             reusable mechanics, point it at an entire league, and watch how it plays out — who’s over,
             who owes what, who’s under the floor, and what penalties land.
           </p>

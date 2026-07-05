@@ -6,8 +6,12 @@
    ───────────────────────────────────────────────────────────────────────── */
 
 :root {
-  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-sans: 'General Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /* Overbit is the figures/mono face; JetBrains Mono is a fallback for glyphs it
+     lacks (e.g. CJK 억/万). */
+  --font-mono: 'Overbit', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-wordmark: 'Amerik', var(--font-sans);
+  --font-display: 'Amerik', var(--font-sans);
 
   /* Spacing — 8px grid */
   --s1: 4px;
@@ -122,6 +126,7 @@
   --cat-contract: var(--success);
   --cat-roster: #7c3aed;
   --cat-penalty: var(--error);
+  --cat-exception: #0d9488;
   --cat-misc: var(--text-3);
 
   /* Expansion-draft rule categories */

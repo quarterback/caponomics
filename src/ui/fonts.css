@@ -1,0 +1,56 @@
+/* Self-hosted brand fonts (licensed, YouWorkForThem / Fontshare).
+   General Sans = UI workhorse · Overbit = wordmark · Amerik = display. */
+
+@font-face {
+  font-family: 'General Sans';
+  src: url('./fonts/generalsans-regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'General Sans';
+  src: url('./fonts/generalsans-medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'General Sans';
+  src: url('./fonts/generalsans-semibold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'General Sans';
+  src: url('./fonts/generalsans-bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Wordmark — the "Cap Buffet" logo only. */
+@font-face {
+  font-family: 'Overbit Shadow';
+  src: url('./fonts/overbit-shadow-bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Overbit';
+  src: url('./fonts/overbit-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Display — big impact numbers / headers. */
+@font-face {
+  font-family: 'Amerik';
+  src: url('./fonts/amerik-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}

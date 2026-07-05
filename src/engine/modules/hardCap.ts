@@ -46,6 +46,9 @@ export const hardCap: CapModuleDef = {
     if (ceiling === null) {
       return result({ reasons: [{ severity: 'warning', module: 'hardCap', message: 'No cap value set — hard cap not evaluated.' }] })
     }
+    // Over-cap exceptions (Bird / MLE) extend a hard ceiling.
+    const room = (ctx.env.scratch['overCapRoom'] as number) ?? 0
+    if (room > 0) ceiling += room
     const measure = str(p, 'basis', 'cap') === 'cash' ? ctx.totals.cashSpend : ctx.totals.capSalary
     const over = measure - ceiling
     const readouts = [{ label: 'Hard cap room', value: -over, format: 'money' as const, module: 'hardCap' }]
