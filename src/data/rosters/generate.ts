@@ -160,3 +160,19 @@ export const IPL_OPTS: GenOpts = {
   starCount: 8,
   weights: [0.2, 0.17, 0.14, 0.12, 0.1, 0.1, 0.09, 0.08],
 }
+// KBO (Korea) baseball — a soft cap on top-40 salaries, in won.
+export const KBO_OPTS: GenOpts = {
+  rosterSize: 28,
+  minSalary: 30_000_000,
+  positions: ['SP', 'RP', 'C', '1B', '2B', '3B', 'SS', 'OF', 'DH'],
+  starCount: 10,
+  weights: [0.15, 0.13, 0.12, 0.11, 0.1, 0.09, 0.08, 0.08, 0.07, 0.07],
+}
+// NPB (Japan) baseball — no cap, in yen.
+export const NPB_OPTS: GenOpts = {
+  rosterSize: 28,
+  minSalary: 8_000_000,
+  positions: ['SP', 'RP', 'C', '1B', '2B', '3B', 'SS', 'OF', 'DH'],
+  starCount: 10,
+  weights: [0.16, 0.13, 0.12, 0.11, 0.1, 0.09, 0.08, 0.08, 0.07, 0.06],
+}

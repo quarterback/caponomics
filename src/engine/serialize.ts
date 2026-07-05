@@ -64,7 +64,7 @@ export function deserializeRuleset(input: string | unknown): Ruleset {
   const modules = Array.isArray(raw.modules)
     ? raw.modules.map(coerceInstance).filter((m): m is ModuleInstance => m !== null)
     : []
-  const validCurrencies = ['USD', 'EUR', 'GBP', 'AUD', 'CAD', 'INR']
+  const validCurrencies = ['USD', 'EUR', 'GBP', 'AUD', 'CAD', 'INR', 'JPY', 'KRW']
   return {
     schemaVersion: SCHEMA_VERSION,
     id: typeof raw.id === 'string' ? raw.id : 'custom',

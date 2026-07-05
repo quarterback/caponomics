@@ -6,12 +6,12 @@ import { nhl } from './nhl'
 import { mls } from './mls'
 import { nwsl } from './nwsl'
 import { pwhl } from './pwhl'
-import { wnba, cfl, aleague, ipl } from './more-leagues'
+import { wnba, cfl, aleague, ipl, kbo, npb } from './more-leagues'
 import { blank } from './blank'
 
 /** Order shown in the preset rail — hero first. */
 export const PRESETS: Ruleset[] = [
-  mlb2026, nba2026, nfl, nhl, mls, nwsl, pwhl, wnba, cfl, aleague, ipl, blank,
+  mlb2026, nba2026, nfl, nhl, mls, nwsl, pwhl, wnba, cfl, aleague, ipl, kbo, npb, blank,
 ]
 
 export const PRESET_MAP: Record<string, Ruleset> = Object.fromEntries(

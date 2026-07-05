@@ -6,7 +6,7 @@ import { nhlLeague } from './nhl-league'
 import { wnbaLeague, pwhlLeague } from './women-leagues'
 import { mlsLeague, nwslLeague } from './na-soccer'
 import { eplLeague, laLigaLeague, serieALeague, bundesligaLeague, ligue1League } from './euro-soccer'
-import { cflLeague, aLeague, iplLeague } from './other-leagues'
+import { cflLeague, aLeague, iplLeague, kboLeague, npbLeague } from './other-leagues'
 
 export { mlbSample } from './mlb-sample'
 export { nbaSample } from './nba-sample'
@@ -36,8 +36,10 @@ export const ROSTERS: RosterOption[] = [
   { id: 'seriea-league', label: 'Serie A · 20', group: 'Europe', league: serieALeague },
   { id: 'bundesliga-league', label: 'Bundesliga · 18', group: 'Europe', league: bundesligaLeague },
   { id: 'ligue1-league', label: 'Ligue 1 · 18', group: 'Europe', league: ligue1League },
+  { id: 'kbo-league', label: 'KBO · 10', group: 'Asia', league: kboLeague },
+  { id: 'npb-league', label: 'NPB · 12', group: 'Asia', league: npbLeague },
+  { id: 'ipl-league', label: 'IPL cricket · 10', group: 'Asia', league: iplLeague },
   { id: 'aleague-au', label: 'A-League · 13', group: 'Rest of world', league: aLeague },
-  { id: 'ipl-league', label: 'IPL cricket · 10', group: 'Rest of world', league: iplLeague },
 ]
 
 export const ROSTER_MAP: Record<string, RosterOption> = Object.fromEntries(
@@ -45,4 +47,4 @@ export const ROSTER_MAP: Record<string, RosterOption> = Object.fromEntries(
 )
 
 /** Roster groups in display order. */
-export const ROSTER_GROUPS = ['North America', 'Europe', 'Rest of world']
+export const ROSTER_GROUPS = ['North America', 'Europe', 'Asia', 'Rest of world']
