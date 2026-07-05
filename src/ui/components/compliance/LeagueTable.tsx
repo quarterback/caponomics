@@ -59,21 +59,21 @@ export function LeagueTable({ rows }: { rows: TeamRow[] }) {
               onClick={() => selectTeam(r.teamId)}
             >
               <td data-align="l" className="tname">{r.teamName}</td>
-              <td className="mono">{fmtMoney(r.payroll, cur)}</td>
-              <td className="mono" data-tone={r.vsCap !== null && r.vsCap > 0 ? 'bad' : undefined}>
+              <td className="mono" data-label="Payroll">{fmtMoney(r.payroll, cur)}</td>
+              <td className="mono" data-label="vs Cap" data-tone={r.vsCap !== null && r.vsCap > 0 ? 'bad' : undefined}>
                 {r.vsCap === null ? '—' : r.vsCap > 0 ? `+${fmtMoney(r.vsCap, cur)}` : `−${fmtMoney(-r.vsCap, cur)}`}
               </td>
-              <td className="mono" data-tone={r.tax > 0 ? 'warn' : undefined}>
+              <td className="mono" data-label="Tax" data-tone={r.tax > 0 ? 'warn' : undefined}>
                 {r.tax > 0 ? fmtMoney(r.tax, cur) : '—'}
               </td>
-              <td className="mono" data-tone={r.floorGap > 0 ? 'bad' : undefined}>
+              <td className="mono" data-label="Floor" data-tone={r.floorGap > 0 ? 'bad' : undefined}>
                 {r.floorGap > 0 ? `−${fmtMoney(r.floorGap, cur)}` : 'OK'}
               </td>
-              <td>
+              <td data-label="Apron">
                 {r.apronLevel > 0 ? <span className="apron-badge">A{r.apronLevel}</span> : <span className="dim">—</span>}
                 {(r.hasAssetPenalty || r.hasToolPenalty) && <span className="pen-dot" title="roster/asset penalty" />}
               </td>
-              <td data-align="l">
+              <td data-align="l" data-label="Status">
                 <span className="status-dot" data-legal={r.legal} />
                 <span className="status-txt" data-legal={r.legal}>{r.legal ? 'Legal' : 'Illegal'}</span>
               </td>
