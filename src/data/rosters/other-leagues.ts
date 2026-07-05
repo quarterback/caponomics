@@ -1,5 +1,5 @@
 import { buildLeague } from './build'
-import { genTeam, CFL_OPTS, ALEAGUE_OPTS, IPL_OPTS } from './generate'
+import { genTeam, CFL_OPTS, ALEAGUE_OPTS, IPL_OPTS, KBO_OPTS, NPB_OPTS } from './generate'
 
 // CFL — a hard salary cap around CA$5.4M per team.
 const cflTeams = (
@@ -78,4 +78,57 @@ export const iplLeague = buildLeague({
   currency: 'INR',
   year: 2026,
   teams: iplTeams,
+})
+
+// KBO (Korea) — soft cap on top-40 salaries (~₩11.4B). Targets in won; some
+// clubs run over the cap.
+const kboTeams = (
+  [
+    ['LG', 'LG Twins', 13_000_000_000],
+    ['KIA', 'KIA Tigers', 12_500_000_000],
+    ['SSG', 'SSG Landers', 11_800_000_000],
+    ['DOO', 'Doosan Bears', 11_500_000_000],
+    ['SAM', 'Samsung Lions', 11_000_000_000],
+    ['LOT', 'Lotte Giants', 10_500_000_000],
+    ['KT', 'KT Wiz', 10_000_000_000],
+    ['NC', 'NC Dinos', 9_500_000_000],
+    ['HAN', 'Hanwha Eagles', 9_000_000_000],
+    ['KIW', 'Kiwoom Heroes', 6_000_000_000],
+  ] as [string, string, number][]
+).map(([id, name, target], i) => genTeam(id, name, target, 8300 + i * 101, KBO_OPTS))
+
+export const kboLeague = buildLeague({
+  id: 'kbo-league',
+  name: 'KBO baseball — 10 teams',
+  sport: 'baseball',
+  currency: 'KRW',
+  year: 2026,
+  teams: kboTeams,
+})
+
+// NPB (Japan) — no salary cap. Targets are estimated payrolls in yen.
+const npbTeams = (
+  [
+    ['YOG', 'Yomiuri Giants', 6_500_000_000],
+    ['SFB', 'SoftBank Hawks', 6_200_000_000],
+    ['HAN', 'Hanshin Tigers', 4_500_000_000],
+    ['ORX', 'Orix Buffaloes', 4_000_000_000],
+    ['DNA', 'DeNA BayStars', 3_800_000_000],
+    ['CHU', 'Chunichi Dragons', 3_500_000_000],
+    ['RAK', 'Rakuten Eagles', 3_500_000_000],
+    ['LOT', 'Lotte Marines', 3_300_000_000],
+    ['YAK', 'Yakult Swallows', 3_200_000_000],
+    ['SEI', 'Seibu Lions', 3_000_000_000],
+    ['HIR', 'Hiroshima Carp', 3_000_000_000],
+    ['NIP', 'Nippon-Ham Fighters', 2_600_000_000],
+  ] as [string, string, number][]
+).map(([id, name, target], i) => genTeam(id, name, target, 8700 + i * 103, NPB_OPTS))
+
+export const npbLeague = buildLeague({
+  id: 'npb-league',
+  name: 'NPB baseball — 12 teams',
+  sport: 'baseball',
+  currency: 'JPY',
+  year: 2026,
+  teams: npbTeams,
 })
