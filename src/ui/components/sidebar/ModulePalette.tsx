@@ -3,7 +3,7 @@ import type { ModuleCategory } from '../../../engine/module'
 import { useStore } from '../../state/store'
 import { catColor } from '../catColor'
 
-const CATEGORY_ORDER: ModuleCategory[] = ['revenue', 'cap', 'floor', 'tax', 'apron', 'contract', 'roster', 'penalty', 'misc']
+const CATEGORY_ORDER: ModuleCategory[] = ['revenue', 'cap', 'floor', 'tax', 'apron', 'contract', 'roster', 'penalty', 'exception', 'misc']
 const CATEGORY_LABEL: Record<ModuleCategory, string> = {
   revenue: 'Revenue',
   cap: 'Cap',
@@ -13,6 +13,7 @@ const CATEGORY_LABEL: Record<ModuleCategory, string> = {
   contract: 'Contract rules',
   roster: 'Roster',
   penalty: 'Penalties',
+  exception: 'Exceptions / workarounds',
   misc: 'Other',
 }
 

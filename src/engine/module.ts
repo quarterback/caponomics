@@ -31,6 +31,7 @@ export type ModuleCategory =
   | 'contract'
   | 'roster'
   | 'penalty'
+  | 'exception'
   | 'misc'
 
 /** Shared environment computed in the first phase and read by later phases. */

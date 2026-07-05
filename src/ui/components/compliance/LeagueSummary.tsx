@@ -24,6 +24,7 @@ export function LeagueSummary({ s }: { s: Summary }) {
       {stat('In tax', `${s.inTaxCount}`, undefined, `owe ${fmtMoney(s.totalTax, cur)}`)}
       {apronTotal > 0 && stat('Over an apron', `${apronTotal}`, 'warn', apronDetail(s.apronCounts))}
       {stat('Payroll spread', `${fmtMoney(s.payrollMin, cur)}–${fmtMoney(s.payrollMax, cur)}`, undefined, `avg ${fmtMoney(s.payrollAvg, cur)}`)}
+      {stat('Top vs bottom', s.disparityRatio ? `${s.disparityRatio.toFixed(1)}×` : '—', s.disparityRatio >= 3 ? 'warn' : undefined, 'richest ÷ poorest')}
       {stat('Balance', `${Math.round(s.payrollCV * 100)}%`, undefined, 'payroll variation')}
     </div>
   )

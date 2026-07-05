@@ -78,10 +78,10 @@ function evaluateTeamYear(
     const def = MODULE_MAP[inst.kind]!
     if (!def.contributes) continue
     const added = def.contributes(inst.params, ctx)
-    if (added.length) {
-      ctx.charges.push(...added)
-      ctx.totals = computeTotals(ctx.charges, team, year)
-    }
+    if (added.length) ctx.charges.push(...added)
+    // Recompute every time: a charge module may also reclassify existing charges
+    // in place (e.g. amnesty flips countsTowardCap to false).
+    ctx.totals = computeTotals(ctx.charges, team, year)
   }
 
   // ── Phase 3: validate ─────────────────────────────────────────────────────

@@ -122,6 +122,7 @@
   --cat-contract: var(--success);
   --cat-roster: #7c3aed;
   --cat-penalty: var(--error);
+  --cat-exception: #0d9488;
   --cat-misc: var(--text-3);
 }
 

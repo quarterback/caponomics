@@ -38,6 +38,8 @@ export interface LeagueSummary {
   /** Coefficient of variation of payroll (spread ÷ mean) — a competitive-balance
    *  proxy. Lower = more even. */
   payrollCV: number
+  /** Ratio of the biggest payroll to the smallest — how lopsided spending is. */
+  disparityRatio: number
 }
 
 function readout(t: TeamYearReport, label: string): number {
@@ -107,5 +109,6 @@ export function summarizeLeague(report: ComplianceReport): LeagueSummary {
     payrollTotal,
     payrollAvg: Math.round(payrollAvg),
     payrollCV,
+    disparityRatio: payrolls.length && Math.min(...payrolls) > 0 ? Math.max(...payrolls) / Math.min(...payrolls) : 0,
   }
 }

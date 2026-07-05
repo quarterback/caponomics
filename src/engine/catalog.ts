@@ -13,8 +13,11 @@ export const MODULE_CATALOG: CapModuleDef[] = [
   M.maxContract,
   M.minimumSalary,
   M.rosterLimits,
+  M.positionCap,
   M.draftPickPenalty,
   M.retainedRights,
+  M.amnesty,
+  M.deadMoney,
   M.passThrough,
 ]
 
