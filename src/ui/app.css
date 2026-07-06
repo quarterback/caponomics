@@ -1152,3 +1152,21 @@
     max-height: 90vh;
   }
 }
+
+/* Family tools menu items */
+.menu__item {
+  text-decoration: none;
+}
+.menu__item--current {
+  color: var(--text-3);
+  cursor: default;
+}
+.menu__item--current .here {
+  font-size: 10px;
+  color: var(--brand-ink);
+  border: 1px solid color-mix(in srgb, var(--brand) 40%, transparent);
+  border-radius: var(--r-pill);
+  padding: 1px 6px;
+  margin-left: 4px;
+  vertical-align: middle;
+}
