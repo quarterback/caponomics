@@ -201,8 +201,13 @@ export function Toolbar({ onAbout }: { onAbout: () => void }) {
               </button>
             </div>
             <div className="card__body" style={{ display: 'grid', gap: 'var(--s3)' }}>
+              <p style={{ margin: 0, fontSize: 13, color: 'var(--text-2)' }}>
+                {onCap
+                  ? 'Paste a cap system you saved with Save, or one shared with you as JSON, to load it here. Shared links open on their own.'
+                  : 'Paste an expansion model you saved with Save, or one shared with you as JSON, to load it here. Shared links open on their own.'}
+              </p>
               <textarea
-                placeholder={onCap ? 'Paste ruleset JSON (from Save)…' : 'Paste expansion-model JSON (from Save)…'}
+                placeholder={onCap ? 'Paste ruleset JSON…' : 'Paste expansion-model JSON…'}
                 value={importText}
                 onChange={(e) => setImportText(e.target.value)}
               />
