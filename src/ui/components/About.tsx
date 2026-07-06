@@ -10,51 +10,50 @@ export function About({ onClose }: { onClose: () => void }) {
         </div>
         <div className="about__body">
           <p className="about__lede">
-            Cap Buffet is a <strong>salary-cap system laboratory</strong>. Design a cap out of
-            reusable mechanics, point it at an entire league, and watch how it plays out — who’s over,
-            who owes what, who’s under the floor, and what penalties land.
+            Cap Buffet is a <strong>salary-cap system laboratory</strong>. Design a cap from reusable
+            mechanics, point it at a whole league, and read the results: who sits over the cap, who
+            owes tax, who falls below the floor, and what penalties apply.
           </p>
 
-          <h3>It models the cap, not the contracts</h3>
+          <h3>The ruleset is the subject</h3>
           <p>
-            This isn’t a trade machine or a contract simulator — tools like PuckPedia, Spotrac and
-            SalarySwish already do that. caponomics is about the <em>system</em>: the ceilings,
-            floors, taxes, aprons and penalties, and how a whole league behaves under them. Change a
-            rule and the league-wide table updates instantly.
+            Cap Buffet works at the level of the rules themselves: ceilings, floors, taxes, aprons,
+            and the penalties that follow from them. Change one rule and the league-wide table
+            updates instantly.
           </p>
 
-          <h3>A calculator, not a prescription</h3>
+          <h3>Legality is objective</h3>
           <p>
-            It computes the consequences of whatever rules you invent and passes no judgment on
-            whether a cap design is good or fair. Legality is objective; everything else is just
-            numbers you can read.
+            Cap Buffet reports what your rules produce and leaves the interpretation to you. A team
+            is legal or illegal by the numbers. Everything past that point is yours to read.
           </p>
 
           <h3>Composable mechanics</h3>
           <p>
-            A cap system is an ordered stack of modules — revenue → cap formula, hard cap, salary
-            floor, luxury tax, aprons, allocation money, draft-pick penalties and more. The four
-            major leagues are just presets of the same kit, so you can mix and match across them:
-            put a second apron on the NFL, or run NBA payrolls under the NHL’s hard cap.
+            A cap system is an ordered stack of modules: revenue, cap formula, hard cap, salary
+            floor, luxury tax, aprons, allocation money, and draft-pick penalties. The major leagues
+            ship as presets built from the same kit, so you can graft one league’s mechanic onto
+            another. Put a second apron on the NFL, or run NBA payrolls under the NHL hard cap.
           </p>
 
           <h3>Any league, any scale</h3>
           <p>
-            Financials are arbitrary — a minor league, the A-League, the CFL, a fantasy world. Set
-            the cap to $40 if you want. Nothing assumes real-world dollar amounts.
+            Financials are arbitrary. Run a minor league, the A-League, the CFL, or a fantasy world,
+            and set the cap to $40 if that is the number you want. The engine treats every figure
+            the same way.
           </p>
 
           <h3>How to use it</h3>
           <ol>
-            <li>Pick a cap system (or start blank) and a league to test it against.</li>
-            <li>Add, remove and tune mechanics in the builder.</li>
-            <li>Read the league overview — illegal teams, tax collected, floor violations, balance.</li>
-            <li>Save or share your ruleset via the link button.</li>
+            <li>Choose a cap system, or start blank, and pick a league to test it against.</li>
+            <li>Add, remove, and tune mechanics in the builder.</li>
+            <li>Read the league overview: illegal teams, tax collected, floor violations, balance.</li>
+            <li>Save your ruleset or share it with the link button.</li>
           </ol>
 
           <p className="about__foot">
-            Cap hits are treated as input data in this build; the transaction sandbox (proration,
-            dead money, buyouts, exceptions) and side-by-side system comparison are on the roadmap.
+            Cap hits are input data in this build. The transaction sandbox (proration, dead money,
+            buyouts, exceptions) and side-by-side comparison are on the roadmap.
           </p>
         </div>
       </div>
