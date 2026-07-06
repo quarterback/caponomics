@@ -980,6 +980,66 @@
   border-color: var(--brand);
 }
 
+/* ── Expansion Draft tab ── */
+.toolbar__tabs {
+  margin-left: var(--s4);
+}
+.toolbar__tabs button {
+  white-space: nowrap;
+}
+.rulebook {
+  display: grid;
+  gap: var(--s4);
+}
+.rulebook__section h4 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 var(--s2);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-2);
+}
+.rulebook__section ul {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+}
+.rulebook__section li {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--text);
+}
+.compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s5);
+  align-items: start;
+}
+.compare__col {
+  min-width: 0;
+  display: grid;
+  gap: var(--s3);
+}
+.compare__col > h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 650;
+}
+.compare__col > h3 small {
+  font-weight: 400;
+  color: var(--text-3);
+  font-size: 12px;
+}
+@media (max-width: 1100px) {
+  .compare {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════
    Mobile / small screens (≤ 760px)
    ═══════════════════════════════════════════════════════════════════════════ */
