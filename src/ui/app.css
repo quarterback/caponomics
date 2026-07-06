@@ -59,8 +59,8 @@
   align-items: baseline;
   gap: var(--s2);
   font-family: var(--font-wordmark);
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-weight: 800;
+  letter-spacing: -0.03em;
   font-size: 19px;
   white-space: nowrap;
   flex-shrink: 0;
@@ -166,6 +166,7 @@
   border-bottom: 1px solid var(--border);
 }
 .card__title {
+  font-family: var(--font-display);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -702,6 +703,7 @@
 }
 
 .section-label {
+  font-family: var(--font-display);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.05em;

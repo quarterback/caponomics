@@ -7,10 +7,11 @@
 
 :root {
   --font-sans: 'General Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  /* Overbit is the figures/mono face; JetBrains Mono is a fallback for glyphs it
-     lacks (e.g. CJK 억/万). */
-  --font-mono: 'Overbit', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-  --font-wordmark: var(--font-sans);
+  /* Azeret Mono is the figures/mono face — a clean, readable monospace; JetBrains
+     Mono is a fallback for glyphs it lacks (e.g. CJK 억/万). */
+  --font-mono: 'Azeret Mono', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  /* Outfit for the "Cap Buffet" wordmark; General Sans for section headers. */
+  --font-wordmark: 'Outfit', var(--font-sans);
   --font-display: var(--font-sans);
 
   /* Spacing — 8px grid */
