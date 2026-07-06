@@ -59,9 +59,9 @@
   align-items: baseline;
   gap: var(--s2);
   font-family: var(--font-wordmark);
-  font-weight: 400;
-  letter-spacing: 0.02em;
-  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  font-size: 19px;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -166,6 +166,7 @@
   border-bottom: 1px solid var(--border);
 }
 .card__title {
+  font-family: var(--font-display);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -702,6 +703,7 @@
 }
 
 .section-label {
+  font-family: var(--font-display);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.05em;
@@ -1211,4 +1213,22 @@
   .modal {
     max-height: 90vh;
   }
+}
+
+/* Family tools menu items */
+.menu__item {
+  text-decoration: none;
+}
+.menu__item--current {
+  color: var(--text-3);
+  cursor: default;
+}
+.menu__item--current .here {
+  font-size: 10px;
+  color: var(--brand-ink);
+  border: 1px solid color-mix(in srgb, var(--brand) 40%, transparent);
+  border-radius: var(--r-pill);
+  padding: 1px 6px;
+  margin-left: 4px;
+  vertical-align: middle;
 }

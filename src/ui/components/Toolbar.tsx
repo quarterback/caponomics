@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { serializeRuleset, encodeRulesetToHash } from '../../engine/serialize'
 import { serializeModel, encodeModelToHash } from '../../engine/expansion/serialize'
 import { CURRENCY_LIST, currencySymbol, type Currency } from '../../engine/format'
 import { REMIXES } from '../remixes'
+import { FAMILY_TOOLS } from '../family'
 import { useStore } from '../state/store'
 import { useExpansion } from '../state/expansionStore'
 
@@ -23,17 +24,16 @@ export function Toolbar({ onAbout }: { onAbout: () => void }) {
   const { tab, setTab, model, forked: modelForked, loadModelObject } = useExpansion()
   const currency = ruleset.currency ?? 'USD'
   const [theme, cycleTheme] = useTheme()
-  const [menu, setMenu] = useState<null | 'remix'>(null)
+  const [menu, setMenu] = useState<null | 'remix' | 'tools'>(null)
   const [importOpen, setImportOpen] = useState(false)
   const [importText, setImportText] = useState('')
   const [copied, setCopied] = useState(false)
-  const menuRef = useRef<HTMLDivElement>(null)
 
   const onCap = tab === 'cap'
 
   useEffect(() => {
     const close = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) setMenu(null)
+      if (!(e.target as Element).closest?.('.menu')) setMenu(null)
     }
     document.addEventListener('mousedown', close)
     return () => document.removeEventListener('mousedown', close)
@@ -121,8 +121,37 @@ export function Toolbar({ onAbout }: { onAbout: () => void }) {
         </select>
       )}
 
+      <div className="menu">
+        <button className="btn btn--sm" onClick={() => setMenu(menu === 'tools' ? null : 'tools')}>
+          Tools ▾
+        </button>
+        {menu === 'tools' && (
+          <div className="menu__pop">
+            {FAMILY_TOOLS.map((t) =>
+              t.current ? (
+                <div className="menu__item menu__item--current" key={t.id}>
+                  {t.name} <span className="here">you’re here</span>
+                  <small>{t.blurb}</small>
+                </div>
+              ) : (
+                <a
+                  key={t.id}
+                  className="menu__item"
+                  href={t.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setMenu(null)}
+                >
+                  {t.name} ↗<small>{t.blurb}</small>
+                </a>
+              ),
+            )}
+          </div>
+        )}
+      </div>
+
       {onCap && (
-        <div className="menu" ref={menuRef}>
+        <div className="menu">
           <button className="btn btn--sm" onClick={() => setMenu(menu === 'remix' ? null : 'remix')}>
             Remixes ▾
           </button>
