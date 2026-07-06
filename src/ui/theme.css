@@ -163,6 +163,9 @@ body {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
   font-feature-settings: 'tnum' 1;
+  /* Azeret Mono is a true fixed-width face, so decimals/symbols read with a lot
+     of air. Pull the tracking in so figures like $63.2M sit tighter. */
+  letter-spacing: -0.05em;
 }
 
 button {
