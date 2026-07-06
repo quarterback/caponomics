@@ -33,11 +33,14 @@
 }
 @media (max-width: 1180px) {
   .shell__body {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     overflow: auto;
   }
   .col {
     overflow: visible;
+    /* Allow the column to shrink below its content so a wide table scrolls
+       inside its own .ltable-wrap instead of overflowing the page. */
+    min-width: 0;
   }
 }
 
@@ -45,7 +48,8 @@
 .toolbar {
   display: flex;
   align-items: center;
-  gap: var(--s4);
+  flex-wrap: wrap;
+  gap: var(--s3) var(--s4);
   padding: var(--s3) var(--s4);
   background: color-mix(in srgb, var(--surface) 82%, transparent);
   backdrop-filter: blur(10px);
@@ -812,6 +816,8 @@
 /* ── League table ── */
 .ltable-wrap {
   overflow-x: auto;
+  min-width: 0;
+  max-width: 100%;
   border: 1px solid var(--border);
   border-radius: var(--r);
 }
@@ -1090,11 +1096,16 @@
   .shell__body > .col:nth-child(3) { order: 2; }
   .shell__body > .col:nth-child(2) { order: 3; }
 
-  /* Toolbar: wrap, drop non-essential text, keep controls reachable. */
+  /* Toolbar: wrap, drop non-essential text, keep controls reachable.
+     Drop the backdrop-filter so it stops being a containing block for the
+     fixed bottom-sheet menus (a filtered ancestor traps position:fixed). */
   .toolbar {
     flex-wrap: wrap;
     gap: var(--s2);
     padding: var(--s2) var(--s3);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: var(--surface);
   }
   .toolbar__brand {
     font-size: 15px;
@@ -1108,6 +1119,45 @@
   .toolbar .cur-select {
     padding: 5px 9px;
     font-size: 12px;
+    min-width: 0;
+    max-width: 100%;
+  }
+  .toolbar .cur-select {
+    max-width: 132px;
+  }
+  /* Any currency/compare select (e.g. in the expansion panel) must shrink to
+     fit rather than force horizontal scroll. */
+  .cur-select {
+    min-width: 0;
+    max-width: 100%;
+  }
+  /* Card headers wrap so a control on the right (e.g. the compare select) drops
+     below the title instead of pushing the row past the viewport. */
+  .card__head {
+    flex-wrap: wrap;
+  }
+  .card__head > span[style*='auto'] {
+    max-width: 100%;
+  }
+  /* Dropdown menus (Tools / Remixes) become bottom sheets on mobile so they
+     always stay inside the viewport instead of overflowing off the edge. */
+  .menu__pop {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    min-width: 0;
+    max-height: 72vh;
+    overflow-y: auto;
+    border-radius: var(--r-lg) var(--r-lg) 0 0;
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.22);
+    padding: var(--s3);
+    z-index: 60;
+  }
+  .menu__item {
+    padding: 12px;
+    font-size: 15px;
   }
   .card__body {
     padding: var(--s3);
