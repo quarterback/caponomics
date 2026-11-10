@@ -4,6 +4,8 @@
 Compose a single-transferable-vote count out of interchangeable rules, load any set of ballots, and
 see who wins and what it cost. Portland's 2024 count is one preset among twelve.
 
+Live at **https://ballot.capbuffet.com/** (Vercel project with root directory `ballot-buffet/`).
+
 > A calculator, not a prescription. It reports what a counting rule does to a set of ballots.
 
 ## Run it
