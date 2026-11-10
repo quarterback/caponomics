@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { PROFILES, generateProfile, parseBallots, formatBallots, DEFAULT_GEN } from '../engine/profiles'
 import { PORTLAND, SYSTEMS } from '../engine/systems'
+import { REAL_SETS, loadReal, type RealSet } from '../engine/real'
 import type { GenParams, Profile, System } from '../engine/types'
 
 interface State {
@@ -14,6 +15,10 @@ interface State {
   setSeats: (n: number) => void
   setGen: (p: Partial<GenParams>) => void
   applyText: (text: string) => string[]
+  /** Id of a real ballot set being fetched, if any. */
+  loading: string | null
+  loadError: string | null
+  loadRealSet: (set: RealSet) => Promise<void>
 }
 
 export const useStore = create<State>((set, get) => ({
@@ -23,7 +28,18 @@ export const useStore = create<State>((set, get) => ({
   seats: PROFILES[0]!.seats,
   loadSystem: (s) => set({ system: s, forked: false }),
   patchSystem: (p) => set({ system: { ...get().system, ...p }, forked: true }),
-  loadProfile: (p) => set({ profile: p, seats: p.seats }),
+  loadProfile: (p) => set({ profile: p, seats: p.seats, loadError: null }),
+  loading: null,
+  loadError: null,
+  loadRealSet: async (rs) => {
+    set({ loading: rs.id, loadError: null })
+    try {
+      const p = await loadReal(rs)
+      set({ profile: p, seats: p.seats, loading: null })
+    } catch {
+      set({ loading: null, loadError: `The ballots for ${rs.name} did not load. Check your connection and try again.` })
+    }
+  },
   setSeats: (n) => set({ seats: Math.max(1, Math.min(9, n)) }),
   setGen: (p) => {
     const cur = get().profile
@@ -52,7 +68,7 @@ export const useStore = create<State>((set, get) => ({
 interface Shared {
   s: System
   n: number
-  p: { id: string } | { gen: GenParams } | { text: string }
+  p: { id: string } | { gen: GenParams } | { text: string } | { real: string }
 }
 
 const b64 = (s: string) => btoa(unescape(encodeURIComponent(s))).replace(/\+/g, '-').replace(/\//g, '_')
@@ -61,7 +77,7 @@ const unb64 = (s: string) => decodeURIComponent(escape(atob(s.replace(/-/g, '+')
 export function encodeState(): string {
   const { system, seats, profile } = useStore.getState()
   const preset = PROFILES.some((p) => p.id === profile.id)
-  const p: Shared['p'] = preset ? { id: profile.id } : profile.gen ? { gen: profile.gen } : { text: formatBallots(profile) }
+  const p: Shared['p'] = profile.real ? { real: profile.id } : preset ? { id: profile.id } : profile.gen ? { gen: profile.gen } : { text: formatBallots(profile) }
   return b64(JSON.stringify({ s: system, n: seats, p } satisfies Shared))
 }
 
@@ -71,7 +87,11 @@ export function loadFromHash(hash: string): void {
   try {
     const sh = JSON.parse(unb64(m[1]!)) as Shared
     const st = useStore.getState()
-    if ('id' in sh.p) {
+    if ('real' in sh.p) {
+      const id = sh.p.real
+      const rs = REAL_SETS.find((x) => x.id === id)
+      if (rs) void st.loadRealSet(rs).then(() => useStore.setState({ seats: sh.n }))
+    } else if ('id' in sh.p) {
       const id = sh.p.id
       st.loadProfile(PROFILES.find((x) => x.id === id) ?? PROFILES[0]!)
     } else if ('gen' in sh.p) st.loadProfile(generateProfile(sh.p.gen))

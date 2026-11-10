@@ -190,6 +190,13 @@ function stvCount(ballots: Ballot[], ids: string[], system: System, seats: numbe
       pending.push(c)
     }
 
+    // Every seat is filled: stop. The last winners keep their extra votes; with no
+    // one left to receive them, moving them on would only count them as run out.
+    if (winners.length >= stvSeats) {
+      snapshot(round, t, reached, [], `${reached.join(', ')} reach${reached.length > 1 ? '' : 'es'} the threshold`)
+      break
+    }
+
     // 2. Transfer surpluses (all at once, or largest first — one per round).
     if (pending.length) {
       pending.sort((a, b) => t[b]! - t[a]!)

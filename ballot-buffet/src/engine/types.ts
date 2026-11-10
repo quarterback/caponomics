@@ -37,6 +37,8 @@ export interface Profile {
   candidates: Candidate[]
   ballots: Ballot[]
   gen?: GenParams
+  /** Real ballots from a published cast vote record. Large: some views compute on request. */
+  real?: boolean
 }
 
 export type Method = 'stv' | 'meek' | 'mcpc' | 'sntv'

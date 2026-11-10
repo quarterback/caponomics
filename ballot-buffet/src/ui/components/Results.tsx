@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { runCount } from '../../engine/count'
 import { computeMetrics } from '../../engine/metrics'
 import { PORTLAND, SYSTEMS, charterFit } from '../../engine/systems'
@@ -126,7 +126,7 @@ export function Results() {
         </div>
       </div>
 
-      <Compare profile={profile} seats={seats} baseline={baseline} currentId={forked ? '' : system.id} onPick={loadSystem} />
+      <Compare key={profile.id} profile={profile} seats={seats} baseline={baseline} currentId={forked ? '' : system.id} onPick={loadSystem} />
       <RoundTable profile={profile} result={result} />
       <SupportTable profile={profile} result={result} support={metrics.support} />
     </section>
@@ -168,15 +168,35 @@ function Compare({
   currentId: string
   onPick: (s: (typeof SYSTEMS)[number]) => void
 }) {
+  // Twelve counts of a real district take several seconds, so they wait for a click.
+  const [asked, setAsked] = useState(false)
+  const ready = !profile.real || asked
   const rows = useMemo(
     () =>
-      SYSTEMS.map((s) => {
-        const r = runCount(profile, s, seats)
-        return { s, r, m: computeMetrics(profile, r), fit: charterFit(s) }
-      }),
-    [profile, seats],
+      ready
+        ? SYSTEMS.map((s) => {
+            const r = runCount(profile, s, seats)
+            return { s, r, m: computeMetrics(profile, r), fit: charterFit(s) }
+          })
+        : [],
+    [profile, seats, ready],
   )
   const base = new Set(baseline.winners.map((w) => w.id))
+  if (!ready) {
+    return (
+      <div className="card">
+        <div className="card__head">
+          <span className="card__title">All Systems</span>
+        </div>
+        <div className="card__body stack">
+          <p className="note">Counting these ballots under all twelve systems takes several seconds.</p>
+          <button className="btn btn--primary" style={{ justifySelf: 'start' }} onClick={() => setAsked(true)}>
+            Count all systems
+          </button>
+        </div>
+      </div>
+    )
+  }
   return (
     <div className="card">
       <div className="card__head">

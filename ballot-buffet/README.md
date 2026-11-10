@@ -43,6 +43,28 @@ Portland 2024 · Meek · Warren · Last-parcel Gregory · BTR-WIGM · STV-B · H
 
 ## Ballot sets
 
+### Real ballots: Portland, November 2024
+All four council districts, converted from Multnomah County's published cast vote records. Each
+district loads when you choose it. The Portland preset elects the certified winners in all four.
+
+| District | Valid ballots | Candidates | Distinct rankings |
+| --- | --- | --- | --- |
+| 1 | 42,972 | 16 and write-ins | 18,970 |
+| 2 | 77,209 | 22 and write-ins | 41,191 |
+| 3 | 84,569 | 30 and write-ins | 40,736 |
+| 4 | 76,776 | 30 and write-ins | 38,281 |
+
+To add another contest, download its cast vote record from the county and run:
+
+```bash
+python3 scripts/convert_cvr.py <cvr.csv> public/data/<name>.json "<display name>"
+```
+
+Then add an entry to `REAL_SETS` in `src/engine/real.ts`. The script header explains how ballots
+with skipped ranks, overvotes and repeated candidates are read.
+
+### Test sets
+
 - **Free radicals / Disciplined slates** — a seeded synthetic district (3,000 voters, 18 candidates,
   three camps) at low and high slate cohesion. Cohesion, field size, bullet-voting rate, ranking limit
   and camp sizes are all sliders.
@@ -79,7 +101,11 @@ advice.
 
 ## Known limits
 
-- Generated ballots are synthetic. No real cast vote record is bundled.
+- The generated district is synthetic. The real sets are a re-tally: voters ranked as they did
+  under the current rules, and would not necessarily rank the same way under different ones.
+- The real counts match the certified winners. They have not been checked round by round against
+  the county's certified report, and 14,311 rows in each county file carry a status flag of -1
+  whose meaning is not confirmed. Those rows are included.
 - Ties are broken deterministically (fewest first choices, then ballot order); Portland draws lots.
 - Meek/Warren use floating-point iteration to a tolerance, not a certified reference implementation.
 - BTR and Borda elimination use the ballots still in play at their current value.
