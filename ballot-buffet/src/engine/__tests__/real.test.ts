@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs'
+import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
 import { runCount } from '../count'
@@ -9,7 +10,7 @@ import { SYSTEMS } from '../systems'
 const load = (n: number) => {
   const set = REAL_SETS[n - 1]!
   // Resolved from this file, so the test passes whichever folder it is run from.
-  const path = fileURLToPath(new URL(`../../../public/${set.file}`, import.meta.url))
+  const path = resolve(dirname(fileURLToPath(import.meta.url)), '../../../public', set.file)
   return profileFromReal(set, JSON.parse(readFileSync(path, 'utf8')) as RealFile)
 }
 const portland = SYSTEMS.find((s) => s.id === 'portland')!
