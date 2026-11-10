@@ -778,3 +778,17 @@
   font-size: 14px;
   font-weight: 600;
 }
+
+/* Camp colour beside a candidate's name */
+.swatch[data-camp] {
+  --camp: var(--party-4);
+}
+.swatch[data-camp='0'] {
+  --camp: var(--party-1);
+}
+.swatch[data-camp='1'] {
+  --camp: var(--party-2);
+}
+.swatch[data-camp='2'] {
+  --camp: var(--party-3);
+}

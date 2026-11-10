@@ -20,6 +20,7 @@ export function Results() {
   const metrics = useMemo(() => computeMetrics(profile, result), [profile, result])
   const fit = charterFit(system)
   const name = (id: string) => profile.candidates.find((c) => c.id === id)?.name ?? id
+  const campOf = campIndex(profile)
   const baseline = useMemo(() => runCount(profile, PORTLAND, seats), [profile, seats])
   const baseSet = new Set(baseline.winners.map((w) => w.id))
   const sameAsPortland = result.winners.every((w) => baseSet.has(w.id))
@@ -35,7 +36,10 @@ export function Results() {
             {result.winners.map((w, i) => (
               <li key={w.id} data-how={w.how} data-new={!baseSet.has(w.id)}>
                 <span className="mono winlist__n">{i + 1}</span>
-                <strong>{name(w.id)}</strong>
+                <strong>
+                  <CampDot i={campOf.get(w.id)} />
+                  {name(w.id)}
+                </strong>
                 <span className="winlist__how">{HOW[w.how]}</span>
                 <span className="mono winlist__v">{num(w.tally)}</span>
               </li>
@@ -127,6 +131,16 @@ export function Results() {
       <SupportTable profile={profile} result={result} support={metrics.support} />
     </section>
   )
+}
+
+/** Candidate id → index of its camp (0, 1, 2…), for the camp colour. */
+function campIndex(profile: Profile): Map<string, number> {
+  const camps = [...new Set(profile.candidates.map((c) => c.camp).filter(Boolean))]
+  return new Map(profile.candidates.filter((c) => c.camp).map((c) => [c.id, camps.indexOf(c.camp)]))
+}
+
+function CampDot({ i }: { i: number | undefined }) {
+  return i === undefined ? null : <i className="swatch" data-camp={Math.min(i, 3)} />
 }
 
 function Readout({ label, value, note, tone }: { label: string; value: string; note?: string; tone?: 'warn' }) {
@@ -222,6 +236,7 @@ function Compare({
 
 function RoundTable({ profile, result }: { profile: Profile; result: CountResult }) {
   const rounds = result.rounds
+  const campOf = campIndex(profile)
   const won = new Map(result.winners.map((w, i) => [w.id, i]))
   const first = rounds[0]?.tallies ?? {}
   const outAt = new Map<string, number>()
@@ -254,6 +269,7 @@ function RoundTable({ profile, result }: { profile: Profile; result: CountResult
             {order.map((c) => (
               <tr key={c.id}>
                 <td data-align="l" data-won={won.has(c.id)}>
+                  <CampDot i={campOf.get(c.id)} />
                   {c.name}
                 </td>
                 {rounds.map((r) => {
@@ -317,6 +333,7 @@ function SupportTable({
   const won = new Set(result.winners.map((w) => w.id))
   const rows = [...support].sort((a, b) => b.top3 - a.top3)
   const name = (id: string) => profile.candidates.find((c) => c.id === id)?.name ?? id
+  const campOf = campIndex(profile)
   return (
     <div className="card">
       <div className="card__head">
@@ -337,6 +354,7 @@ function SupportTable({
             {rows.map((s) => (
               <tr key={s.id}>
                 <td data-align="l" data-won={won.has(s.id)}>
+                  <CampDot i={campOf.get(s.id)} />
                   {name(s.id)}
                 </td>
                 <td className="mono">{pct(s.first)}</td>

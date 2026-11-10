@@ -16,11 +16,11 @@ describe('Portland WIGM', () => {
   it('uses the Droop threshold and elects D on full-value transfers', () => {
     const r = runCount(P('rank-decay'), S('portland'), 3)
     expect(r.quota).toBe(26)
-    expect(r.winners.map((w) => w.id).sort()).toEqual(['A', 'B', 'D'])
+    expect(r.winners.map((w) => w.id).sort()).toEqual(['Abara', 'Belmonte', 'Dravik'])
     expect(r.winners.every((w) => w.how === 'quota')).toBe(true)
   })
   it('splits 60/40 two seats to one', () => {
-    expect(winners('sixty-forty', 'portland')).toEqual(['A', 'B', 'D'])
+    expect(winners('sixty-forty', 'portland')).toEqual(['Abara', 'Belmonte', 'Dravik'])
   })
   it('conserves vote value', () => {
     const r = runCount(P('free-radicals'), S('portland'), 3)
@@ -32,7 +32,7 @@ describe('Portland WIGM', () => {
   })
   it('lets a truncating majority lose two of three seats, below threshold', () => {
     const r = runCount(P('truncated-majority'), S('portland'), 3)
-    expect(r.winners.map((w) => w.id).sort()).toEqual(['M1', 'M2', 'P1'])
+    expect(r.winners.map((w) => w.id).sort()).toEqual(['Abara', 'Fontaine', 'Galloway'])
     expect(r.winners.filter((w) => w.how === 'remaining').length).toBeGreaterThan(0)
   })
 })
@@ -40,26 +40,26 @@ describe('Portland WIGM', () => {
 describe('variants', () => {
   it('rank decay flips the last seat to C and destroys 4.2 votes', () => {
     const r = runCount(P('rank-decay'), S('rank-decay'), 3)
-    expect(r.winners.map((w) => w.id).sort()).toEqual(['A', 'B', 'C'])
+    expect(r.winners.map((w) => w.id).sort()).toEqual(['Abara', 'Belmonte', 'Castellan'])
     expect(r.lost).toBeCloseTo(4.2, 6)
   })
   it('BTR protects the head-to-head winner in a center squeeze', () => {
-    expect(winners('center-squeeze', 'portland')).toEqual(['L'])
-    expect(winners('center-squeeze', 'btr-wigm')).toEqual(['C'])
+    expect(winners('center-squeeze', 'portland')).toEqual(['Lindqvist'])
+    expect(winners('center-squeeze', 'btr-wigm')).toEqual(['Castellan'])
   })
   it('Meek and Warren agree with WIGM on the simple cases', () => {
     for (const s of ['meek', 'warren']) {
-      expect(winners('sixty-forty', s)).toEqual(['A', 'B', 'D'])
-      expect(winners('rank-decay', s)).toEqual(['A', 'B', 'D'])
+      expect(winners('sixty-forty', s)).toEqual(['Abara', 'Belmonte', 'Dravik'])
+      expect(winners('rank-decay', s)).toEqual(['Abara', 'Belmonte', 'Dravik'])
     }
   })
   it('sequential RCV hands a cohesive majority every seat', () => {
-    expect(winners('sixty-forty', 'sequential')).toEqual(['A', 'B', 'C'])
+    expect(winners('sixty-forty', 'sequential')).toEqual(['Abara', 'Belmonte', 'Castellan'])
   })
   it('MCPC moves from 2–1 to a sweep as the mandate rises to a majority', () => {
-    expect(winners('sixty-forty', 'mcpc')).toEqual(['A', 'B', 'D'])
+    expect(winners('sixty-forty', 'mcpc')).toEqual(['Abara', 'Belmonte', 'Dravik'])
     const half = { ...S('mcpc'), mandate: 0.5 }
-    expect(runCount(P('sixty-forty'), half, 3).winners.map((w) => w.id).sort()).toEqual(['A', 'B', 'C'])
+    expect(runCount(P('sixty-forty'), half, 3).winners.map((w) => w.id).sort()).toEqual(['Abara', 'Belmonte', 'Castellan'])
   })
   it('MCPC relaxes an infeasible mandate and says so', () => {
     const r = runCount(P('rank-decay'), { ...S('mcpc'), mandate: 0.5 }, 3)
@@ -86,7 +86,7 @@ describe('supporting pieces', () => {
   })
   it('flags pairwise upsets and camp seat shares', () => {
     const m = computeMetrics(P('rank-decay'), runCount(P('rank-decay'), S('rank-decay'), 3))
-    expect(m.upsets.some((u) => u.loser === 'D' && u.winner === 'C')).toBe(true)
+    expect(m.upsets.some((u) => u.loser === 'Dravik' && u.winner === 'Castellan')).toBe(true)
     const t = computeMetrics(P('truncated-majority'), runCount(P('truncated-majority'), S('portland'), 3))
     expect(t.camps[0]).toMatchObject({ camp: 'Majority', seats: 1 })
   })

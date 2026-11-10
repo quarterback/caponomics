@@ -68,6 +68,13 @@ function mulberry32(seed: number) {
   }
 }
 
+/** Invented surnames for candidates. None is a real office-holder. */
+export const CANDIDATE_NAMES = [
+  'Abara', 'Belmonte', 'Castellan', 'Dravik', 'Eldridge', 'Fontaine', 'Galloway', 'Hartwell', 'Ibarra', 'Jovanic',
+  'Kessler', 'Lindqvist', 'Marchetti', 'Nakamura', 'Okafor', 'Petrov', 'Quintero', 'Rasmussen', 'Santoro', 'Thackeray',
+  'Umana', 'Valdez', 'Whitlock', 'Xiong', 'Yarrow', 'Zielinski', 'Ashby', 'Brannigan', 'Cordova', 'Delacroix',
+]
+
 export const DEFAULT_GEN: GenParams = {
   seed: 2024,
   voters: 3000,
@@ -99,7 +106,7 @@ export function generateProfile(g: GenParams, meta?: Partial<Profile>): Profile 
   const cands: (Candidate & { campIdx: number; pull: number })[] = []
   perCamp.forEach((k, ci) => {
     for (let j = 0; j < k; j++) {
-      const id = `${letters[ci]}${j + 1}`
+      const id = CANDIDATE_NAMES[cands.length] ?? `${letters[ci]}${j + 1}`
       cands.push({ id, name: id, camp: `Camp ${letters[ci]}`, campIdx: ci, pull: gauss() * 0.8 })
     }
   })
@@ -146,63 +153,63 @@ export const PROFILES: Profile[] = [
   fromText(
     'rank-decay',
     'Seven small candidates, one backup',
-    'Voters for seven small candidates all rank D second. D leads C 26 to 22 for the last seat.',
+    'Voters for seven small candidates all rank Dravik second. Dravik leads Castellan 26 to 22 for the last seat.',
     3,
-    `26: A
-26: B
-22: C
-5: D
-3: X1 > D
-3: X2 > D
-3: X3 > D
-3: X4 > D
-3: X5 > D
-3: X6 > D
-3: X7 > D`,
+    `26: Abara
+26: Belmonte
+22: Castellan
+5: Dravik
+3: Eldridge > Dravik
+3: Fontaine > Dravik
+3: Galloway > Dravik
+3: Hartwell > Dravik
+3: Ibarra > Dravik
+3: Jovanic > Dravik
+3: Kessler > Dravik`,
   ),
   fromText(
     'sixty-forty',
     '60 / 40 blocs',
     '60 voters rank one slate. 40 rank another.',
     3,
-    `A [Majority]
-B [Majority]
-C [Majority]
-D [Minority]
-E [Minority]
-F [Minority]
+    `Abara [Majority]
+Belmonte [Majority]
+Castellan [Majority]
+Dravik [Minority]
+Eldridge [Minority]
+Fontaine [Minority]
 
-60: A > B > C
-40: D > E > F`,
+60: Abara > Belmonte > Castellan
+40: Dravik > Eldridge > Fontaine`,
   ),
   fromText(
     'truncated-majority',
     'Majority that won’t rank',
     '56% of voters back five similar candidates but rank only one or two. 44% back two candidates and rank both.',
     3,
-    `P1 [Majority]
-P2 [Majority]
-P3 [Majority]
-P4 [Majority]
-P5 [Majority]
-M1 [Minority]
-M2 [Minority]
+    `Abara [Majority]
+Belmonte [Majority]
+Castellan [Majority]
+Dravik [Majority]
+Eldridge [Majority]
+Fontaine [Minority]
+Galloway [Minority]
 
-13: P1 > P2
-12: P2
-11: P3 > P4
-10: P4
-10: P5
-24: M1 > M2
-20: M2 > M1`,
+13: Abara > Belmonte
+12: Belmonte
+11: Castellan > Dravik
+10: Dravik
+10: Eldridge
+24: Fontaine > Galloway
+20: Galloway > Fontaine`,
   ),
   fromText(
     'center-squeeze',
     'Center squeeze',
-    'One seat. Most voters prefer C to each rival, but C has the fewest first choices.',
+    'One seat. Most voters prefer Castellan to each rival, but Castellan has the fewest first choices.',
     1,
-    `35: L > C > R
-40: R > C > L
-25: C > L > R`,
+    `35: Lindqvist > Castellan > Rasmussen
+40: Rasmussen > Castellan > Lindqvist
+25: Castellan > Lindqvist > Rasmussen`,
   ),
 ]

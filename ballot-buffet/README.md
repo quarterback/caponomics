@@ -51,6 +51,9 @@ Portland 2024 · Meek · Warren · Last-parcel Gregory · BTR-WIGM · STV-B · H
 - **Majority that won't rank** — 56% wins one seat of three.
 - **Center squeeze** — one seat; the head-to-head winner has the fewest first choices.
 
+Candidates have invented surnames (Abara, Belmonte, Castellan and so on). None is a real
+office-holder. A coloured square beside a name shows the candidate's camp.
+
 Or paste your own: one line per group, `26: A > B > C`.
 
 ## Readouts
