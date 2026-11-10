@@ -78,11 +78,20 @@ describe('supporting pieces', () => {
     expect(a.ballots).toEqual(b.ballots)
     expect(a.ballots.reduce((s, x) => s + x.n, 0)).toBe(DEFAULT_GEN.voters)
   })
+  it('names candidates from the pool, uniquely, and keeps them when a slider moves', () => {
+    const a = generateProfile({ ...DEFAULT_GEN, candidates: 30 })
+    expect(new Set(a.candidates.map((c) => c.id)).size).toBe(30)
+    expect(a.candidates.every((c) => c.name.endsWith(c.id) && c.name.length > c.id.length)).toBe(true)
+    const b = generateProfile({ ...DEFAULT_GEN, candidates: 30, cohesion: 0.9 })
+    expect(b.candidates.map((c) => c.name)).toEqual(a.candidates.map((c) => c.name))
+    const c = generateProfile({ ...DEFAULT_GEN, candidates: 30, seed: 7 })
+    expect(c.candidates.map((x) => x.name)).not.toEqual(a.candidates.map((x) => x.name))
+  })
   it('ballot text round-trips', () => {
     const p = P('sixty-forty')
     const back = parseBallots(formatBallots(p))
     expect(back.ballots).toEqual(p.ballots)
-    expect(back.candidates).toEqual(p.candidates)
+    expect(back.candidates.map((c) => [c.id, c.camp])).toEqual(p.candidates.map((c) => [c.id, c.camp]))
   })
   it('flags pairwise upsets and camp seat shares', () => {
     const m = computeMetrics(P('rank-decay'), runCount(P('rank-decay'), S('rank-decay'), 3))

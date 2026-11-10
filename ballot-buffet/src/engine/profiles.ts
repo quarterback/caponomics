@@ -1,6 +1,7 @@
 // Ballot profiles — the "rosters" of this tool. Hand-built teaching cases plus
 // a seeded generator for Portland-shaped districts.
 
+import { FIRST_NAMES, SURNAMES } from './names'
 import type { Ballot, Candidate, GenParams, Profile } from './types'
 
 // ───────────────────────── text format ─────────────────────────
@@ -50,9 +51,16 @@ export function formatBallots(p: Profile): string {
   return [...camps, ...(camps.length ? [''] : []), ...lines].join('\n')
 }
 
+/** A stable first name for a surname, so hand-built sets show full names. */
+function firstNameFor(surname: string): string {
+  let h = 2166136261
+  for (let i = 0; i < surname.length; i++) h = Math.imul(h ^ surname.charCodeAt(i), 16777619)
+  return FIRST_NAMES[(h >>> 0) % FIRST_NAMES.length]!
+}
+
 const fromText = (id: string, name: string, blurb: string, seats: number, text: string): Profile => {
   const { candidates, ballots } = parseBallots(text)
-  return { id, name, blurb, seats, candidates, ballots }
+  return { id, name, blurb, seats, candidates: candidates.map((c) => ({ ...c, name: `${firstNameFor(c.id)} ${c.id}` })), ballots }
 }
 
 // ───────────────────────── generator ─────────────────────────
@@ -67,13 +75,6 @@ function mulberry32(seed: number) {
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296
   }
 }
-
-/** Invented surnames for candidates. None is a real office-holder. */
-export const CANDIDATE_NAMES = [
-  'Abara', 'Belmonte', 'Castellan', 'Dravik', 'Eldridge', 'Fontaine', 'Galloway', 'Hartwell', 'Ibarra', 'Jovanic',
-  'Kessler', 'Lindqvist', 'Marchetti', 'Nakamura', 'Okafor', 'Petrov', 'Quintero', 'Rasmussen', 'Santoro', 'Thackeray',
-  'Umana', 'Valdez', 'Whitlock', 'Xiong', 'Yarrow', 'Zielinski', 'Ashby', 'Brannigan', 'Cordova', 'Delacroix',
-]
 
 export const DEFAULT_GEN: GenParams = {
   seed: 2024,
@@ -103,11 +104,20 @@ export function generateProfile(g: GenParams, meta?: Partial<Profile>): Profile 
   const perCamp = shares.map((s) => Math.max(1, Math.round(s * g.candidates)))
   while (perCamp.reduce((s, x) => s + x, 0) > g.candidates) perCamp[perCamp.indexOf(Math.max(...perCamp))]!--
   while (perCamp.reduce((s, x) => s + x, 0) < g.candidates) perCamp[perCamp.indexOf(Math.max(...perCamp))]!++
+  // Names come from their own random stream, so changing a slider keeps the same people.
+  const nameRnd = mulberry32(g.seed ^ 0x5bd1e995)
+  const surnames: string[] = []
+  while (surnames.length < g.candidates) {
+    const pick = SURNAMES[Math.floor(nameRnd() * SURNAMES.length)]!
+    if (!surnames.includes(pick)) surnames.push(pick)
+  }
+  const firsts = surnames.map(() => FIRST_NAMES[Math.floor(nameRnd() * FIRST_NAMES.length)]!)
   const cands: (Candidate & { campIdx: number; pull: number })[] = []
   perCamp.forEach((k, ci) => {
     for (let j = 0; j < k; j++) {
-      const id = CANDIDATE_NAMES[cands.length] ?? `${letters[ci]}${j + 1}`
-      cands.push({ id, name: id, camp: `Camp ${letters[ci]}`, campIdx: ci, pull: gauss() * 0.8 })
+      // The surname is the id (short enough for a table cell); the full name is shown where there is room.
+      const id = surnames[cands.length]!
+      cands.push({ id, name: `${firsts[cands.length]} ${id}`, camp: `Camp ${letters[ci]}`, campIdx: ci, pull: gauss() * 0.8 })
     }
   })
   const groups = new Map<string, number>()

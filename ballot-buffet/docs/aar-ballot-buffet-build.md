@@ -127,6 +127,16 @@ A **Results only** button in the toolbar hides the setup columns so the output f
 a larger text size, for screenshots. It was added to both apps after Ron showed that the output
 took a fifth of the screen.
 
+**Candidate names.** Candidates were first codes (A1, X3), then 30 surnames the agent made up.
+Ron: *"only 30? you have access to all my repos, there are thousands of actual names."* The pool
+now comes from `viperball/data/name_pools/` (`surnames.json`, `first_names.json`,
+`male_first_names.json`): every surname group, with the largest group sampled down to 700, and
+450 first names from each of the two first-name files. Names are kept only if they are plain
+letters of a sensible length, and the surnames of current Portland and Oregon office-holders and
+recent presidents are left out. That gives about 1,950 surnames and 900 first names in
+`src/engine/names.ts` (30 KB). The lesson: look for the owner's existing data before inventing a
+small substitute.
+
 Kept on purpose, where the checklist and the design system disagree: square corners and hard
 offset shadows are the Chromatic Editorial System's own rules. Not done: Cap Buffet's metric
 tiles, About text and module descriptions predate this work and were not rewritten.
