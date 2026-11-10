@@ -8,7 +8,7 @@ import type { System } from './types'
 const BASE: System = {
   id: 'portland',
   name: 'Portland 2024',
-  blurb: 'Droop threshold · weighted inclusive Gregory · lowest out',
+  blurb: 'The count Portland used in 2024.',
   method: 'stv',
   quota: 'droop',
   quotaShare: 1 / 3,
@@ -35,18 +35,18 @@ export interface SystemGroup {
 
 export const SYSTEM_GROUPS: SystemGroup[] = [
   {
-    label: 'Current law',
+    label: 'Portland’s current count',
     systems: [BASE],
   },
   {
-    label: 'Other STV counts',
+    label: 'Other ways to count STV',
     systems: [
-      sys({ id: 'meek', name: 'Meek STV', blurb: 'Winners keep a share of every ballot; the quota falls as ballots run out', method: 'meek' }),
-      sys({ id: 'warren', name: 'Warren STV', blurb: 'Like Meek, but winners take equal portions from each ballot', method: 'meek', meekVariant: 'warren' }),
+      sys({ id: 'meek', name: 'Meek STV', blurb: 'Winners keep the same share of every ballot. The threshold falls as ballots run out.', method: 'meek' }),
+      sys({ id: 'warren', name: 'Warren STV', blurb: 'Winners take the same amount from every ballot.', method: 'meek', meekVariant: 'warren' }),
       sys({
         id: 'last-parcel',
         name: 'Last-parcel Gregory',
-        blurb: 'Only the ballots that tipped the winner over transfer',
+        blurb: 'Only the last group of ballots a winner received moves on.',
         surplus: 'last-parcel',
         surplusOrder: 'largest',
         truncate: false,
@@ -54,43 +54,43 @@ export const SYSTEM_GROUPS: SystemGroup[] = [
     ],
   },
   {
-    label: 'Majority-leaning variants',
+    label: 'Changes that favor a majority',
     systems: [
-      sys({ id: 'btr-wigm', name: 'BTR-WIGM', blurb: 'Bottom two face off head-to-head before anyone is cut', elimination: 'btr' }),
-      sys({ id: 'stv-b', name: 'STV-B (Borda elimination)', blurb: 'Lowest Borda score is cut, not lowest tally', elimination: 'borda' }),
+      sys({ id: 'btr-wigm', name: 'BTR-WIGM', blurb: 'Compares the two lowest candidates before it removes one.', elimination: 'btr' }),
+      sys({ id: 'stv-b', name: 'STV-B (Borda elimination)', blurb: 'Removes the candidate voters rank lowest overall.', elimination: 'borda' }),
       sys({
         id: 'hare-mandate',
         name: 'Hare-Mandate STV',
-        blurb: 'Higher threshold (⅓ for 3 seats); seats nobody reaches go to a districtwide count',
+        blurb: 'Raises the threshold to one-third. A separate count fills seats no one reaches.',
         quota: 'hare',
         completion: 'finisher',
       }),
       sys({
         id: 'two-plus-one',
         name: '2+1 Hybrid',
-        blurb: 'STV fills all but one seat; the last goes to a districtwide Condorcet count',
+        blurb: 'STV fills all seats but one. A districtwide count fills the last.',
         resetSeats: 1,
       }),
-      sys({ id: 'rank-decay', name: 'Rank-decay transfers', blurb: 'A ballot keeps 80% of its value each time it moves', decay: 0.8, truncate: false }),
+      sys({ id: 'rank-decay', name: 'Rank-decay transfers', blurb: 'A ballot loses 20% of its value each time it moves.', decay: 0.8, truncate: false }),
     ],
   },
   {
-    label: 'Other methods',
+    label: 'Methods that are not STV',
     systems: [
       sys({
         id: 'mcpc',
         name: 'MCPC',
-        blurb: 'Picks the committee most voters put in their top 3; every winner must clear a support bar',
+        blurb: 'Picks the group of winners that the most voters ranked in their top three.',
         method: 'mcpc',
       }),
       sys({
         id: 'sequential',
         name: 'Sequential Mandate RCV',
-        blurb: 'One instant-runoff per seat, ballots restored each time',
+        blurb: 'Holds a separate instant-runoff count for each seat.',
         resetSeats: 99,
         finisher: 'irv',
       }),
-      sys({ id: 'sntv', name: 'First-choice plurality', blurb: 'Top N first choices; rankings ignored (SNTV)', method: 'sntv' }),
+      sys({ id: 'sntv', name: 'First-choice plurality', blurb: 'The candidates with the most first choices win.', method: 'sntv' }),
     ],
   },
 ]
@@ -120,29 +120,29 @@ export interface Fit {
 export function charterFit(s: System): Fit {
   const charter: string[] = []
   const code: string[] = []
-  if (s.method === 'mcpc') charter.push('Not a transferable-vote count at all — the charter names single transferable vote.')
-  if (s.method === 'sntv') charter.push('Ignores rankings — the charter requires ranked choice voting.')
+  if (s.method === 'mcpc') charter.push('The charter requires single transferable vote. This method does not transfer votes.')
+  if (s.method === 'sntv') charter.push('The charter requires ranked choice voting. This method ignores rankings.')
   if (s.method === 'meek') {
     code.push(
-      'Keep-value counting still elects on a threshold, transfers surpluses and cuts the lowest candidate — arguably inside the charter, but the falling quota and transfers through winners would be a contested reading.',
+      'This method still uses a threshold, moves extra votes and removes the lowest candidate. The charter may allow it, but the falling threshold would likely be disputed.',
     )
   }
   if (s.method === 'stv') {
     if (s.quota === 'hare' || (s.quota === 'custom' && s.quotaShare > 0.2501))
-      charter.push('Raises the threshold above the lowest one that prevents too many winners (charter language).')
-    if (s.quota === 'exact') code.push('Fractional Droop threshold instead of the code’s whole-number formula.')
-    if (s.quotaBasis === 'stv' && s.resetSeats > 0) charter.push('Threshold no longer tied to the full number of seats.')
+      charter.push('The charter ties the threshold to the number of seats. This rule sets it higher.')
+    if (s.quota === 'exact') code.push('The code rounds the threshold to a whole number. This rule does not.')
+    if (s.quotaBasis === 'stv' && s.resetSeats > 0) charter.push('The charter ties the threshold to the number of seats in the district. This rule uses fewer seats.')
     if (s.elimination !== 'lowest')
-      charter.push('The charter says the lowest-polling candidates are eliminated; a pairwise or Borda test picks someone else.')
-    if (s.decay < 1) charter.push('Discounting transferred ballots is not a transfer “to the next-ranked candidate” at the ballot’s value.')
-    if (s.resetSeats > 0) charter.push('Seats filled outside the transferable-vote count, with ballots restored to full value.')
-    if (s.completion === 'finisher') charter.push('Replaces the STV count for unfilled seats with a separate contest.')
-    if (s.surplus === 'none') charter.push('The charter requires surplus votes to transfer.')
-    if (s.surplus === 'last-parcel') code.push('Last-parcel surplus transfers instead of the code’s all-ballot weighted transfer.')
-    if (s.surplusOrder !== 'simultaneous' && s.surplus !== 'none') code.push('Surpluses transferred one at a time rather than simultaneously.')
-    if (!s.truncate) code.push('Exact arithmetic instead of four-decimal truncation.')
+      charter.push('The charter removes the candidate with the fewest votes. This rule can remove a different candidate.')
+    if (s.decay < 1) charter.push('The charter moves a ballot to its next choice. This rule discards part of the ballot.')
+    if (s.resetSeats > 0) charter.push('The charter fills council seats by single transferable vote. This rule fills some seats with a separate count.')
+    if (s.completion === 'finisher') charter.push('The code elects the remaining candidates. This rule holds a separate count instead.')
+    if (s.surplus === 'none') charter.push('The charter requires extra votes to move to next choices. This rule keeps them with the winner.')
+    if (s.surplus === 'last-parcel') code.push('The code moves every ballot a winner holds. This rule moves only the last group.')
+    if (s.surplusOrder !== 'simultaneous' && s.surplus !== 'none') code.push('The code moves all winners’ extra votes together. This rule moves them one winner at a time.')
+    if (!s.truncate) code.push('The code cuts transfer values at four decimals. This rule does not round.')
   }
   if (charter.length) return { level: 'charter', label: 'Needs charter amendment', short: 'Charter', reasons: [...charter, ...code] }
-  if (code.length) return { level: 'ordinance', label: 'Code-level change', short: 'Ordinance', reasons: code }
-  return { level: 'current', label: 'Current law', short: 'Current', reasons: ['Matches City Code 2.08.030 as written (ties here are broken deterministically, not by lot).'] }
+  if (code.length) return { level: 'ordinance', label: 'Needs an ordinance', short: 'Ordinance', reasons: code }
+  return { level: 'current', label: 'Current law', short: 'Current', reasons: ['This count follows City Code 2.08.030. The tool breaks ties by a fixed rule. Portland draws lots.'] }
 }

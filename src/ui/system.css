@@ -126,24 +126,29 @@
 /* ── Labels: mono, uppercase, tracked — only for category labels (card
       titles, rail groups, column heads). Field and tile labels stay sentence
       case so long ones remain readable. ── */
-.card__title,
-.rail__label,
 .palette__cat h4,
-.ltable thead th,
-.about__body h3 {
+.ltable thead th {
   font-family: var(--mono);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-weight: 600;
+  font-size: 10.5px;
+  color: var(--ink);
+}
+/* Headings are questions or statements in sentence case. */
+.card__title,
+.rail__label,
+.about__body h3 {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 600;
   color: var(--ink);
 }
 .card__title {
-  font-size: 12px;
+  font-size: 14px;
 }
-.rail__label,
-.palette__cat h4,
-.ltable thead th {
-  font-size: 10.5px;
+.rail__label {
+  font-size: 13px;
 }
 .field > label,
 .tile__label {
@@ -151,7 +156,7 @@
   font-weight: 600;
 }
 .about__body h3 {
-  font-size: 12px;
+  font-size: 14px;
   border-bottom: var(--hair) solid var(--ink);
   padding-bottom: 4px;
 }

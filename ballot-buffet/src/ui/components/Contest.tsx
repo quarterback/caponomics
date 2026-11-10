@@ -18,10 +18,10 @@ export function Contest() {
   return (
     <div className="card">
       <div className="card__head">
-        <span className="card__title">Contest</span>
+        <span className="card__title">How many seats, and who votes?</span>
       </div>
       <div className="card__body form">
-        <Field label="Seats to fill" help="Portland districts elect 3. Set 1 to see the single-member version of any rule.">
+        <Field label="Seats to fill" help="Portland districts elect three. Set one seat to count a single-member district.">
           <div className="stepper">
             <button className="btn btn--sm" onClick={() => setSeats(seats - 1)} aria-label="Fewer seats">
               −
@@ -36,21 +36,21 @@ export function Contest() {
         {g ? (
           <>
             <Field
-              label="Slate cohesion"
-              help="How much rankings follow camp lines. Low = free radicals ranked on personal pull; high = voters rank down their camp."
+              label="How closely voters follow a slate"
+              help="At 0%, voters rank candidates one by one. At 100%, voters rank the candidates from their own camp first."
             >
               <Range value={g.cohesion} min={0} max={1} step={0.05} show={`${Math.round(g.cohesion * 100)}%`} onChange={(v) => setGen({ cohesion: v })} />
             </Field>
             <Field label="Candidates">
               <Range value={g.candidates} min={4} max={30} step={1} show={String(g.candidates)} onChange={(v) => setGen({ candidates: v })} />
             </Field>
-            <Field label="Bullet voters" help="Share who rank a single candidate and stop.">
+            <Field label="Voters who rank only one candidate">
               <Range value={g.bullet} min={0} max={0.6} step={0.02} show={`${Math.round(g.bullet * 100)}%`} onChange={(v) => setGen({ bullet: v })} />
             </Field>
-            <Field label="Rankings allowed" help="Portland’s ballot has six columns.">
+            <Field label="Choices a ballot allows" help="Portland’s ballot allows six.">
               <Range value={g.maxRanks} min={2} max={10} step={1} show={String(g.maxRanks)} onChange={(v) => setGen({ maxRanks: v })} />
             </Field>
-            <Field label="Camp sizes" help="Relative size of each camp of voters (2–4 camps).">
+            <Field label="Camp sizes" help="Enter the relative size of each camp of voters. Use two to four camps.">
               <div className="camps">
                 {g.camps.map((c, i) => (
                   <input
@@ -79,10 +79,10 @@ export function Contest() {
                 )}
               </div>
             </Field>
-            <Field label="Electorate">
+            <Field label="Voters">
               <div className="field__row">
                 <button className="btn btn--sm" onClick={() => setGen({ seed: Math.floor(Math.random() * 1e6) })}>
-                  Re-roll voters
+                  Draw new voters
                 </button>
                 <span className="input__echo mono">seed {g.seed}</span>
               </div>
@@ -90,7 +90,7 @@ export function Contest() {
           </>
         ) : (
           <button className="btn btn--sm" style={{ justifySelf: 'start' }} onClick={() => setGen(DEFAULT_GEN)}>
-            Generate a synthetic district instead
+            Use a generated district
           </button>
         )}
 
@@ -100,10 +100,11 @@ export function Contest() {
           </button>
           {open && (
             <div className="ballot-edit">
-              {big && <div className="field__help">{profile.ballots.length.toLocaleString()} distinct rankings — editing by hand is easier on the small sets.</div>}
+              {big && <div className="field__help">This set has {profile.ballots.length.toLocaleString()} different rankings. The smaller sets are easier to edit by hand.</div>}
               <textarea className="input mono" spellCheck={false} value={text} onChange={(e) => setText(e.target.value)} rows={10} />
               <div className="field__help">
-                One line per group: <span className="mono">26: A &gt; B &gt; C</span>. Optional camp lines: <span className="mono">A [Camp name]</span>.
+                Write one line for each group of identical ballots, like <span className="mono">26: A &gt; B &gt; C</span>. To put a
+                candidate in a camp, add a line like <span className="mono">A [Camp name]</span>.
               </div>
               {errors.map((e) => (
                 <div key={e} className="field__err">

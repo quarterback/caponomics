@@ -175,6 +175,14 @@
   --cat-rounds: var(--ink-soft);
   --cat-financial: var(--baltic);
   --cat-special: var(--ink);
+
+  /* Cup-format rule categories */
+  --cat-field: var(--steel);
+  --cat-groups: var(--accent);
+  --cat-advance: var(--success);
+  --cat-knockout: var(--lead);
+  --cat-schedule: var(--baltic);
+  --cat-prize: var(--warning);
 }
 
 * {

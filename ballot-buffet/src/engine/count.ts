@@ -155,7 +155,7 @@ function stvCount(ballots: Ballot[], ids: string[], system: System, seats: numbe
     if (system.surplus === 'last-parcel' && surplus > base + EPS) {
       retained[c] = t[c]! - base
     }
-    return `${c} surplus ${fmt(surplus)} transfers at ×${f.toFixed(4)}`
+    return `${c}’s ${fmt(surplus)} extra votes move on at ${f.toFixed(4)} of each ballot’s value`
   }
 
   const snapshot = (n: number, t: Record<string, number>, elected: string[], eliminated: string[], note: string) =>
@@ -198,8 +198,8 @@ function stvCount(ballots: Ballot[], ids: string[], system: System, seats: numbe
       const msgs = now.map((c) => transferSurplus(c, t, round)).filter(Boolean)
       const note = [reached.length ? `${reached.join(', ')} reach${reached.length > 1 ? '' : 'es'} the threshold` : '', ...msgs]
         .filter(Boolean)
-        .join(' · ')
-      snapshot(round, t, reached, [], note || 'No surplus to transfer')
+        .join('. ')
+      snapshot(round, t, reached, [], note || 'No extra votes to move')
       continue
     }
 
@@ -210,9 +210,9 @@ function stvCount(ballots: Ballot[], ids: string[], system: System, seats: numbe
           status[c] = 'elected'
           winners.push({ id: c, how: 'remaining', round, tally: t[c]! })
         }
-        snapshot(round, t, hs, [], `${hs.join(', ')} elected as the last candidate${hs.length > 1 ? 's' : ''} standing — below the threshold`)
+        snapshot(round, t, hs, [], `${hs.join(', ')} win${hs.length > 1 ? '' : 's'} the remaining seat${hs.length > 1 ? 's' : ''} below the threshold`)
       } else {
-        snapshot(round, t, [], [], `Nobody else can reach the threshold — ${seatsLeft} seat${seatsLeft > 1 ? 's go' : ' goes'} to a fresh count`)
+        snapshot(round, t, [], [], `No other candidate can reach the threshold. A separate count fills ${seatsLeft} seat${seatsLeft > 1 ? 's' : ''}`)
       }
       break
     }
@@ -220,7 +220,7 @@ function stvCount(ballots: Ballot[], ids: string[], system: System, seats: numbe
     // 4. Eliminate.
     const weak = weakestFirst(t)
     let loser = weak[0]!
-    let why = `${loser} has the fewest votes`
+    let why = `${loser} has the fewest votes and is removed`
     if (weak.length > 1 && Math.abs(t[weak[0]!]! - t[weak[1]!]!) < EPS && system.elimination === 'lowest') {
       ties.push(round)
     }
@@ -229,7 +229,7 @@ function stvCount(ballots: Ballot[], ids: string[], system: System, seats: numbe
       const [a, b] = [weak[0]!, weak[1]!]
       const [pa, pb] = pairwise(inPlay, a, b)
       if (pa > pb + EPS) loser = b
-      why = `Bottom two ${a} vs ${b}: ${fmt(pa)}–${fmt(pb)} head-to-head, ${loser} is out`
+      why = `${a} and ${b} have the fewest votes. Voters prefer ${a} ${fmt(pa)} to ${fmt(pb)}, so ${loser} is removed`
     } else if (system.elimination === 'borda') {
       const m = hs.length
       const score: Record<string, number> = Object.fromEntries(hs.map((c) => [c, 0]))
@@ -238,7 +238,7 @@ function stvCount(ballots: Ballot[], ids: string[], system: System, seats: numbe
         for (const r of bl.ranks) if (status[r] === 'hopeful') score[r] = score[r]! + bl.n * (m - 1 - k++)
       }
       loser = [...weak].sort((a, b) => score[a]! - score[b]!)[0]!
-      why = `${loser} has the lowest Borda score (${fmt(score[loser]!)})`
+      why = `${loser} has the lowest ranking score (${fmt(score[loser]!)}) and is removed`
     }
     status[loser] = 'eliminated'
     for (const p of piles) {
@@ -255,7 +255,7 @@ function stvCount(ballots: Ballot[], ids: string[], system: System, seats: numbe
 
   if (ties.length) {
     notes.push(
-      `${ties.length} tie${ties.length > 1 ? 's' : ''} for last place (round${ties.length > 1 ? 's' : ''} ${ties.join(', ')}) broken by first choices, then ballot order. Portland draws lots, so a real count could differ.`,
+      `The tool broke ${ties.length} tie${ties.length > 1 ? 's' : ''} for last place (round${ties.length > 1 ? 's' : ''} ${ties.join(', ')}) by first choices, then by ballot order. Portland draws lots, so its result could differ.`,
     )
   }
 
@@ -267,7 +267,7 @@ function stvCount(ballots: Ballot[], ids: string[], system: System, seats: numbe
       const field = ids.filter((id) => !taken.has(id))
       if (!field.length) break
       const res = singleWinner(ballots, field, system.finisher, order)
-      const label = `Seat ${winners.length + 1} · fresh ${system.finisher === 'irv' ? 'instant-runoff' : 'Condorcet'} count`
+      const label = `Seat ${winners.length + 1}, separate ${system.finisher === 'irv' ? 'instant-runoff' : 'head-to-head'} count`
       for (const r of res.rounds) {
         round++
         const st: Record<string, CandStatus> = Object.fromEntries(ids.map((id) => [id, 'eliminated']))
@@ -288,7 +288,7 @@ function stvCount(ballots: Ballot[], ids: string[], system: System, seats: numbe
       winners.push({ id: res.winner, how: 'finisher', round, tally: res.tally })
     }
     notes.push(
-      `${open} seat${open > 1 ? 's were' : ' was'} filled by a fresh count with every ballot restored to full value — a majoritarian step, not proportional accounting.`,
+      `A separate count filled ${open} seat${open > 1 ? 's' : ''}. Every ballot counted at full value there, so a majority of voters can win each of those seats.`,
     )
   }
 
@@ -326,7 +326,7 @@ function singleWinner(
       return {
         winner: cw,
         tally: t[cw]!,
-        rounds: [{ tallies: t, winner: cw, note: `${cw} beats every other remaining candidate head-to-head (first choices shown)` }],
+        rounds: [{ tallies: t, winner: cw, note: `More voters prefer ${cw} to each other candidate. The figures are first choices` }],
       }
     }
   }
@@ -339,13 +339,13 @@ function singleWinner(
     const ranked = [...alive].sort((a, b) => t[b]! - t[a]! || first[b]! - first[a]! || order.get(a)! - order.get(b)!)
     const top = ranked[0]!
     if (t[top]! > active / 2 + EPS || alive.size <= 2) {
-      const pre = rule === 'condorcet' && !rounds.length ? 'No Condorcet winner — instant runoff instead. ' : ''
+      const pre = rule === 'condorcet' && !rounds.length ? 'No candidate beats every rival, so the count uses instant runoff. ' : ''
       rounds.push({ tallies: t, winner: top, note: `${pre}${top} wins with ${fmt(t[top]!)} of ${fmt(active)} continuing ballots` })
       return { winner: top, tally: t[top]!, rounds }
     }
     const out = ranked[ranked.length - 1]!
     alive.delete(out)
-    rounds.push({ tallies: t, out, note: `${out} has the fewest votes` })
+    rounds.push({ tallies: t, out, note: `${out} has the fewest votes and is removed` })
   }
 }
 
@@ -415,7 +415,7 @@ function meekCount(ballots: Ballot[], ids: string[], system: System, seats: numb
       .sort((a, b) => t[b]! - t[a]!)
       .slice(0, seatsLeft)
     if (reached.length) {
-      snap(reached, [], `${reached.join(', ')} reach${reached.length > 1 ? '' : 'es'} the quota (${fmt(quota)}); keep values re-settle`)
+      snap(reached, [], `${reached.join(', ')} reach${reached.length > 1 ? '' : 'es'} the threshold (${fmt(quota)}). The count shares their ballots again`)
       for (const c of reached) {
         status[c] = 'elected'
         winners.push({ id: c, how: 'quota', round, tally: t[c]! })
@@ -423,7 +423,7 @@ function meekCount(ballots: Ballot[], ids: string[], system: System, seats: numb
       continue
     }
     if (hs.length <= seatsLeft) {
-      snap(hs, [], `${hs.join(', ')} elected as the last standing`)
+      snap(hs, [], `${hs.join(', ')} win${hs.length > 1 ? '' : 's'} the remaining seat${hs.length > 1 ? 's' : ''}`)
       for (const c of hs) {
         status[c] = 'elected'
         winners.push({ id: c, how: 'remaining', round, tally: t[c]! })
@@ -431,7 +431,7 @@ function meekCount(ballots: Ballot[], ids: string[], system: System, seats: numb
       break
     }
     const loser = [...hs].sort((a, b) => t[a]! - t[b]! || order.get(b)! - order.get(a)!)[0]!
-    snap([], [loser], `${loser} has the fewest votes; the count restarts as if they never stood`)
+    snap([], [loser], `${loser} has the fewest votes and is removed. The count starts again without them`)
     status[loser] = 'eliminated'
     keep[loser] = 0
   }
@@ -443,7 +443,7 @@ function meekCount(ballots: Ballot[], ids: string[], system: System, seats: numb
     total,
     exhausted: excess,
     lost: 0,
-    notes: [`The quota falls as ballots run out of rankings: it finished at ${fmt(quota)} (${((quota / total) * 100).toFixed(1)}% of all ballots).`],
+    notes: [`The threshold falls as ballots run out of choices. It ended at ${fmt(quota)}, which is ${((quota / total) * 100).toFixed(1)}% of all ballots.`],
   }
 }
 
@@ -467,7 +467,7 @@ function mcpcCount(ballots: Ballot[], ids: string[], system: System, seats: numb
   const notes: string[] = []
   if (asked > feasible + EPS) {
     notes.push(
-      `No ${seats}-member committee clears a ${(asked * 100).toFixed(1)}% mandate. Relaxed to μ* = ${(feasible * 100).toFixed(1)}% — the strongest bar this field can actually meet.`,
+      `No group of ${seats} winners meets the ${(asked * 100).toFixed(1)}% support you set. The tool lowered it to ${(feasible * 100).toFixed(1)}%, the highest these candidates can meet.`,
     )
   }
 
@@ -512,7 +512,7 @@ function mcpcCount(ballots: Ballot[], ids: string[], system: System, seats: numb
     rec(0)
   } else {
     // Too many committees to enumerate: build greedily (sequential PAV).
-    notes.push('Field too large to test every committee — built greedily, one seat at a time.')
+    notes.push('There are too many candidates to test every group. The tool built the group one seat at a time.')
     while (best.length < seats) {
       let add = -1
       let s: [number, number] = [-1, -1]
@@ -534,19 +534,19 @@ function mcpcCount(ballots: Ballot[], ids: string[], system: System, seats: numb
     .map((i) => ({ id: ids[i]!, how: 'committee' as const, round: 1, tally: share[i]! * total }))
   const reps = tops.reduce((s, b) => s + (b.c.some((c) => best.includes(c)) ? b.n : 0), 0)
   notes.push(
-    `Consent = appearing in a voter's top ${depth}. Winning committee: representation score ${bestScore[0].toFixed(1)}, ${((reps / total) * 100).toFixed(1)}% of voters consented to at least one winner.`,
+    `A voter supports the candidates in their top ${depth}. ${((reps / total) * 100).toFixed(1)}% of voters support at least one winner.`,
   )
   const status: Record<string, CandStatus> = Object.fromEntries(ids.map((id) => [id, 'hopeful']))
   const round: Round = {
     n: 1,
-    phase: 'Consent tally',
+    phase: 'Support count',
     tallies: Object.fromEntries(ids.map((id, i) => [id, share[i]! * total])),
     status,
     exhausted: 0,
     lost: 0,
     elected: winners.map((w) => w.id),
     eliminated: [],
-    note: `Voters consenting to each candidate (top ${depth}); mandate bar ${(mu * 100).toFixed(1)}% = ${fmt(mu * total)}`,
+    note: `The figures are voters who rank each candidate in their top ${depth}. Each winner needs ${(mu * 100).toFixed(1)}%, which is ${fmt(mu * total)} voters`,
   }
   return {
     winners,
@@ -585,7 +585,7 @@ function sntvCount(ballots: Ballot[], ids: string[], seats: number, total: numbe
         lost: 0,
         elected: top,
         eliminated: [],
-        note: `Top ${seats} by first choices; later rankings are ignored`,
+        note: `The ${seats} candidate${seats > 1 ? 's' : ''} with the most first choices win${seats > 1 ? '' : 's'}. The count ignores later choices`,
       },
     ],
     quota: null,

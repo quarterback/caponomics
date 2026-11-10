@@ -7,6 +7,9 @@ import { ExpansionBuilder } from './expansion/ExpansionBuilder'
 import { ModelSummary } from './expansion/ModelSummary'
 import { Toolbar } from './Toolbar'
 import { About } from './About'
+import { CupRail } from './cup/CupRail'
+import { CupBuilder } from './cup/CupBuilder'
+import { CupSummary } from './cup/CupSummary'
 import { useExpansion } from '../state/expansionStore'
 
 export function AppShell() {
@@ -22,6 +25,14 @@ export function AppShell() {
             <RulesetBuilder />
           </div>
           <LeaguePanel />
+        </div>
+      ) : tab === 'cup' ? (
+        <div className="shell__body">
+          <CupRail />
+          <div className="col">
+            <CupBuilder />
+          </div>
+          <CupSummary />
         </div>
       ) : (
         <div className="shell__body">

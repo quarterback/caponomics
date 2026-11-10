@@ -64,7 +64,7 @@ describe('variants', () => {
   it('MCPC relaxes an infeasible mandate and says so', () => {
     const r = runCount(P('rank-decay'), { ...S('mcpc'), mandate: 0.5 }, 3)
     expect(r.winners).toHaveLength(3)
-    expect(r.notes.join(' ')).toMatch(/Relaxed/)
+    expect(r.notes.join(' ')).toMatch(/lowered/)
   })
   it('every preset fills every seat on every profile', () => {
     for (const p of PROFILES) for (const s of SYSTEMS) expect(runCount(p, s, p.seats).winners, `${s.id} on ${p.id}`).toHaveLength(p.seats)

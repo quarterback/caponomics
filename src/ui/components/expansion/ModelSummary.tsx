@@ -85,7 +85,7 @@ export function ModelSummary() {
       <div className="col">
         <div className="card">
           <div className="card__head">
-            <span className="card__title">Side by side</span>
+            <span className="card__title">How do the two models differ?</span>
             <span style={{ marginLeft: 'auto', display: 'flex', gap: 8, alignItems: 'center' }}>
               {selector}
               <button className="btn--icon" title="Close comparison" onClick={() => setCompareId(null)}>
@@ -123,7 +123,7 @@ export function ModelSummary() {
     <div className="col">
       <div className="card">
         <div className="card__head">
-          <span className="card__title">At a glance</span>
+          <span className="card__title">What does this draft add up to?</span>
         </div>
         <div className="card__body">
           <Tiles model={model} existingTeams={teams} />
@@ -132,7 +132,7 @@ export function ModelSummary() {
 
       <div className="card">
         <div className="card__head">
-          <span className="card__title">The rulebook</span>
+          <span className="card__title">What does the rulebook say?</span>
           <span style={{ marginLeft: 'auto' }}>{selector}</span>
         </div>
         <div className="card__body">

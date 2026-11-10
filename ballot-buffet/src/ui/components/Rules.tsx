@@ -6,7 +6,7 @@ export function Rules() {
   return (
     <div className="card">
       <div className="card__head">
-        <span className="card__title">Counting rules</span>
+        <span className="card__title">How are the ballots counted?</span>
       </div>
       <div className="card__body form">
         <Field label="Counting method">
@@ -16,7 +16,7 @@ export function Rules() {
             options={[
               { value: 'stv', label: 'Round-by-round STV' },
               { value: 'meek', label: 'Meek / Warren' },
-              { value: 'mcpc', label: 'Consent committee (MCPC)' },
+              { value: 'mcpc', label: 'Most-supported group (MCPC)' },
               { value: 'sntv', label: 'First choices only' },
             ]}
           />
@@ -29,67 +29,67 @@ export function Rules() {
               tag="charter"
               help={
                 s.quota === 'custom'
-                  ? 'Share of all valid ballots. With one conserved vote per voter, three winners can each hold at most ⅓ — above that, seats can only be filled by the completion rule.'
+                  ? 'You set the share of all ballots a candidate needs. Each voter has one vote, so three winners can each hold one-third at most. If you set a higher share, the rule for leftover seats fills some seats.'
                   : s.quota === 'droop'
-                    ? 'votes ÷ (seats + 1), plus one, fractions dropped — 25% + 1 for three seats.'
+                    ? 'Divide the ballots by the number of seats plus one, drop any fraction, and add one. For three seats, a candidate needs just over 25%.'
                     : s.quota === 'hare'
-                      ? 'votes ÷ seats — ⅓ for three seats. The highest bar every winner could clear at once.'
-                      : 'votes ÷ (seats + 1) exactly, no rounding.'
+                      ? 'Divide the ballots by the number of seats. For three seats, a candidate needs one-third.'
+                      : 'Divide the ballots by the number of seats plus one. The result is not rounded.'
               }
             >
               <Seg
                 value={s.quota}
                 onChange={(v) => set({ quota: v })}
                 options={[
-                  { value: 'droop', label: 'Droop' },
+                  { value: 'droop', label: 'Droop (Portland)' },
                   { value: 'exact', label: 'Exact Droop' },
                   { value: 'hare', label: 'Hare' },
-                  { value: 'custom', label: 'Custom' },
+                  { value: 'custom', label: 'Set a share' },
                 ]}
               />
               {s.quota === 'custom' && <Range value={s.quotaShare} min={0.15} max={0.5} step={0.005} show={pct(s.quotaShare)} onChange={(v) => set({ quotaShare: v })} />}
             </Field>
 
             <Field
-              label="Surplus transfers"
+              label="What happens to a winner’s extra votes"
               tag="code"
               help={
                 s.surplus === 'wigm'
-                  ? 'Weighted inclusive Gregory: every ballot behind the winner moves on at a fraction of its current value.'
+                  ? 'A winner’s extra votes move to the next choice on every ballot the winner holds. Each ballot moves at a fraction of its value. Portland uses this method.'
                   : s.surplus === 'last-parcel'
-                    ? 'Only the batch of ballots that pushed the winner over the line is examined.'
-                    : 'Votes beyond the threshold stay with the winner and are wasted.'
+                    ? 'Only the last group of ballots the winner received moves on. Earlier ballots stay with the winner.'
+                    : 'A winner keeps all their votes. Votes above the threshold help no other candidate.'
               }
             >
               <Seg
                 value={s.surplus}
                 onChange={(v) => set({ surplus: v })}
                 options={[
-                  { value: 'wigm', label: 'All ballots (WIGM)' },
-                  { value: 'last-parcel', label: 'Last parcel' },
-                  { value: 'none', label: 'None' },
+                  { value: 'wigm', label: 'All ballots move' },
+                  { value: 'last-parcel', label: 'Last group moves' },
+                  { value: 'none', label: 'None move' },
                 ]}
               />
             </Field>
             {s.surplus !== 'none' && (
               <div className="pair">
-                <Field label="Surplus order" tag="code">
+                <Field label="When several candidates win at once" tag="code">
                   <Seg
                     value={s.surplusOrder}
                     onChange={(v) => set({ surplusOrder: v })}
                     options={[
-                      { value: 'simultaneous', label: 'All at once' },
-                      { value: 'largest', label: 'Largest first' },
+                      { value: 'simultaneous', label: 'Move all extras together' },
+                      { value: 'largest', label: 'Largest extra first' },
                     ]}
                   />
                 </Field>
-                <Field label="Arithmetic" tag="code">
+                <Field label="Rounding" tag="code">
                   <Seg
                     value={s.truncate ? 't' : 'e'}
                     onChange={(v) => set({ truncate: v === 't' })}
                     options={[
-                      { value: 't', label: '4 decimals' },
-                      { value: 'e', label: 'Exact' },
+                      { value: 't', label: 'Cut at 4 decimals' },
+                      { value: 'e', label: 'No rounding' },
                     ]}
                   />
                 </Field>
@@ -101,10 +101,10 @@ export function Rules() {
               tag="charter"
               help={
                 s.elimination === 'lowest'
-                  ? 'The candidate with the fewest votes in the round.'
+                  ? 'The count removes the candidate with the fewest votes.'
                   : s.elimination === 'btr'
-                    ? 'The two lowest are compared head-to-head on the ballots still in play; the loser goes.'
-                    : 'The candidate with the lowest Borda score across the ballots still in play (STV-B).'
+                    ? 'The count compares the two lowest candidates on every ballot still counting. It removes the one fewer voters prefer.'
+                    : 'The count scores each candidate by how high voters rank them. It removes the candidate with the lowest score.'
               }
             >
               <Seg
@@ -113,71 +113,71 @@ export function Rules() {
                 options={[
                   { value: 'lowest', label: 'Fewest votes' },
                   { value: 'btr', label: 'Bottom-two runoff' },
-                  { value: 'borda', label: 'Lowest Borda' },
+                  { value: 'borda', label: 'Lowest ranking score' },
                 ]}
               />
             </Field>
 
             <Field
-              label="Value kept when a ballot moves after an elimination"
+              label="What a ballot is worth after its candidate is removed"
               tag="charter"
-              help={s.decay < 1 ? `A backup choice receives ${pct(s.decay, 0)} of the ballot; the rest is destroyed.` : 'Full value — a backup choice gets the whole remaining ballot.'}
+              help={s.decay < 1 ? `The ballot moves to its next choice at ${pct(s.decay, 0)} of its value. The rest is discarded.` : 'The ballot moves to its next choice at full value.'}
             >
               <Range value={s.decay} min={0.5} max={1} step={0.05} show={pct(s.decay, 0)} onChange={(v) => set({ decay: v })} />
             </Field>
 
             <Field
-              label="When candidates left = seats left"
+              label="When as many candidates remain as open seats"
               tag="charter"
               help={
                 s.completion === 'elect-remaining'
-                  ? 'Whoever is still standing is elected, threshold or not.'
-                  : 'Nobody wins by default: open seats go to a fresh count with every ballot at full value.'
+                  ? 'The remaining candidates win, even below the threshold.'
+                  : 'No one wins below the threshold. A separate count fills the open seats, with every ballot at full value.'
               }
             >
               <Seg
                 value={s.completion}
                 onChange={(v) => set({ completion: v })}
                 options={[
-                  { value: 'elect-remaining', label: 'Elect whoever remains' },
-                  { value: 'finisher', label: 'Fresh count' },
+                  { value: 'elect-remaining', label: 'Remaining candidates win' },
+                  { value: 'finisher', label: 'Hold a separate count' },
                 ]}
               />
             </Field>
 
             <Field
-              label="Seats held out for a districtwide count"
+              label="Seats filled by a separate districtwide count"
               tag="charter"
               help={
                 s.resetSeats === 0
-                  ? 'All seats come from the transferable-vote count.'
+                  ? 'The STV count fills every seat.'
                   : Math.min(s.resetSeats, seats) >= seats
-                    ? 'Every seat is its own full-value contest — sequential, majoritarian.'
-                    : `STV fills ${seats - Math.min(s.resetSeats, seats)}; then ballots are restored and the district fills the rest.`
+                    ? 'Each seat gets its own count, with every ballot at full value. A majority of voters can win every seat.'
+                    : `The STV count fills ${seats - Math.min(s.resetSeats, seats)} of ${seats} seats. A separate count fills the rest, with every ballot at full value.`
               }
             >
               <Range value={Math.min(s.resetSeats, seats)} min={0} max={seats} step={1} show={String(Math.min(s.resetSeats, seats))} onChange={(v) => set({ resetSeats: v })} />
             </Field>
             {(s.resetSeats > 0 || s.completion === 'finisher') && (
               <div className="pair">
-                <Field label="Fresh count uses">
+                <Field label="How the separate count picks a winner">
                   <Seg
                     value={s.finisher}
                     onChange={(v) => set({ finisher: v })}
                     options={[
-                      { value: 'condorcet', label: 'Condorcet' },
+                      { value: 'condorcet', label: 'Beats every rival' },
                       { value: 'irv', label: 'Instant runoff' },
                     ]}
                   />
                 </Field>
                 {s.resetSeats > 0 && s.resetSeats < seats && (
-                  <Field label="Threshold based on">
+                  <Field label="Seats used to set the threshold">
                     <Seg
                       value={s.quotaBasis}
                       onChange={(v) => set({ quotaBasis: v })}
                       options={[
                         { value: 'all', label: 'All seats' },
-                        { value: 'stv', label: 'STV seats' },
+                        { value: 'stv', label: 'STV seats only' },
                       ]}
                     />
                   </Field>
@@ -189,19 +189,19 @@ export function Rules() {
 
         {s.method === 'meek' && (
           <Field
-            label="Keep-value rule"
+            label="How winners share ballots"
             help={
               s.meekVariant === 'meek'
-                ? 'Each winner keeps a fixed proportion of every ballot that reaches them and passes the rest on. The quota falls as ballots run out.'
-                : 'Each winner takes the same absolute portion from every supporting ballot, as far as the ballot’s remaining value allows.'
+                ? 'Each winner keeps the same share of every ballot that reaches them. The rest moves to the voter’s next choice. The threshold falls as ballots run out of choices.'
+                : 'Each winner takes the same amount from every ballot that reaches them, up to what the ballot has left.'
             }
           >
             <Seg
               value={s.meekVariant}
               onChange={(v) => set({ meekVariant: v })}
               options={[
-                { value: 'meek', label: 'Meek (multiplicative)' },
-                { value: 'warren', label: 'Warren (additive)' },
+                { value: 'meek', label: 'Meek: same share' },
+                { value: 'warren', label: 'Warren: same amount' },
               ]}
             />
           </Field>
@@ -209,19 +209,19 @@ export function Rules() {
 
         {s.method === 'mcpc' && (
           <>
-            <Field label="A voter consents to their top…" help="Support overlaps: one voter can stand behind every winner.">
-              <Range value={s.consentDepth} min={1} max={6} step={1} show={`${s.consentDepth} ranked`} onChange={(v) => set({ consentDepth: v })} />
+            <Field label="How many top choices count as support" help="A voter supports every candidate in their top choices, so one voter can support all the winners.">
+              <Range value={s.consentDepth} min={1} max={6} step={1} show={`top ${s.consentDepth}`} onChange={(v) => set({ consentDepth: v })} />
             </Field>
             <Field
-              label="Mandate every winner must hold (μ)"
-              help="Share of all voters consenting to the candidate. Among committees that clear the bar, the one with the best proportional-representation score wins. If none can, the bar drops to the highest the field can meet — and says so."
+              label="Support every winner needs"
+              help="Set the share of all voters who must support each winner. The tool picks the group of winners that represents the most voters. If no group meets the share, the tool lowers it to the highest share these candidates can meet, and tells you."
             >
               <Range value={s.mandate} min={0} max={0.6} step={0.01} show={pct(s.mandate, 0)} onChange={(v) => set({ mandate: v })} />
             </Field>
           </>
         )}
 
-        {s.method === 'sntv' && <div className="field__help">A floor to compare against: the top first-choice vote-getters win and rankings do nothing.</div>}
+        {s.method === 'sntv' && <div className="field__help">The candidates with the most first choices win. The count ignores later choices. Use this method as a comparison.</div>}
       </div>
     </div>
   )

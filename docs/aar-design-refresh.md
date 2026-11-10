@@ -40,12 +40,31 @@ mono uppercase labels, an ink top bar with a lead rule.
   1,300 lines of component CSS follow the scheme without being rewritten.
 - `src/ui/system.css` — new, loaded after `app.css`. Structure only: frames, labels, buttons,
   segmented controls, switches, inputs, the top bar.
-- Fonts are unchanged (General Sans, Azeret Mono, Outfit), mapped into the system's type slots.
+- Fonts at this point were unchanged (General Sans, Azeret Mono, Outfit), mapped into the system's
+  type slots. The monospace face was removed later; see section 3.
 
 **Pigments.** Cap Buffet's own five, which were already named in the old theme file but mostly
 unused: Tangerine `#ff6b35`, Peach `#f7c59f`, Beige `#efefd0`, Steel `#004e89`, Baltic
 `#1a659e`. Light scheme is Beige paper with Steel ink; dark is Steel night with Beige ink. The
 old cyan brand colour `#00b7e0` is no longer used.
+
+### 3. Later the same day
+Ron reviewed the refresh against three rule sets (`no-slop-ui`, `red-pen-editor`,
+`plain-language-default`) and gave direct instructions. Changes to Cap Buffet:
+
+- **No eyebrow text or captions.** The tagline beside the wordmark, the small "system" label, and
+  every caption in a card header are gone.
+- **No monospace type.** Figures and labels use General Sans with tabular numerals. Azeret Mono
+  and JetBrains Mono are no longer loaded.
+- **Headings are questions or statements**, in sentence case, following the federal plain-language
+  guidance on headings: "How does each team fare?", "Which cap system?", "What is Cap Buffet?".
+  Uppercase is kept for table column heads and rule-category labels only.
+- **Nothing moves on hover**, and the app honours the reduced-motion setting.
+- **Descriptions and help text** were rewritten in plain language in a separate pass.
+- **The Import dialog** names what it loads and says a shared link needs no import.
+
+Not changed: the metric tiles on the Cap System tab. They are the kind of KPI grid the no-slop
+checklist flags, and they predate this work.
 
 ---
 

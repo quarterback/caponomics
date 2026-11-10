@@ -4,7 +4,7 @@ import { deserializeModel } from '../../engine/expansion/serialize'
 import type { ExpansionModel } from '../../engine/expansion/types'
 import { DEFAULT_EXPANSION_PRESET_ID, EXPANSION_PRESET_MAP } from '../../presets/expansion'
 
-export type AppTab = 'cap' | 'expansion'
+export type AppTab = 'cap' | 'expansion' | 'cup'
 
 interface ExpansionState {
   /** Which product surface is showing. Lives here so Toolbar + AppShell share it. */

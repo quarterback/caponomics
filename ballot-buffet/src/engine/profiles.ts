@@ -122,7 +122,7 @@ export function generateProfile(g: GenParams, meta?: Partial<Profile>): Profile 
   return {
     id: 'generated',
     name: 'Generated district',
-    blurb: `${g.voters.toLocaleString()} voters · ${g.candidates} candidates · cohesion ${Math.round(g.cohesion * 100)}%`,
+    blurb: `${g.voters.toLocaleString()} voters and ${g.candidates} candidates.`,
     seats: 3,
     candidates: cands.map(({ id, name, camp }) => ({ id, name, camp })),
     ballots,
@@ -137,16 +137,16 @@ export const PROFILES: Profile[] = [
   generateProfile(DEFAULT_GEN, {
     id: 'free-radicals',
     name: 'Free radicals',
-    blurb: '18 candidates in three camps; voters rarely stick to a slate',
+    blurb: '18 candidates in three camps. Voters rarely follow a slate.',
   }),
   generateProfile(
     { ...DEFAULT_GEN, cohesion: 0.9, bullet: 0.05 },
-    { id: 'slates', name: 'Disciplined slates', blurb: 'The same district, but voters rank candidates from their own camp' },
+    { id: 'slates', name: 'Disciplined slates', blurb: 'The same district. Voters rank their own camp first.' },
   ),
   fromText(
     'rank-decay',
     'Seven small candidates, one backup',
-    'Seven small candidates’ voters all rank D second. D leads C 26–22 for the last seat',
+    'Voters for seven small candidates all rank D second. D leads C 26 to 22 for the last seat.',
     3,
     `26: A
 26: B
@@ -163,7 +163,7 @@ export const PROFILES: Profile[] = [
   fromText(
     'sixty-forty',
     '60 / 40 blocs',
-    '60 voters rank one slate, 40 rank another',
+    '60 voters rank one slate. 40 rank another.',
     3,
     `A [Majority]
 B [Majority]
@@ -178,7 +178,7 @@ F [Minority]
   fromText(
     'truncated-majority',
     'Majority that won’t rank',
-    '56% back five like-minded candidates but barely rank past their favourite; 44% run two and cross-rank',
+    '56% of voters back five similar candidates but rank only one or two. 44% back two candidates and rank both.',
     3,
     `P1 [Majority]
 P2 [Majority]
@@ -199,7 +199,7 @@ M2 [Minority]
   fromText(
     'center-squeeze',
     'Center squeeze',
-    'One seat. C beats everyone head-to-head but has the fewest first choices',
+    'One seat. Most voters prefer C to each rival, but C has the fewest first choices.',
     1,
     `35: L > C > R
 40: R > C > L

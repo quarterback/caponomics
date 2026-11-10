@@ -772,3 +772,9 @@
     grid-row: 2;
   }
 }
+
+.fit h4 {
+  margin: 0 0 var(--s2);
+  font-size: 14px;
+  font-weight: 600;
+}

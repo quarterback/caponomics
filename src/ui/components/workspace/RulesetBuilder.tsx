@@ -10,7 +10,7 @@ export function RulesetBuilder() {
   return (
     <div className="card">
       <div className="card__head">
-        <span className="card__title">Ruleset</span>
+        <span className="card__title">What rules does this system have?</span>
       </div>
       <div className="card__body">
         {ruleset.modules.length === 0 ? (

@@ -1293,3 +1293,26 @@
   margin-left: 4px;
   vertical-align: middle;
 }
+
+/* Cup tab: plain rows for the arithmetic */
+.statrows {
+  margin: 0;
+  border-top: 2px solid var(--border-strong);
+}
+.statrow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--s4);
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.statrow dt {
+  font-weight: 600;
+}
+.statrow dd {
+  margin: 0;
+  font-size: 15px;
+  text-align: right;
+}

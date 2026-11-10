@@ -19,8 +19,8 @@
 
 :root {
   /* Type slots */
-  --display: 'Outfit', 'General Sans', system-ui, sans-serif;
-  --text-face: 'General Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --display: 'GC North Sans', system-ui, sans-serif;
+  --text-face: 'GC North Sans', system-ui, -apple-system, sans-serif;
   /* No monospace face: figures use the text face with tabular numerals. */
   --mono: var(--text-face);
   --ui: var(--mono);

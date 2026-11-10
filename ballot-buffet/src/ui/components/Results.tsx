@@ -8,10 +8,10 @@ import { num, pct } from './bits'
 
 const HOW: Record<Winner['how'], string> = {
   quota: 'reached threshold',
-  remaining: 'last standing',
-  finisher: 'fresh count',
-  committee: 'committee',
-  plurality: 'first choices',
+  remaining: 'won below threshold',
+  finisher: 'separate count',
+  committee: 'most-supported group',
+  plurality: 'most first choices',
 }
 
 export function Results() {
@@ -28,7 +28,7 @@ export function Results() {
     <section className="col">
       <div className="card">
         <div className="card__head">
-          <span className="card__title">Winners</span>
+          <span className="card__title">Who wins?</span>
         </div>
         <div className="card__body stack">
           <ol className="winlist">
@@ -64,7 +64,7 @@ export function Results() {
             <Readout
               label="Votes that ran out"
               value={pct(metrics.inactive)}
-              note={result.lost / result.total > 0.002 ? `includes ${num(result.lost)} votes discarded by rule` : 'no rankings left to count'}
+              note={result.lost / result.total > 0.002 ? `includes ${num(result.lost)} votes discarded by rule` : 'ballots with no choices left'}
               tone={metrics.inactive > 0.2 ? 'warn' : undefined}
             />
             <Readout
@@ -97,7 +97,7 @@ export function Results() {
                     <div className="bar" style={{ width: `${(c.seats / seats) * 100}%` }} data-kind="seats" />
                   </div>
                   <span className="camp-row__val">
-                    {pct(c.voteShare, 0)} of first choices → {c.seats} of {seats} seats
+                    {pct(c.voteShare, 0)} of first choices, {c.seats} of {seats} seats
                   </span>
                 </div>
               ))}
@@ -111,6 +111,7 @@ export function Results() {
           ))}
 
           <div className="fit" data-level={fit.level}>
+            <h4>Does Portland law allow this count?</h4>
             <strong>{fit.label}</strong>
             <ul>
               {fit.reasons.map((r) => (
@@ -165,7 +166,7 @@ function Compare({
   return (
     <div className="card">
       <div className="card__head">
-        <span className="card__title">All systems on these ballots</span>
+        <span className="card__title">Who wins under each system?</span>
       </div>
       <div className="btable-wrap flush">
         <table className="btable cmp">
@@ -173,10 +174,10 @@ function Compare({
             <tr>
               <th data-align="l">System</th>
               <th data-align="l">Winners</th>
-              <th>Weakest winner</th>
+              <th>Least-supported winner</th>
               <th>Ranked a winner</th>
               <th>Ran out</th>
-              <th data-align="l">Change needs</th>
+              <th data-align="l">Law change needed</th>
             </tr>
           </thead>
           <tbody>
@@ -235,7 +236,7 @@ function RoundTable({ profile, result }: { profile: Profile; result: CountResult
   return (
     <div className="card">
       <div className="card__head">
-        <span className="card__title">Rounds</span>
+        <span className="card__title">How did the count go, round by round?</span>
       </div>
       <div className="btable-wrap flush">
         <table className="btable rounds">
@@ -319,7 +320,7 @@ function SupportTable({
   return (
     <div className="card">
       <div className="card__head">
-        <span className="card__title">Share of voters ranking each candidate</span>
+        <span className="card__title">How many voters ranked each candidate?</span>
       </div>
       <div className="btable-wrap flush">
         <table className="btable">

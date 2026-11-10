@@ -6,7 +6,7 @@ export function Field({ label, help, tag, children }: { label: string; help?: st
       <label>
         {label}
         {tag && (
-          <span className="law-tag" data-tag={tag} title={tag === 'charter' ? 'Fixed by Portland Charter §3-102 — changing it takes a public vote' : 'Set in City Code 2.08.030 — Council can change it by ordinance'}>
+          <span className="law-tag" data-tag={tag} title={tag === 'charter' ? 'The Portland charter sets this rule. Changing it takes a public vote.' : 'City Code 2.08.030 sets this rule. The Council can change it by ordinance.'}>
             {tag}
           </span>
         )}

@@ -13,7 +13,7 @@ export function ExpansionRail() {
   return (
     <div className="col" style={{ paddingRight: 2 }}>
       <div className="rail__group">
-        <div className="rail__label">Draft models</div>
+        <div className="rail__label">Which draft model?</div>
         <div className="rail__items">
           {EXPANSION_PRESETS.map((p) => (
             <button
@@ -50,7 +50,7 @@ export function ExpansionRail() {
       </div>
 
       <div className="rail__group">
-        <div className="rail__label">League context</div>
+        <div className="rail__label">Which league do the new teams join?</div>
         <div className="field__help" style={{ padding: '0 2px 6px' }}>
           Sets the existing-team count the summary's quick math uses. Shared with the Cap System tab.
         </div>

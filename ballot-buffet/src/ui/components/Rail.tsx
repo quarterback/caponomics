@@ -8,7 +8,7 @@ export function Rail() {
     <aside className="col">
       <div className="card">
         <div className="card__head">
-          <span className="card__title">Counting systems</span>
+          <span className="card__title">Which counting system?</span>
         </div>
         <div className="card__body">
           {SYSTEM_GROUPS.map((g) => (
@@ -26,7 +26,7 @@ export function Rail() {
       </div>
       <div className="card">
         <div className="card__head">
-          <span className="card__title">Ballot sets</span>
+          <span className="card__title">Which ballots?</span>
         </div>
         <div className="card__body">
           {PROFILES.map((p) => (
