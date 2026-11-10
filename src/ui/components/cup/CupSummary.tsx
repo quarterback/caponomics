@@ -74,7 +74,7 @@ export function CupSummary() {
       <div className="col">
         <div className="card">
           <div className="card__head">
-            <span className="card__title">How do the two cups differ?</span>
+            <span className="card__title">Comparison</span>
             <span style={{ marginLeft: 'auto', display: 'flex', gap: 8, alignItems: 'center' }}>
               {selector}
               <button className="btn--icon" aria-label="Close comparison" onClick={() => setCompareId(null)}>
@@ -108,7 +108,7 @@ export function CupSummary() {
     <div className="col">
       <div className="card">
         <div className="card__head">
-          <span className="card__title">How big is this cup?</span>
+          <span className="card__title">Components</span>
         </div>
         <div className="card__body">
           <Numbers model={model} teams={teams} />
@@ -116,7 +116,7 @@ export function CupSummary() {
       </div>
       <div className="card">
         <div className="card__head">
-          <span className="card__title">What do the rules say?</span>
+          <span className="card__title">Rulebook</span>
           <span style={{ marginLeft: 'auto' }}>{selector}</span>
         </div>
         <div className="card__body">

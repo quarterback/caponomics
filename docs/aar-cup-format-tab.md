@@ -61,11 +61,30 @@ The cap side of a cup is covered by two rules: prize money can be set to count a
 cap, and the champion's reward can be extra cap room or a luxury tax reduction. These are written
 into the rulebook only. They do not feed the Cap System tab's compliance check.
 
+### Soccer and competitions between leagues
+Ron: *"I guess we ought to let MLS/NWSL be an option in this too? I'd be curious about some kind
+of CONCACAF style Champions/Europa/Conference League imagineering where you can improve what they
+do now?"* The engine gained what those formats need:
+
+- **Teams entered** can be a set number of clubs from several leagues, with a line for how they
+  qualify.
+- **League phase**: a set number of matches and a table, with no groups. One table, or one per
+  league.
+- **Standings** can award 3 points for a win and 1 for a draw, or use shootouts with no draws.
+- **Knockout rounds** can be two legs, can give some teams a bye, and can add a third-place match.
+- **Lower competitions**: second and third competitions, with clubs dropping down and winners
+  moving up.
+- **Reward** can be places in a higher competition.
+
+New presets: the **Leagues Cup** and the **Concacaf Champions Cup** as played in 2026, an invented
+**MLS in-season cup**, an invented **NWSL in-season cup**, and an invented **Concacaf in three
+tiers** (a 24-club league phase with two lower competitions).
+
 ---
 
 ## Validation
 
-- 9 new engine tests; the full suite is 73 tests and passes. Typecheck and build are clean.
+- 12 engine tests for the tab; the full suite passes. Typecheck and build are clean.
 - NBA Cup on 30 teams gives 6 groups of 5, 4 group games, 8 teams advancing, 3 knockout rounds and
   1 added game, which matches the published format.
 - Checked in a headless browser at 1500px and 390px: all three presets, the comparison view, no
@@ -81,7 +100,12 @@ into the rulebook only. They do not feed the Cap System tab's compliance check.
   $106,187 for losing a semifinal, $530,933 for the champion. The 2026 amounts had not been
   published. No runner-up figure was confirmed, so the preset leaves it at zero and the rulebook
   omits it.
-- The MLB and NHL cups are invented. Their prize amounts are placeholders.
+- The MLB, NHL, MLS and NWSL cups and the three-tier Concacaf model are invented. Their prize
+  amounts are placeholders.
+- The Leagues Cup format (36 clubs, three matches against the other league, a table for each
+  league, top four advance, shootouts in place of draws) and the Champions Cup format (27 clubs,
+  five byes, two legs until a one-match final) were checked against 2026 coverage from MLS,
+  Concacaf and club sites.
 
 ---
 
@@ -93,3 +117,7 @@ into the rulebook only. They do not feed the Cap System tab's compliance check.
   of 3 or 4, and the tool reports that without objecting.
 - Cup prize and reward rules are not connected to the cap compliance engine.
 - No NFL preset, as requested.
+- Lower competitions are described in the rulebook only. The arithmetic covers the top competition.
+- The Leagues Cup and Champions Cup presets leave out tiebreakers and venue rules that were not
+  confirmed. Knockout venues are shown as chosen by the organiser.
+- The NWSL league in the tool has 14 clubs, so the invented NWSL cup shows groups of 3 or 4.

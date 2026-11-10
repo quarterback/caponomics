@@ -12,7 +12,7 @@ export function CupRail() {
   return (
     <div className="col" style={{ paddingRight: 2 }}>
       <div className="rail__group">
-        <div className="rail__label">Which cup format?</div>
+        <div className="rail__label">Cup Format</div>
         <div className="rail__items">
           {CUP_PRESETS.map((p) => (
             <button key={p.id} className="preset-btn" data-active={model.id === p.id && !forked} onClick={() => {
@@ -49,7 +49,7 @@ export function CupRail() {
       </div>
 
       <div className="rail__group">
-        <div className="rail__label">Which league plays the cup?</div>
+        <div className="rail__label">League</div>
         <div className="field__help" style={{ padding: '0 2px 6px' }}>
           The tool uses this league’s number of teams. The Cap System tab uses the same league.
         </div>

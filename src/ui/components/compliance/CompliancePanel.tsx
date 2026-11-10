@@ -13,7 +13,7 @@ export function CompliancePanel() {
     <div className="col">
       <div className="card">
         <div className="card__head">
-          <span className="card__title">Is this team legal?</span>
+          <span className="card__title">Compliance</span>
         </div>
         <div className="card__body" style={{ display: 'grid', gap: 'var(--s4)' }}>
           <TeamPicker />
@@ -31,7 +31,7 @@ export function CompliancePanel() {
       {teamReport && (
         <div className="card">
           <div className="card__head">
-            <span className="card__title">What counts against the {teamReport.teamName} cap?</span>
+            <span className="card__title">{teamReport.teamName} Cap Sheet</span>
           </div>
           <div className="card__body">
             <CapSheet report={teamReport} league={league} />

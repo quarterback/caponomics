@@ -63,6 +63,57 @@ Ron reviewed the refresh against three rule sets (`no-slop-ui`, `red-pen-editor`
 - **Descriptions and help text** were rewritten in plain language in a separate pass.
 - **The Import dialog** names what it loads and says a shared link needs no import.
 
+### 4. Amended: headings and labels got too long, and how that was fixed
+
+**What went wrong.** Two passes in a row made short interface text longer.
+
+1. *Headings.* Ron said the headings did not follow plainlanguage.gov. The agent read that
+   guidance, which prefers question headings, and rewrote every card title as a question:
+   "What rules does this system have?", "How does each team fare?", "How big is this cup?".
+2. *Labels.* The agent then briefed a helper to rewrite Cap Buffet's descriptions in plain
+   language: name the actor, spell things out. The brief did not separate labels from prose, so
+   the helper rewrote control labels as sentences. "Mode" became "How the cap is set". "Snake"
+   became "Reverses each round". "Note / Unmodeled Mechanic" became "Note on a Rule Not Modeled".
+
+Ron's response to the labels: *"why are the renamed rules and options so verbose?"*
+
+**How it was fixed.**
+
+- The agent shortened about 55 labels back to names of one to four words: "Method", "Based on",
+  "Alternating / Snake / Fixed", "Note". Ron: *"your labels were a big improvement and in the
+  same style as what i offered."*
+- Ron then fixed the headings himself by supplying the mapping, and the agent applied it and
+  carried the same style to the headings he did not list:
+
+| Question heading | Ron's heading |
+| --- | --- |
+| What rules does this system / draft / cup have? | Rules |
+| How does each team fare? | Results |
+| Which cap system? | Cap Systems |
+| What does this draft add up to? | Final Draft Options |
+| Which draft model? | Draft Models |
+| How big is this cup? | Components |
+| Which cup format? | Cup Format |
+
+**The lesson for future agents.** Plain language does not mean more words. This is a common
+misreading, so check for it before shipping copy:
+
+- **A heading or label in an app names a thing. It does not explain it.** One to three words,
+  a noun or noun phrase: "Rules", "Results", "Draft Models". The reader is scanning a screen they
+  will see many times.
+- **The plainlanguage.gov advice on question headings is for documents**, where a reader arrives
+  with a question and reads once. It does not transfer to card titles, tabs, field labels or
+  option names.
+- **Explanation goes in help text and descriptions**, and those should still be short. If a label
+  seems to need a sentence, write a short label and put the sentence in the help line.
+- **Removing jargon and removing words are separate edits.** Replace "N", slashes and symbols
+  with plain words, but do not expand a clear two-word label to do it.
+- **When you brief a helper on copy, name each kind of string and give it a length**: labels and
+  headings at most three or four words, option names at most three, blurbs one sentence, help one
+  or two sentences. Give two before-and-after examples of a label that should stay short.
+- **Read the result in the interface, not in the diff.** A label that looks fine in a list of
+  strings can be plainly too long on a segmented control.
+
 Not changed: the metric tiles on the Cap System tab. They are the kind of KPI grid the no-slop
 checklist flags, and they predate this work.
 

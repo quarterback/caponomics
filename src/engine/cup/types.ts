@@ -12,7 +12,7 @@ import type { Currency } from '../format'
 import type { ParamField } from '../module'
 import type { ModuleInstance } from '../types'
 
-export type CupCategory = 'field' | 'groups' | 'advance' | 'knockout' | 'schedule' | 'prize' | 'special'
+export type CupCategory = 'field' | 'groups' | 'advance' | 'knockout' | 'tiers' | 'schedule' | 'prize' | 'special'
 
 export interface CupModel {
   schemaVersion: number

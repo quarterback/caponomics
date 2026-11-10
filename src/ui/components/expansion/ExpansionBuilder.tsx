@@ -10,7 +10,7 @@ export function ExpansionBuilder() {
   return (
     <div className="card">
       <div className="card__head">
-        <span className="card__title">What rules does this draft have?</span>
+        <span className="card__title">Rules</span>
       </div>
       <div className="card__body">
         <div className="field" style={{ marginBottom: 'var(--s3)' }}>

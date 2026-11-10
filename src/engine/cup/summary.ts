@@ -7,13 +7,14 @@ import { CUP_MAP } from './catalog'
 import { entered, formatGames } from './modules'
 import type { CupCategory, CupContext, CupModel, CupSection, CupStat, CupSummary } from './types'
 
-export const CUP_CATEGORY_ORDER: CupCategory[] = ['field', 'groups', 'advance', 'knockout', 'schedule', 'prize', 'special']
+export const CUP_CATEGORY_ORDER: CupCategory[] = ['field', 'groups', 'advance', 'knockout', 'tiers', 'schedule', 'prize', 'special']
 
 export const CUP_CATEGORY_LABEL: Record<CupCategory, string> = {
   field: 'Teams',
-  groups: 'Group stage',
+  groups: 'First stage',
   advance: 'Advancing',
   knockout: 'Knockout rounds',
+  tiers: 'Lower competitions',
   schedule: 'Schedule',
   prize: 'Prizes',
   special: 'Other rules',
@@ -38,9 +39,11 @@ export function cupNumbers(model: CupModel, leagueTeams: number): CupNumbers {
   const ko = find(model, 'knockout')
   const sc = find(model, 'seasonCount')
 
-  const groups = gs ? Math.max(1, num(gs, 'groups', 6)) : null
+  const lp = find(model, 'leaguePhase')
+  // A league phase ranks teams in one table, or one per league (two leagues).
+  const groups = gs ? Math.max(1, num(gs, 'groups', 6)) : lp ? (str(lp, 'tables', 'one') === 'perLeague' ? 2 : 1) : null
   const size = groups ? Math.ceil(field / groups) : null
-  const groupGames = gs && size ? (size - 1) * num(gs, 'meetings', 1) * num(gs, 'seriesLength', 1) : null
+  const groupGames = gs && size ? (size - 1) * num(gs, 'meetings', 1) * num(gs, 'seriesLength', 1) : lp ? num(lp, 'matches', 6) : null
   const advancing = adv && groups ? Math.min(field, groups * num(adv, 'perGroup', 1) + num(adv, 'wildCards', 0)) : ko ? field : null
   const rounds = ko && advancing && advancing > 1 ? Math.ceil(Math.log2(advancing)) : null
 
@@ -60,14 +63,18 @@ export function cupNumbers(model: CupModel, leagueTeams: number): CupNumbers {
 function statList(model: CupModel, leagueTeams: number, ctx: CupContext): CupStat[] {
   const n = cupNumbers(model, leagueTeams)
   const stats: CupStat[] = [{ label: 'Teams in the cup', value: String(n.field) }]
-  if (n.groups !== null) {
+  const hasGroups = !!find(model, 'groupStage')
+  if (n.groups !== null && !hasGroups) stats.push({ label: 'Tables', value: String(n.groups) })
+  if (n.groups !== null && hasGroups) {
     const lo = Math.floor(n.field / n.groups)
     stats.push({ label: 'Groups', value: `${n.groups} of ${n.field % n.groups === 0 ? lo : `${lo} or ${lo + 1}`}` })
   }
-  if (n.groupGames !== null) stats.push({ label: 'Group games for each team', value: String(n.groupGames) })
+  if (n.groupGames !== null) stats.push({ label: 'First-stage games for each team', value: String(n.groupGames) })
   if (n.advancing !== null)
     stats.push({ label: 'Teams that advance', value: `${n.advancing} (${Math.round((n.advancing / n.field) * 100)}%)` })
   if (n.rounds !== null) stats.push({ label: 'Knockout rounds', value: String(n.rounds) })
+  const tr = find(model, 'tiers')
+  if (tr) stats.push({ label: 'Competitions', value: String(1 + num(tr, 'count', 2)) })
   if (n.addedGames !== null) stats.push({ label: 'Most games added to one team’s season', value: String(n.addedGames) })
   const prize = find(model, 'prizeMoney')
   if (prize && num(prize, 'champion', 0) > 0)

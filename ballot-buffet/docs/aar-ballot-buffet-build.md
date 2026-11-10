@@ -118,6 +118,11 @@ Copy:
   became "Other STV counts"; "Machine" became "Counting method".
 - The About text lost its slogan-style headings.
 
+Later amended: for a short time every heading here was a question ("Who wins?", "How are the
+ballots counted?"). Ron replaced question headings with short names in Cap Buffet, and the same
+style now applies here: "Results", "Rules", "Rounds", "Counting Systems". The reasoning and the
+lesson for future agents are in `../docs/aar-design-refresh.md`, section 4.
+
 Kept on purpose, where the checklist and the design system disagree: square corners and hard
 offset shadows are the Chromatic Editorial System's own rules. Not done: Cap Buffet's metric
 tiles, About text and module descriptions predate this work and were not rewritten.

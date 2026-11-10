@@ -5,10 +5,12 @@ import type { CupModuleDef } from './types'
 export const CUP_CATALOG: CupModuleDef[] = [
   C.cupField,
   C.groupStage,
+  C.leaguePhase,
   C.standings,
   C.tiebreakers,
   C.advancement,
   C.knockout,
+  C.tiers,
   C.seasonCount,
   C.prizeMoney,
   C.winnerReward,

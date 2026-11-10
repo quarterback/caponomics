@@ -6,7 +6,7 @@ export function Rules() {
   return (
     <div className="card">
       <div className="card__head">
-        <span className="card__title">How are the ballots counted?</span>
+        <span className="card__title">Rules</span>
       </div>
       <div className="card__body form">
         <Field label="Counting method">

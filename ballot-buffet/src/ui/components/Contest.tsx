@@ -18,7 +18,7 @@ export function Contest() {
   return (
     <div className="card">
       <div className="card__head">
-        <span className="card__title">How many seats, and who votes?</span>
+        <span className="card__title">Contest</span>
       </div>
       <div className="card__body form">
         <Field label="Seats to fill" help="Portland districts elect three. Set one seat to count a single-member district.">

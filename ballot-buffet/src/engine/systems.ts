@@ -35,11 +35,11 @@ export interface SystemGroup {
 
 export const SYSTEM_GROUPS: SystemGroup[] = [
   {
-    label: 'Portland’s current count',
+    label: 'Current Law',
     systems: [BASE],
   },
   {
-    label: 'Other ways to count STV',
+    label: 'Other STV Counts',
     systems: [
       sys({ id: 'meek', name: 'Meek STV', blurb: 'Winners keep the same share of every ballot. The threshold falls as ballots run out.', method: 'meek' }),
       sys({ id: 'warren', name: 'Warren STV', blurb: 'Winners take the same amount from every ballot.', method: 'meek', meekVariant: 'warren' }),
@@ -54,7 +54,7 @@ export const SYSTEM_GROUPS: SystemGroup[] = [
     ],
   },
   {
-    label: 'Changes that favor a majority',
+    label: 'Majority Variants',
     systems: [
       sys({ id: 'btr-wigm', name: 'BTR-WIGM', blurb: 'Compares the two lowest candidates before it removes one.', elimination: 'btr' }),
       sys({ id: 'stv-b', name: 'STV-B (Borda elimination)', blurb: 'Removes the candidate voters rank lowest overall.', elimination: 'borda' }),
@@ -75,7 +75,7 @@ export const SYSTEM_GROUPS: SystemGroup[] = [
     ],
   },
   {
-    label: 'Methods that are not STV',
+    label: 'Other Methods',
     systems: [
       sys({
         id: 'mcpc',

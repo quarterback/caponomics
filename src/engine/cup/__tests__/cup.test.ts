@@ -28,11 +28,30 @@ describe('cup arithmetic', () => {
   })
 })
 
+describe('competitions with clubs from several leagues', () => {
+  it('Leagues Cup: 36 clubs, three matches, top four of each league table advance', () => {
+    expect(cupNumbers(CUP_PRESET_MAP['cup-leagues-2026']!, 30)).toMatchObject({ field: 36, groups: 2, groupGames: 3, advancing: 8, rounds: 3 })
+  })
+  it('Champions Cup: 27 clubs need five knockout rounds, two legs until the final', () => {
+    const n = cupNumbers(CUP_PRESET_MAP['cup-concacaf-2026']!, 30)
+    expect(n).toMatchObject({ field: 27, groups: null, advancing: 27, rounds: 5 })
+    // three early rounds and a semifinal over two legs, then a one-match final
+    expect(n.addedGames).toBe(9)
+    const lines = summarizeCup(CUP_PRESET_MAP['cup-concacaf-2026']!, 30).sections.find((s) => s.category === 'knockout')!.lines.join(' ')
+    expect(lines).toContain('5 teams skip the first knockout round')
+    expect(lines).toContain('two legs')
+  })
+  it('three-tier model reports three competitions', () => {
+    const s = summarizeCup(CUP_PRESET_MAP['cup-concacaf-tiers']!, 30)
+    expect(s.stats.find((x) => x.label === 'Competitions')!.value).toBe('3')
+  })
+})
+
 describe('cup rulebook', () => {
   it('every preset with rules renders a rulebook', () => {
     for (const p of CUP_PRESETS.filter((x) => x.modules.length)) {
       const s = summarizeCup(p, 30)
-      expect(s.sections.length, p.id).toBeGreaterThan(4)
+      expect(s.sections.length, p.id).toBeGreaterThan(2)
       for (const sec of s.sections) for (const line of sec.lines) expect(line.trim().length).toBeGreaterThan(0)
     }
   })

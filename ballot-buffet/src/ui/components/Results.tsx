@@ -28,7 +28,7 @@ export function Results() {
     <section className="col">
       <div className="card">
         <div className="card__head">
-          <span className="card__title">Who wins?</span>
+          <span className="card__title">Results</span>
         </div>
         <div className="card__body stack">
           <ol className="winlist">
@@ -111,7 +111,7 @@ export function Results() {
           ))}
 
           <div className="fit" data-level={fit.level}>
-            <h4>Does Portland law allow this count?</h4>
+            <h4>Portland Law</h4>
             <strong>{fit.label}</strong>
             <ul>
               {fit.reasons.map((r) => (
@@ -166,7 +166,7 @@ function Compare({
   return (
     <div className="card">
       <div className="card__head">
-        <span className="card__title">Who wins under each system?</span>
+        <span className="card__title">All Systems</span>
       </div>
       <div className="btable-wrap flush">
         <table className="btable cmp">
@@ -236,7 +236,7 @@ function RoundTable({ profile, result }: { profile: Profile; result: CountResult
   return (
     <div className="card">
       <div className="card__head">
-        <span className="card__title">How did the count go, round by round?</span>
+        <span className="card__title">Rounds</span>
       </div>
       <div className="btable-wrap flush">
         <table className="btable rounds">
@@ -320,7 +320,7 @@ function SupportTable({
   return (
     <div className="card">
       <div className="card__head">
-        <span className="card__title">How many voters ranked each candidate?</span>
+        <span className="card__title">Support</span>
       </div>
       <div className="btable-wrap flush">
         <table className="btable">

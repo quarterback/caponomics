@@ -181,6 +181,7 @@
   --cat-groups: var(--accent);
   --cat-advance: var(--success);
   --cat-knockout: var(--lead);
+  --cat-tiers: var(--ink-soft);
   --cat-schedule: var(--baltic);
   --cat-prize: var(--warning);
 }

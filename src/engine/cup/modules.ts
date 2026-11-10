@@ -22,10 +22,19 @@ export const cupField: CupModuleDef = {
       options: [
         { value: 'all', label: 'Every team' },
         { value: 'top', label: 'A set number of teams' },
+        { value: 'open', label: 'Clubs from several leagues' },
       ],
       default: 'all',
     },
-    { key: 'count', label: 'Teams entered', type: 'number', default: 16, min: 2, help: 'Used when a set number of teams enter.' },
+    { key: 'count', label: 'Teams entered', type: 'number', default: 16, min: 2, help: 'Used unless every team enters.' },
+    {
+      key: 'qualify',
+      label: 'How clubs qualify',
+      type: 'text',
+      default: '',
+      placeholder: 'League champions and cup winners from each country',
+      help: 'Used when clubs come from several leagues.',
+    },
     {
       key: 'basis',
       label: 'How those teams qualify',
@@ -37,9 +46,15 @@ export const cupField: CupModuleDef = {
       default: 'lastSeason',
     },
   ],
-  defaultParams: { mode: 'all', count: 16, basis: 'lastSeason' },
+  defaultParams: { mode: 'all', count: 16, basis: 'lastSeason', qualify: '' },
   describe(p, ctx) {
     if (str(p, 'mode', 'all') === 'all') return [`All ${ctx.teams} teams enter the cup.`]
+    if (str(p, 'mode', 'all') === 'open') {
+      const q = str(p, 'qualify', '')
+      const lines = [`${num(p, 'count', 16)} clubs from several leagues enter the cup.`]
+      if (q) lines.push(`They qualify as follows: ${q}${/[.!?]$/.test(q) ? '' : '.'}`)
+      return lines
+    }
     const n = Math.min(num(p, 'count', 16), ctx.teams)
     return [
       str(p, 'basis', 'lastSeason') === 'lastSeason'
@@ -86,7 +101,7 @@ export const groupStage: CupModuleDef = {
   defaultParams: { groups: 6, bound: 'conference', draw: 'pots', meetings: 1, seriesLength: 1 },
   describe(p, ctx) {
     const g = Math.max(1, num(p, 'groups', 6))
-    const field = entered(ctx.teams, null)
+    const field = ctx.teams
     const lo = Math.floor(field / g)
     const size = field % g === 0 ? `${lo}` : `${lo} or ${lo + 1}`
     const bound = str(p, 'bound', 'conference')
@@ -113,6 +128,46 @@ export const groupStage: CupModuleDef = {
   },
 }
 
+export const leaguePhase: CupModuleDef = {
+  kind: 'leaguePhase',
+  label: 'League phase',
+  category: 'groups',
+  blurb: 'Teams play a set number of matches and are ranked in a table, with no groups.',
+  paramSchema: [
+    { key: 'matches', label: 'Matches for each team', type: 'number', default: 6, min: 1 },
+    {
+      key: 'opponents',
+      label: 'Opponents',
+      type: 'enum',
+      options: [
+        { value: 'drawn', label: 'Drawn from seeded pots' },
+        { value: 'otherLeague', label: 'Clubs from the other league only' },
+      ],
+      default: 'drawn',
+    },
+    {
+      key: 'tables',
+      label: 'Tables',
+      type: 'enum',
+      options: [
+        { value: 'one', label: 'One table for all teams' },
+        { value: 'perLeague', label: 'One table for each league' },
+      ],
+      default: 'one',
+    },
+  ],
+  defaultParams: { matches: 6, opponents: 'drawn', tables: 'one' },
+  describe(p) {
+    const n = num(p, 'matches', 6)
+    return [
+      str(p, 'opponents', 'drawn') === 'otherLeague'
+        ? `Each club plays ${plural(n, 'match', 'matches')}, all against clubs from the other league.`
+        : `Each team plays ${plural(n, 'match', 'matches')} against different opponents. The draw takes one or more opponents from each seeded pot.`,
+      str(p, 'tables', 'one') === 'perLeague' ? 'Each league has its own table.' : 'All teams are ranked in one table.',
+    ]
+  },
+}
+
 export const standings: CupModuleDef = {
   kind: 'standings',
   label: 'Group standings',
@@ -126,6 +181,8 @@ export const standings: CupModuleDef = {
       options: [
         { value: 'wins', label: 'Games won' },
         { value: 'series', label: 'Series won' },
+        { value: 'points310', label: 'Points: 3 for a win, 1 for a draw' },
+        { value: 'points3shootout', label: 'Points: 3 for a win, 2 for a shootout win, 1 for a shootout loss' },
         { value: 'points21', label: 'Points: 2 for a win, 1 for an overtime loss' },
         { value: 'points321', label: 'Points: 3 for a regulation win, 2 for an overtime win, 1 for an overtime loss' },
       ],
@@ -140,7 +197,11 @@ export const standings: CupModuleDef = {
         ? 'A group ranks its teams by games won.'
         : s === 'series'
           ? 'A group ranks its teams by series won.'
-          : s === 'points21'
+          : s === 'points310'
+            ? 'A team earns 3 points for a win and 1 point for a draw. Teams are ranked by points.'
+            : s === 'points3shootout'
+              ? 'A team earns 3 points for a win in normal time. A level match goes to a penalty shootout. The shootout winner earns 2 points and the loser earns 1. Teams are ranked by points.'
+              : s === 'points21'
             ? 'A team earns 2 points for a win and 1 point for a loss in overtime or a shootout. A group ranks its teams by points.'
             : 'A team earns 3 points for a win in regulation, 2 for a win in overtime or a shootout, and 1 for a loss in overtime or a shootout. A group ranks its teams by points.',
     ]
@@ -196,7 +257,7 @@ export const advancement: CupModuleDef = {
   category: 'advance',
   blurb: 'How many teams leave the groups for the knockout rounds.',
   paramSchema: [
-    { key: 'perGroup', label: 'Teams that advance from each group', type: 'number', default: 1, min: 1 },
+    { key: 'perGroup', label: 'Teams that advance from each group or table', type: 'number', default: 1, min: 1 },
     { key: 'wildCards', label: 'Wild cards', type: 'number', default: 2, min: 0, help: 'Teams that advance without winning a spot in their group.' },
     {
       key: 'wildScope',
@@ -213,7 +274,7 @@ export const advancement: CupModuleDef = {
   describe(p) {
     const per = num(p, 'perGroup', 1)
     const wc = num(p, 'wildCards', 2)
-    const lines = [per === 1 ? 'The winner of each group advances.' : `The top ${per} teams in each group advance.`]
+    const lines = [per === 1 ? 'The winner of each group or table advances.' : `The top ${per} teams in each group or table advance.`]
     if (wc > 0) {
       lines.push(
         str(p, 'wildScope', 'conference') === 'conference'
@@ -229,16 +290,21 @@ export const advancement: CupModuleDef = {
 
 const FORMAT = [
   { value: 'single', label: 'One game' },
+  { value: 'twoLegs', label: 'Two legs, home and away' },
   { value: 'bestOf3', label: 'Best of 3' },
   { value: 'bestOf5', label: 'Best of 5' },
 ]
 const SITE = [
   { value: 'higherSeed', label: 'Home of the higher seed' },
   { value: 'neutral', label: 'Neutral site' },
+  { value: 'host', label: 'Chosen by the organiser' },
 ]
-const formatText = (f: string) => (f === 'bestOf3' ? 'a best-of-3 series' : f === 'bestOf5' ? 'a best-of-5 series' : 'one game')
-const siteText = (s: string) => (s === 'neutral' ? 'at a neutral site' : 'at the home of the higher seed')
-export const formatGames = (f: string) => (f === 'bestOf3' ? 3 : f === 'bestOf5' ? 5 : 1)
+const formatText = (f: string) =>
+  f === 'twoLegs' ? 'two legs, one at each team’s home' : f === 'bestOf3' ? 'a best-of-3 series' : f === 'bestOf5' ? 'a best-of-5 series' : 'one game'
+const siteText = (s: string) => (s === 'neutral' ? 'at a neutral site' : s === 'host' ? 'at a site the organiser chooses' : 'at the home of the higher seed')
+/** "one game, played at a neutral site" or "two legs, one at each team’s home". */
+const roundText = (f: string, s: string) => (f === 'twoLegs' ? formatText(f) : `${formatText(f)}, played ${siteText(s)}`)
+export const formatGames = (f: string) => (f === 'twoLegs' ? 2 : f === 'bestOf3' ? 3 : f === 'bestOf5' ? 5 : 1)
 
 export const knockout: CupModuleDef = {
   kind: 'knockout',
@@ -251,19 +317,28 @@ export const knockout: CupModuleDef = {
     { key: 'semiFormat', label: 'Semifinals', type: 'enum', options: FORMAT, default: 'single' },
     { key: 'finalFormat', label: 'Final', type: 'enum', options: FORMAT, default: 'single' },
     { key: 'lateSite', label: 'Where the semifinals and final are played', type: 'enum', options: SITE, default: 'neutral' },
+    { key: 'byes', label: 'Teams that skip the first knockout round', type: 'number', default: 0, min: 0 },
+    { key: 'byeFor', label: 'Who skips it', type: 'text', default: '', placeholder: 'The champions of the main qualifying competitions' },
+    { key: 'thirdPlace', label: 'Losing semifinalists play for third place', type: 'boolean', default: false },
   ],
-  defaultParams: { earlyFormat: 'single', earlySite: 'higherSeed', semiFormat: 'single', finalFormat: 'single', lateSite: 'neutral' },
+  defaultParams: { earlyFormat: 'single', earlySite: 'higherSeed', semiFormat: 'single', finalFormat: 'single', lateSite: 'neutral', byes: 0, byeFor: '', thirdPlace: false },
   describe(p) {
     const lines = ['Teams that lose a knockout round are out.']
-    lines.push(`Each round before the semifinals is ${formatText(str(p, 'earlyFormat', 'single'))}, played ${siteText(str(p, 'earlySite', 'higherSeed'))}.`)
+    const byes = num(p, 'byes', 0)
+    if (byes > 0) {
+      const who = str(p, 'byeFor', '')
+      lines.push(`${plural(byes, 'team')} skip${byes === 1 ? 's' : ''} the first knockout round${who ? `: ${who}` : ''}.`)
+    }
+    lines.push(`Each round before the semifinals is ${roundText(str(p, 'earlyFormat', 'single'), str(p, 'earlySite', 'higherSeed'))}.`)
     const semi = str(p, 'semiFormat', 'single')
     const fin = str(p, 'finalFormat', 'single')
-    const site = siteText(str(p, 'lateSite', 'neutral'))
+    const late = str(p, 'lateSite', 'neutral')
     lines.push(
       semi === fin
-        ? `Each semifinal and the final are ${formatText(semi)}, played ${site}.`
-        : `Each semifinal is ${formatText(semi)} and the final is ${formatText(fin)}, played ${site}.`,
+        ? `Each semifinal and the final are ${roundText(semi, late)}.`
+        : `Each semifinal is ${roundText(semi, late)}. The final is ${roundText(fin, late)}.`,
     )
+    if (bool(p, 'thirdPlace', false)) lines.push('The two losing semifinalists play one match for third place.')
     return lines
   },
 }
@@ -340,6 +415,7 @@ export const winnerReward: CupModuleDef = {
       type: 'enum',
       options: [
         { value: 'playoffBerth', label: 'A place in the playoffs' },
+        { value: 'continental', label: 'Places in a higher competition' },
         { value: 'seeding', label: 'The first playoff seeding tiebreaker' },
         { value: 'draftPick', label: 'An extra draft pick' },
         { value: 'capException', label: 'Extra room above the salary cap' },
@@ -349,11 +425,18 @@ export const winnerReward: CupModuleDef = {
     },
     { key: 'amount', label: 'Amount of cap room or tax reduction', type: 'money', default: 5000000, min: 0 },
     { key: 'round', label: 'Round of the extra draft pick', type: 'number', default: 2, min: 1 },
+    { key: 'places', label: 'Teams that earn a place in the higher competition', type: 'number', default: 1, min: 1 },
+    { key: 'competition', label: 'Name of the higher competition', type: 'text', default: '', placeholder: 'Champions Cup' },
   ],
-  defaultParams: { type: 'seeding', amount: 5000000, round: 2 },
+  defaultParams: { type: 'seeding', amount: 5000000, round: 2, places: 1, competition: '' },
   describe(p, ctx) {
     const t = str(p, 'type', 'seeding')
     const amt = fmtMoney(num(p, 'amount', 0), ctx.currency)
+    if (t === 'continental') {
+      const places = num(p, 'places', 1)
+      const comp = str(p, 'competition', '') || 'a higher competition'
+      return [places === 1 ? `The champion earns a place in next season’s ${comp}.` : `The top ${places} teams earn places in next season’s ${comp}.`]
+    }
     return [
       t === 'playoffBerth'
         ? 'The champion earns a place in the playoffs.'
@@ -365,6 +448,34 @@ export const winnerReward: CupModuleDef = {
               ? `The champion may spend ${amt} above the salary cap next season.`
               : `The league reduces the champion’s luxury tax bill by ${amt}.`,
     ]
+  },
+}
+
+// ─── Tiers ───────────────────────────────────────────────────────────────────
+
+export const tiers: CupModuleDef = {
+  kind: 'tiers',
+  label: 'Lower competitions',
+  category: 'tiers',
+  blurb: 'Second and third competitions for clubs that miss the top one.',
+  paramSchema: [
+    { key: 'count', label: 'Competitions below the top one', type: 'number', default: 2, min: 1, max: 3 },
+    { key: 'size', label: 'Clubs in each lower competition', type: 'number', default: 24, min: 2 },
+    { key: 'names', label: 'Names, from the top down', type: 'text', default: 'Champions Cup, Shield, Conference Cup' },
+    { key: 'dropDown', label: 'Clubs knocked out early drop to the next competition', type: 'boolean', default: true },
+    { key: 'promote', label: 'A winner earns a place one competition higher next season', type: 'boolean', default: true },
+  ],
+  defaultParams: { count: 2, size: 24, names: 'Champions Cup, Shield, Conference Cup', dropDown: true, promote: true },
+  describe(p) {
+    const count = num(p, 'count', 2)
+    const names = str(p, 'names', '').split(',').map((x) => x.trim()).filter(Boolean)
+    const lines = [
+      `${plural(count, 'lower competition')} run${count === 1 ? 's' : ''} beside the top one${names.length ? `. From the top down, the competitions are: ${names.join(', ')}` : ''}.`,
+      `Each lower competition has ${num(p, 'size', 24)} clubs. The clubs that rank next in qualifying enter the next competition down.`,
+    ]
+    if (bool(p, 'dropDown', true)) lines.push('A club knocked out before the knockout rounds of one competition enters the knockout rounds of the next one down.')
+    if (bool(p, 'promote', true)) lines.push('The winner of a lower competition earns a place one competition higher next season.')
+    return lines
   },
 }
 
@@ -389,5 +500,6 @@ export const cupHouseRule: CupModuleDef = {
 /** Teams in the cup, given the league size and the field rule's params. */
 export function entered(leagueTeams: number, field: Record<string, unknown> | null): number {
   if (!field || str(field, 'mode', 'all') === 'all') return leagueTeams
+  if (str(field, 'mode', 'all') === 'open') return Math.max(2, num(field, 'count', 16))
   return Math.max(2, Math.min(num(field, 'count', 16), leagueTeams))
 }

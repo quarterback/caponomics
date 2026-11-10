@@ -8,7 +8,7 @@ export function CupBuilder() {
   return (
     <div className="card">
       <div className="card__head">
-        <span className="card__title">What rules does this cup have?</span>
+        <span className="card__title">Rules</span>
       </div>
       <div className="card__body">
         {model.modules.length === 0 ? (

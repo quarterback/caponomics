@@ -3,7 +3,7 @@ export function About({ onClose }: { onClose: () => void }) {
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal modal--wide about" onClick={(e) => e.stopPropagation()}>
         <div className="card__head">
-          <span className="card__title">What is Cap Buffet?</span>
+          <span className="card__title">About Cap Buffet</span>
           <button className="btn--icon" style={{ marginLeft: 'auto' }} onClick={onClose} aria-label="Close">
             ✕
           </button>
@@ -15,19 +15,19 @@ export function About({ onClose }: { onClose: () => void }) {
             are over the cap, which owe tax, which are below the floor, and what penalties apply.
           </p>
 
-          <h3>What does it work on?</h3>
+          <h3>Scope</h3>
           <p>
             Cap Buffet works on the rules: ceilings, floors, taxes, aprons, and the penalties
             attached to them. When you change a rule, the league table updates.
           </p>
 
-          <h3>How does it decide what is legal?</h3>
+          <h3>Legality</h3>
           <p>
             Cap Buffet applies your rules to each team’s numbers and reports whether the team is
             legal. It does not judge whether the rules are good.
           </p>
 
-          <h3>How is a cap system built?</h3>
+          <h3>Rules</h3>
           <p>
             A cap system is an ordered list of modules: revenue, cap formula, hard cap, salary
             floor, luxury tax, aprons, allocation money, and draft-pick penalties. The major leagues
@@ -36,14 +36,14 @@ export function About({ onClose }: { onClose: () => void }) {
             tax with its own restrictions. You can also apply the NHL hard cap to NBA payrolls.
           </p>
 
-          <h3>Which leagues can I use?</h3>
+          <h3>Leagues</h3>
           <p>
             You can use any league and any amounts. Cap Buffet works for a minor league, the
             A-League, the CFL, or a league you invent. You can set the cap to $40. The engine treats
             every amount the same way.
           </p>
 
-          <h3>How do I use it?</h3>
+          <h3>Steps</h3>
           <ol>
             <li>Choose a cap system, or start blank, and pick a league to test it against.</li>
             <li>Add, remove, and adjust mechanics in the builder.</li>
