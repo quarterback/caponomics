@@ -9,28 +9,28 @@ export const hardCap: CapModuleDef = {
   label: 'Hard Cap',
   category: 'cap',
   phase: 'validate',
-  blurb: 'An absolute ceiling on team salary. Exceeding it is illegal under any circumstance.',
+  blurb: 'A fixed ceiling on team salary. A team over the ceiling is illegal.',
   paramSchema: [
     {
       key: 'source',
-      label: 'Ceiling source',
+      label: 'Set the ceiling as',
       type: 'enum',
       options: [
         { value: 'fixed', label: 'Fixed amount' },
         { value: 'useCapValue', label: 'The cap value' },
-        { value: 'multipleOfCap', label: 'Multiple of cap value' },
+        { value: 'multipleOfCap', label: 'Percent of the cap value' },
       ],
       default: 'useCapValue',
     },
     { key: 'ceiling', label: 'Fixed ceiling', type: 'money', default: 100_000_000, min: 0 },
-    { key: 'capMultiplePct', label: 'Multiple of cap', type: 'percent', default: 100, min: 0, max: 500 },
+    { key: 'capMultiplePct', label: 'Percent of the cap value', type: 'percent', default: 100, min: 0, max: 500 },
     {
       key: 'basis',
-      label: 'Measure',
+      label: 'What counts toward the ceiling',
       type: 'enum',
       options: [
         { value: 'cap', label: 'Cap salary' },
-        { value: 'cash', label: 'Cash spend' },
+        { value: 'cash', label: 'Cash spending' },
       ],
       default: 'cap',
     },
@@ -44,19 +44,20 @@ export const hardCap: CapModuleDef = {
     else if (source === 'multipleOfCap') ceiling = cap === null ? null : Math.round((cap * num(p, 'capMultiplePct', 100)) / 100)
     else ceiling = cap
     if (ceiling === null) {
-      return result({ reasons: [{ severity: 'warning', module: 'hardCap', message: 'No cap value set — hard cap not evaluated.' }] })
+      return result({ reasons: [{ severity: 'warning', module: 'hardCap', message: 'No cap value is set, so the hard cap was not checked.' }] })
     }
     // Over-cap exceptions (Bird / MLE) extend a hard ceiling.
     const room = (ctx.env.scratch['overCapRoom'] as number) ?? 0
     if (room > 0) ceiling += room
-    const measure = str(p, 'basis', 'cap') === 'cash' ? ctx.totals.cashSpend : ctx.totals.capSalary
+    const cash = str(p, 'basis', 'cap') === 'cash'
+    const measure = cash ? ctx.totals.cashSpend : ctx.totals.capSalary
     const over = measure - ceiling
     const readouts = [{ label: 'Hard cap room', value: -over, format: 'money' as const, module: 'hardCap' }]
     if (over > 0) {
       return result({
         legal: false,
         readouts,
-        reasons: [{ severity: 'error', module: 'hardCap', message: `Over the hard cap by ${fmtMoney(over, (ctx.ruleset.currency ?? 'USD'))} (${fmtMoney(measure, (ctx.ruleset.currency ?? 'USD'))} / ${fmtMoney(ceiling, (ctx.ruleset.currency ?? 'USD'))}).` }],
+        reasons: [{ severity: 'error', module: 'hardCap', message: `${cash ? 'Cash spending' : 'Team salary'} of ${fmtMoney(measure, (ctx.ruleset.currency ?? 'USD'))} is ${fmtMoney(over, (ctx.ruleset.currency ?? 'USD'))} over the hard cap of ${fmtMoney(ceiling, (ctx.ruleset.currency ?? 'USD'))}.` }],
       })
     }
     return result({ readouts })

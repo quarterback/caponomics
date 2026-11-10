@@ -26,8 +26,8 @@ export const aleague = preset('aleague', 'A-League (Australia)', 'soccer', [
   m('minimumSalary', { mode: 'flat', flat: 90_000 }),
   m('rosterLimits', { min: 20, max: 23 }),
   m('passThrough', {
-    title: 'Marquee & exception rules',
-    note: 'The A-League permits designated marquee players outside the cap; modeled here as an allocation allowance.',
+    title: 'Marquee and exception rules',
+    note: 'The A-League lets clubs pay designated marquee players outside the cap. This preset models that as an allocation allowance.',
   }),
 ], 'AUD')
 
@@ -36,8 +36,8 @@ export const ipl = preset('ipl', 'IPL (auction purse)', 'cricket', [
   m('hardCap', { source: 'useCapValue', basis: 'cap' }),
   m('rosterLimits', { min: 18, max: 25 }),
   m('passThrough', {
-    title: 'Auction & retention',
-    note: 'IPL uses an auction purse with player retention rules rather than a wage cap; modeled here as a hard spend ceiling.',
+    title: 'Auction and retention',
+    note: 'The IPL gives each team an auction purse and has player retention rules. It has no wage cap. This preset models the purse as a hard spending ceiling.',
   }),
 ], 'INR')
 
@@ -61,8 +61,8 @@ export const kbo = preset('kbo', 'KBO (soft cap)', 'baseball', [
   m('minimumSalary', { mode: 'flat', flat: 30_000_000 }),
   m('rosterLimits', { min: 0, max: 28 }),
   m('passThrough', {
-    title: 'Escalating penalties',
-    note: 'Repeat overages escalate to 100%/150% of the excess plus the draft drop; only the first-year 50% is modeled here.',
+    title: 'Penalties for repeat overages',
+    note: 'A team over the cap in repeat years pays 100%, then 150%, of the excess, and its draft pick moves down. This preset uses only the first-year rate of 50%.',
   }),
 ], 'KRW')
 
@@ -72,7 +72,7 @@ export const npb = preset('npb', 'NPB (no cap)', 'baseball', [
   m('minimumSalary', { mode: 'flat', flat: 4_400_000 }),
   m('rosterLimits', { min: 0, max: 29 }),
   m('passThrough', {
-    title: 'No cap · foreign-player limit',
-    note: 'NPB has no salary cap or tax. Its main roster rule is a max of 4 foreign players active (not all pitchers or all fielders) — a composition limit not yet modeled.',
+    title: 'No cap, foreign-player limit',
+    note: 'NPB has no salary cap or tax. Its main roster rule allows at most 4 active foreign players, who cannot all be pitchers or all be fielders. This app does not model that limit yet.',
   }),
 ], 'JPY')

@@ -12,12 +12,12 @@ export const exception: CapModuleDef = {
   label: 'Over-Cap Exception',
   category: 'exception',
   phase: 'environment',
-  blurb: 'Grants each team room to exceed a hard cap by a set amount — the Bird-rights / mid-level “exceed the cap” move.',
+  blurb: 'Lets each team exceed a hard cap by a set amount. The NBA’s Bird rights and mid-level exception work this way.',
   paramSchema: [
-    { key: 'label', label: 'Label', type: 'text', default: 'Exception', placeholder: 'Bird rights / MLE' },
+    { key: 'label', label: 'Label', type: 'text', default: 'Exception', placeholder: 'e.g. Bird rights' },
     {
       key: 'mode',
-      label: 'Allowance basis',
+      label: 'Set the allowance as',
       type: 'enum',
       options: [
         { value: 'fixed', label: 'Fixed amount' },

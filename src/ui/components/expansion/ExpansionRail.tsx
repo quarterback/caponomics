@@ -52,7 +52,8 @@ export function ExpansionRail() {
       <div className="rail__group">
         <div className="rail__label">Which league do the new teams join?</div>
         <div className="field__help" style={{ padding: '0 2px 6px' }}>
-          Sets the existing-team count the summary's quick math uses. Shared with the Cap System tab.
+          The summary uses this league’s number of teams in its totals. The Cap System tab uses the same
+          league.
         </div>
         {ROSTER_GROUPS.map((group) => (
           <div className="rail__subgroup" key={group}>

@@ -71,7 +71,7 @@ export function LeagueTable({ rows }: { rows: TeamRow[] }) {
               </td>
               <td data-label="Apron">
                 {r.apronLevel > 0 ? <span className="apron-badge">A{r.apronLevel}</span> : <span className="dim">—</span>}
-                {(r.hasAssetPenalty || r.hasToolPenalty) && <span className="pen-dot" title="roster/asset penalty" />}
+                {(r.hasAssetPenalty || r.hasToolPenalty) && <span className="pen-dot" title="This team has a roster or draft-pick penalty" />}
               </td>
               <td data-align="l" data-label="Status">
                 <span className="status-dot" data-legal={r.legal} />

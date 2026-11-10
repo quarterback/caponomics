@@ -25,7 +25,7 @@ export const mlbCbt = preset('mlb-cbt', 'MLB Luxury Tax (current CBT)', 'basebal
   m('minimumSalary', { mode: 'flat', flat: 780_000 }),
   m('rosterLimits', { min: 24, max: 26 }),
   m('passThrough', {
-    title: 'Repeater rates',
-    note: 'Rates shown are for a first-time payor; second-consecutive years run ~30/42/75/90% and third-plus ~50/62/95/110%.',
+    title: 'Rates for repeat taxpayers',
+    note: 'These rates apply to a team paying the tax for the first time. A team paying for a second straight year pays about 30%, 42%, 75% and 90%. A team paying for a third straight year or more pays about 50%, 62%, 95% and 110%.',
   }),
 ])

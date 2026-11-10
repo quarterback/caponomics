@@ -11,10 +11,10 @@ export const amnesty: CapModuleDef = {
   label: 'Amnesty',
   category: 'exception',
   phase: 'charge',
-  blurb: 'Each team excludes its N biggest salaries from the cap (still paid, just off the books).',
+  blurb: 'Each team drops a set number of its largest salaries from the cap. It still pays those players.',
   paramSchema: [
     { key: 'count', label: 'Amnesties per team', type: 'number', default: 1, min: 0, max: 10 },
-    { key: 'label', label: 'Label', type: 'text', default: 'Amnesty', placeholder: 'Amnesty / stretch' },
+    { key: 'label', label: 'Label', type: 'text', default: 'Amnesty', placeholder: 'e.g. Amnesty' },
   ],
   defaultParams: { count: 1, label: 'Amnesty' },
   contributes(p, ctx) {
@@ -36,7 +36,7 @@ export const amnesty: CapModuleDef = {
     const cur = ctx.ruleset.currency ?? 'USD'
     return result({
       readouts: [{ label: 'Amnesty relief', value: saved, format: 'money', module: 'amnesty' }],
-      reasons: [{ severity: 'info', module: 'amnesty', message: `Excluded ${fmtMoney(saved, cur)} from the cap via amnesty.` }],
+      reasons: [{ severity: 'info', module: 'amnesty', message: `Amnesty removes ${fmtMoney(saved, cur)} from this team’s cap.` }],
     })
   },
 }

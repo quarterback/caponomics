@@ -7,7 +7,7 @@ export const rosterLimits: CapModuleDef = {
   label: 'Roster Limits',
   category: 'roster',
   phase: 'validate',
-  blurb: 'Minimum and maximum number of players on the roster.',
+  blurb: 'Sets the fewest and most players a team can have on its roster.',
   paramSchema: [
     { key: 'min', label: 'Min players', type: 'number', default: 0, min: 0 },
     { key: 'max', label: 'Max players', type: 'number', default: 15, min: 0 },
@@ -19,10 +19,10 @@ export const rosterLimits: CapModuleDef = {
     const count = ctx.totals.playerCount
     const readouts = [{ label: 'Roster size', value: count, format: 'number' as const, module: 'rosterLimits' }]
     if (count > max) {
-      return result({ legal: false, readouts, reasons: [{ severity: 'error', module: 'rosterLimits', message: `Roster of ${count} exceeds the max of ${max}.` }] })
+      return result({ legal: false, readouts, reasons: [{ severity: 'error', module: 'rosterLimits', message: `The roster has ${count} players. The maximum is ${max}.` }] })
     }
     if (count < min) {
-      return result({ legal: false, readouts, reasons: [{ severity: 'error', module: 'rosterLimits', message: `Roster of ${count} is below the min of ${min}.` }] })
+      return result({ legal: false, readouts, reasons: [{ severity: 'error', module: 'rosterLimits', message: `The roster has ${count} players. The minimum is ${min}.` }] })
     }
     return result({ readouts })
   },

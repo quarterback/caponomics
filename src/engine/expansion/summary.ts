@@ -46,12 +46,12 @@ function statList(model: ExpansionModel, existingTeams: number | null): ModelSta
   const stats: ModelStat[] = [{ label: 'New teams', value: String(model.teamsAdded) }]
 
   const prot = protectedPerTeam(model)
-  if (prot !== null) stats.push({ label: 'Protected / team', value: prot })
+  if (prot !== null) stats.push({ label: 'Protected per team', value: prot })
 
   const quota = findParams(model, 'selectionQuota')
   if (quota) {
     const word = str(quota, 'perTeam', 'exactly') === 'exactly' ? '' : '≤ '
-    stats.push({ label: 'Picks / existing team', value: `${word}${num(quota, 'count', 1)}` })
+    stats.push({ label: 'Picks per existing team', value: `${word}${num(quota, 'count', 1)}` })
   }
 
   const rounds = findParams(model, 'rounds')
@@ -59,7 +59,7 @@ function statList(model: ExpansionModel, existingTeams: number | null): ModelSta
   stats.push({ label: 'Rounds', value: String(roundCount) })
 
   const loss = findParams(model, 'lossLimit')
-  if (loss) stats.push({ label: 'Max lost / team', value: String(num(loss, 'maxLost', 0)) })
+  if (loss) stats.push({ label: 'Max lost per team', value: String(num(loss, 'maxLost', 0)) })
 
   // Roster targets state the selection count outright; only fall back to
   // quota/loss-limit arithmetic when the model has no explicit target.
@@ -67,7 +67,7 @@ function statList(model: ExpansionModel, existingTeams: number | null): ModelSta
   if (targets) {
     const min = num(targets, 'minSize', 0)
     const max = num(targets, 'maxSize', 0)
-    stats.push({ label: 'Selections / new team', value: min === max ? String(min) : `${min}–${max}` })
+    stats.push({ label: 'Selections per new team', value: min === max ? String(min) : `${min}–${max}` })
   } else if (quota && existingTeams !== null) {
     const quotaBound = num(quota, 'count', 1) * existingTeams * roundCount
     // A loss limit caps the whole pool: existingTeams × maxLost players move
@@ -78,7 +78,7 @@ function statList(model: ExpansionModel, existingTeams: number | null): ModelSta
     const upper = Math.min(quotaBound, lossBound)
     const exact = str(quota, 'perTeam', 'exactly') === 'exactly' && !loss
     stats.push({
-      label: 'Selections / new team',
+      label: 'Selections per new team',
       value: `${exact ? '' : '≤ '}${upper}`,
     })
   }

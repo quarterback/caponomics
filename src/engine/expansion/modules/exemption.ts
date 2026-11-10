@@ -7,15 +7,15 @@ export const youngPlayerExemption: ExpansionModuleDef = {
   kind: 'youngPlayerExemption',
   label: 'Young-Player Exemption',
   category: 'exemption',
-  blurb: 'Players under a service-time threshold are exempt — unpickable and slot-free.',
+  blurb: 'Players with few pro seasons are exempt. They cannot be selected and use no protection slot.',
   paramSchema: [
     { key: 'maxYears', label: 'Max pro seasons to qualify', type: 'number', default: 2, min: 0 },
-    { key: 'unsignedPicks', label: 'Unsigned draft picks also exempt', type: 'boolean', default: true },
+    { key: 'unsignedPicks', label: 'Unsigned draft picks are also exempt', type: 'boolean', default: true },
   ],
   defaultParams: { maxYears: 2, unsignedPicks: true },
   describe(p) {
     const lines = [
-      `Players with ${num(p, 'maxYears', 2)} or fewer professional seasons are exempt — they can't be selected and don't consume protection slots.`,
+      `Players with ${num(p, 'maxYears', 2)} or fewer professional seasons are exempt. They cannot be selected and do not use a protection slot.`,
     ]
     if (bool(p, 'unsignedPicks', true)) lines.push('Unsigned draft picks are also exempt.')
     return lines
@@ -28,7 +28,7 @@ export const autoProtect: ExpansionModuleDef = {
   kind: 'autoProtect',
   label: 'Auto-Protected Class',
   category: 'exemption',
-  blurb: 'A described class of players is automatically protected.',
+  blurb: 'A group of players you describe is protected automatically.',
   paramSchema: [
     {
       key: 'criteria',
@@ -37,13 +37,13 @@ export const autoProtect: ExpansionModuleDef = {
       default: 'Homegrown players aged 25 or younger',
       placeholder: 'e.g. academy graduates, designated youth players…',
     },
-    { key: 'consumesSlot', label: 'Consumes a protection slot', type: 'boolean', default: false },
+    { key: 'consumesSlot', label: 'Uses a protection slot', type: 'boolean', default: false },
   ],
   defaultParams: { criteria: 'Homegrown players aged 25 or younger', consumesSlot: false },
   describe(p) {
     return [
-      `${str(p, 'criteria', 'Qualifying players')} are automatically protected` +
-        (bool(p, 'consumesSlot', false) ? ', consuming a protection slot.' : ' without consuming a protection slot.'),
+      `${str(p, 'criteria', 'Qualifying players')} are protected automatically` +
+        (bool(p, 'consumesSlot', false) ? ' and use a protection slot.' : ' and do not use a protection slot.'),
     ]
   },
 }
@@ -54,7 +54,7 @@ export const injuryExemption: ExpansionModuleDef = {
   kind: 'injuryExemption',
   label: 'Injury Exemption',
   category: 'exemption',
-  blurb: 'Long-term injured players may be exempted from exposure.',
+  blurb: 'A player with a long-term injury may be exempt from exposure.',
   paramSchema: [
     { key: 'gamesMissed', label: 'Consecutive games missed', type: 'number', default: 60, min: 0 },
     { key: 'needsApproval', label: 'Requires league approval', type: 'boolean', default: true },
@@ -62,8 +62,8 @@ export const injuryExemption: ExpansionModuleDef = {
   defaultParams: { gamesMissed: 60, needsApproval: true },
   describe(p) {
     return [
-      `A player who has missed ${num(p, 'gamesMissed', 60)}+ consecutive games with a potentially career-threatening injury may be exempted` +
-        (bool(p, 'needsApproval', true) ? ', subject to league approval.' : '.'),
+      `A player who has missed ${num(p, 'gamesMissed', 60)} or more consecutive games with a potentially career-threatening injury may be exempt` +
+        (bool(p, 'needsApproval', true) ? ' if the league approves.' : '.'),
     ]
   },
 }

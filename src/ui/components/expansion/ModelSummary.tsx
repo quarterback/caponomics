@@ -6,8 +6,8 @@ import { useStore } from '../../state/store'
 import { catColor } from '../catColor'
 
 const DISCLAIMER =
-  'A calculator, not a prescription: this describes the redistribution rules you designed. It ' +
-  "doesn't judge them — and deliberately doesn't simulate who would get picked."
+  'This page describes the rules you designed. It does not judge them, and it does not simulate ' +
+  'which players teams would pick.'
 
 function Tiles({ model, existingTeams }: { model: ExpansionModel; existingTeams: number }) {
   const summary = summarizeModel(model, existingTeams)
@@ -29,7 +29,7 @@ function Rulebook({ model, existingTeams }: { model: ExpansionModel; existingTea
     return (
       <div className="builder__empty">
         <strong>No rules yet.</strong>
-        Whatever you stack on the left reads back here as a plain-language rulebook.
+        The rules you add on the left appear here as a plain-language rulebook.
       </div>
     )
   }
@@ -111,7 +111,7 @@ export function ModelSummary() {
               </div>
             </div>
             <div className="field__help" style={{ marginTop: 'var(--s3)' }}>
-              {DISCLAIMER} Quick math for both columns uses the loaded league ({teams} existing teams).
+              {DISCLAIMER} The totals in both columns use the loaded league, which has {teams} existing teams.
             </div>
           </div>
         </div>

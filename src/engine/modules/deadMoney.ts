@@ -11,11 +11,11 @@ export const deadMoney: CapModuleDef = {
   label: 'Dead Money',
   category: 'contract',
   phase: 'charge',
-  blurb: 'Adds a dead-money charge per team, with a toggle for whether it counts against the cap.',
+  blurb: 'Adds dead money to each team: pay still owed to departed players. You choose if it counts against the cap.',
   paramSchema: [
     {
       key: 'mode',
-      label: 'Amount basis',
+      label: 'Set the amount as',
       type: 'enum',
       options: [
         { value: 'percentOfPayroll', label: 'Percent of payroll' },

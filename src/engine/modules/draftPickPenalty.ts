@@ -11,12 +11,12 @@ export const draftPickPenalty: CapModuleDef = {
   label: 'Draft Pick Penalty',
   category: 'penalty',
   phase: 'validate',
-  blurb: 'Ties overspending to a draft-pick consequence (freeze / drop / forfeit).',
+  blurb: 'A team over a set spending line has a first-round pick frozen, moved down or forfeited.',
   paramSchema: [
-    { key: 'threshold', label: 'Trigger over', type: 'money', default: 220_000_000, min: 0 },
+    { key: 'threshold', label: 'Applies when salary is over', type: 'money', default: 220_000_000, min: 0 },
     {
       key: 'thresholdMode',
-      label: 'Threshold basis',
+      label: 'Set the line as',
       type: 'enum',
       options: [
         { value: 'fixed', label: 'Fixed amount' },
@@ -32,8 +32,8 @@ export const draftPickPenalty: CapModuleDef = {
       options: ASSET_PENALTY_EFFECTS.map((e) => ({ value: e.value, label: e.label })),
       default: 'freeze',
     },
-    { key: 'yearsOut', label: 'Pick years out', type: 'number', default: 7, min: 0 },
-    { key: 'dropSpots', label: 'Drop N spots', type: 'number', default: 10, min: 0 },
+    { key: 'yearsOut', label: 'Freeze the pick this many drafts ahead', type: 'number', default: 7, min: 0 },
+    { key: 'dropSpots', label: 'Spots the pick moves down', type: 'number', default: 10, min: 0 },
   ],
   defaultParams: {
     threshold: 220_000_000,
@@ -57,10 +57,10 @@ export const draftPickPenalty: CapModuleDef = {
     const cur = (ctx.ruleset.currency ?? 'USD')
     const desc =
       effect === 'dropSpots'
-        ? `1st-round pick drops ${num(p, 'dropSpots', 10)} spots (spending over ${fmtMoney(line, cur)}).`
+        ? `Team salary is over ${fmtMoney(line, cur)}, so the team’s first-round pick moves down ${num(p, 'dropSpots', 10)} spots.`
         : effect === 'forfeit'
-          ? `Forfeits a 1st-round pick (spending over ${fmtMoney(line, cur)}).`
-          : `Freezes its 1st-round pick ${num(p, 'yearsOut', 7)} drafts out (spending over ${fmtMoney(line, cur)}).`
+          ? `Team salary is over ${fmtMoney(line, cur)}, so the team forfeits a first-round pick.`
+          : `Team salary is over ${fmtMoney(line, cur)}, so the team cannot trade its first-round pick ${num(p, 'yearsOut', 7)} drafts ahead.`
     return result({
       reasons: [{ severity: 'warning', module: 'draftPickPenalty', message: desc }],
       penalties: [{ currency: 'assets', description: desc, module: 'draftPickPenalty' }],

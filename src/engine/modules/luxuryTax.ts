@@ -10,11 +10,11 @@ export const luxuryTax: CapModuleDef = {
   label: 'Luxury Tax',
   category: 'tax',
   phase: 'validate',
-  blurb: 'A price on spending above a threshold, charged in marginal brackets. Optional repeater surcharge.',
+  blurb: 'A tax on salary above a threshold, charged in brackets. You can add a surcharge for repeat taxpayers.',
   paramSchema: [
     {
       key: 'thresholdMode',
-      label: 'Threshold basis',
+      label: 'Set the threshold as',
       type: 'enum',
       options: [
         { value: 'fixed', label: 'Fixed amount' },
@@ -26,10 +26,10 @@ export const luxuryTax: CapModuleDef = {
     { key: 'thresholdPercent', label: 'Percent of cap', type: 'percent', default: 120, min: 0, max: 300 },
     {
       key: 'brackets',
-      label: 'Marginal brackets',
+      label: 'Tax brackets',
       type: 'bracketList',
       itemSchema: [
-        { key: 'upTo', label: 'Up to overage of (0 = ∞)', type: 'money', default: 0, min: 0 },
+        { key: 'upTo', label: 'Up to this much over (0 = no limit)', type: 'money', default: 0, min: 0 },
         { key: 'rate', label: 'Rate', type: 'percent', default: 20, min: 0, max: 500 },
       ],
       default: [
@@ -38,8 +38,8 @@ export const luxuryTax: CapModuleDef = {
         { upTo: 0, rate: 50 },
       ],
     },
-    { key: 'isRepeater', label: 'Repeater team', type: 'boolean', default: false },
-    { key: 'repeaterSurchargePct', label: 'Repeater surcharge', type: 'percent', default: 0, min: 0, max: 200 },
+    { key: 'isRepeater', label: 'Team is a repeat taxpayer', type: 'boolean', default: false },
+    { key: 'repeaterSurchargePct', label: 'Repeat-taxpayer surcharge', type: 'percent', default: 0, min: 0, max: 200 },
   ],
   defaultParams: {
     thresholdMode: 'fixed',
@@ -62,7 +62,7 @@ export const luxuryTax: CapModuleDef = {
           : Math.round((cap * num(p, 'thresholdPercent', 120)) / 100)
         : num(p, 'threshold')
     if (threshold === null) {
-      return result({ reasons: [{ severity: 'warning', module: 'luxuryTax', message: 'No cap value set — luxury tax not evaluated.' }] })
+      return result({ reasons: [{ severity: 'warning', module: 'luxuryTax', message: 'No cap value is set, so the luxury tax was not checked.' }] })
     }
     const overage = ctx.totals.capSalary - threshold
     if (overage <= 0) {
@@ -94,7 +94,7 @@ export const luxuryTax: CapModuleDef = {
 
     const readouts = [{ label: 'Tax owed', value: total, format: 'money' as const, module: 'luxuryTax' }]
     const cur = (ctx.ruleset.currency ?? 'USD')
-    const reasons = [{ severity: 'info' as const, module: 'luxuryTax', message: `In the tax by ${fmtMoney(overage, cur)}; owes ${fmtMoney(total, cur)}${surcharge ? ` (incl. ${fmtMoney(surcharge, cur)} repeater)` : ''}.` }]
+    const reasons = [{ severity: 'info' as const, module: 'luxuryTax', message: `Team salary is ${fmtMoney(overage, cur)} over the tax threshold. The team owes ${fmtMoney(total, cur)} in tax${surcharge ? `, including a repeat-taxpayer surcharge of ${fmtMoney(surcharge, cur)}` : ''}.` }]
     return result({ readouts, reasons, penalties: [{ currency: 'money', amount: total, description: 'Luxury tax owed.', module: 'luxuryTax' }] })
   },
 }

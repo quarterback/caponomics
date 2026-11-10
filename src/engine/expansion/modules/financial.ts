@@ -8,22 +8,22 @@ export const financialWindow: ExpansionModuleDef = {
   kind: 'financialWindow',
   label: 'Financial Window',
   category: 'financial',
-  blurb: 'How much salary the expansion roster must absorb (or stay under).',
+  blurb: 'Sets the least salary the new team must take on, and the most it may take on.',
   paramSchema: [
     {
       key: 'mode',
-      label: 'Mode',
+      label: 'Type of requirement',
       type: 'enum',
       options: [
-        { value: 'pctWindow', label: '% of cap window' },
-        { value: 'dollarOrCount', label: 'Dollar-or-count floor' },
+        { value: 'pctWindow', label: 'Percent-of-cap range' },
+        { value: 'dollarOrCount', label: 'Minimum players or salary' },
       ],
       default: 'pctWindow',
     },
-    { key: 'floorPct', label: 'Floor (% of cap)', type: 'percent', default: 60, min: 0, max: 200 },
-    { key: 'ceilingPct', label: 'Ceiling (% of cap)', type: 'percent', default: 100, min: 0, max: 200 },
-    { key: 'countFloor', label: 'Player-count floor', type: 'number', default: 30, min: 0 },
-    { key: 'dollarFloor', label: 'Dollar floor', type: 'money', default: 27_200_000, min: 0 },
+    { key: 'floorPct', label: 'Minimum (% of cap)', type: 'percent', default: 60, min: 0, max: 200 },
+    { key: 'ceilingPct', label: 'Maximum (% of cap)', type: 'percent', default: 100, min: 0, max: 200 },
+    { key: 'countFloor', label: 'Minimum players', type: 'number', default: 30, min: 0 },
+    { key: 'dollarFloor', label: 'Minimum salary total', type: 'money', default: 27_200_000, min: 0 },
   ],
   defaultParams: { mode: 'pctWindow', floorPct: 60, ceilingPct: 100, countFloor: 30, dollarFloor: 27_200_000 },
   describe(p, ctx) {
@@ -33,7 +33,7 @@ export const financialWindow: ExpansionModuleDef = {
       ]
     }
     return [
-      `Each expansion team's selected contracts must total between ${num(p, 'floorPct', 60)}% and ${num(p, 'ceilingPct', 100)}% of the league cap.`,
+      `Each expansion team’s selected contracts must total between ${num(p, 'floorPct', 60)}% and ${num(p, 'ceilingPct', 100)}% of the league cap.`,
     ]
   },
 }
@@ -43,7 +43,7 @@ export const compensation: ExpansionModuleDef = {
   kind: 'compensation',
   label: 'Loss Compensation',
   category: 'financial',
-  blurb: 'What a team receives when it loses a player.',
+  blurb: 'Sets what a team receives when it loses a player.',
   paramSchema: [
     { key: 'amount', label: 'Amount per player lost', type: 'money', default: 50_000, min: 0 },
     { key: 'unit', label: 'Paid in', type: 'text', default: 'general allocation money' },
@@ -62,7 +62,7 @@ export const expansionCapRamp: ExpansionModuleDef = {
   kind: 'expansionCapRamp',
   label: 'Expansion Cap Ramp',
   category: 'financial',
-  blurb: 'The new team plays under a reduced salary cap at first.',
+  blurb: 'The new team has a lower salary cap in its first two seasons.',
   paramSchema: [
     { key: 'year1Pct', label: 'Year 1 (% of league cap)', type: 'percent', default: 66, min: 0, max: 100 },
     { key: 'year2Pct', label: 'Year 2 (% of league cap)', type: 'percent', default: 75, min: 0, max: 100 },
@@ -70,7 +70,7 @@ export const expansionCapRamp: ExpansionModuleDef = {
   defaultParams: { year1Pct: 66, year2Pct: 75 },
   describe(p) {
     return [
-      `Each expansion team's salary cap is ${num(p, 'year1Pct', 66)}% of the league cap in its first season and ${num(p, 'year2Pct', 75)}% in its second, reaching the full cap in year three.`,
+      `Each expansion team’s salary cap is ${num(p, 'year1Pct', 66)}% of the league cap in its first season and ${num(p, 'year2Pct', 75)}% in its second. The team has the full cap from its third season.`,
     ]
   },
 }

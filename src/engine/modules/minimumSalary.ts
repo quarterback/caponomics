@@ -9,25 +9,25 @@ export const minimumSalary: CapModuleDef = {
   label: 'Minimum Salary',
   category: 'contract',
   phase: 'validate',
-  blurb: 'A salary floor for individual contracts — a flat minimum or a step function of service years.',
+  blurb: 'The least a contract can pay. Use one minimum for all players, or raise it with years of service.',
   paramSchema: [
     {
       key: 'mode',
-      label: 'Mode',
+      label: 'How the minimum is set',
       type: 'enum',
       options: [
         { value: 'flat', label: 'Flat minimum' },
-        { value: 'byService', label: 'By service years' },
+        { value: 'byService', label: 'By years of service' },
       ],
       default: 'flat',
     },
     { key: 'flat', label: 'Flat minimum', type: 'money', default: 780_000, min: 0 },
     {
       key: 'tiers',
-      label: 'Minimum by service',
+      label: 'Minimum by years of service',
       type: 'bracketList',
       itemSchema: [
-        { key: 'minService', label: 'Min service years', type: 'number', default: 0, min: 0 },
+        { key: 'minService', label: 'Min years of service', type: 'number', default: 0, min: 0 },
         { key: 'amount', label: 'Minimum', type: 'money', default: 780_000, min: 0 },
       ],
       default: [
@@ -63,7 +63,7 @@ export const minimumSalary: CapModuleDef = {
       if (salary < min) {
         legal = false
         const name = ctx.league.players[c.playerId]?.name ?? c.playerId
-        reasons.push({ severity: 'error', module: 'minimumSalary', message: `${name} at ${fmtMoney(salary, (ctx.ruleset.currency ?? 'USD'))} is below the minimum (${fmtMoney(min, (ctx.ruleset.currency ?? 'USD'))}).` })
+        reasons.push({ severity: 'error', module: 'minimumSalary', message: `${name} is paid ${fmtMoney(salary, (ctx.ruleset.currency ?? 'USD'))}. The minimum is ${fmtMoney(min, (ctx.ruleset.currency ?? 'USD'))}.` })
       }
     }
     return result({ legal, reasons })
