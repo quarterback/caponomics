@@ -8,9 +8,11 @@ export function Contest() {
   const [open, setOpen] = useState(false)
   const [text, setText] = useState('')
   const [errors, setErrors] = useState<string[]>([])
+  // Real sets have tens of thousands of rankings, so the text is built only if asked for.
   useEffect(() => {
-    setText(formatBallots(profile))
+    setText(profile.real ? '' : formatBallots(profile))
     setErrors([])
+    if (profile.real) setOpen(false)
   }, [profile])
   const g = profile.gen
   const big = profile.ballots.length > 400
@@ -95,7 +97,14 @@ export function Contest() {
         )}
 
         <div>
-          <button className="linkish" onClick={() => setOpen(!open)}>
+          {profile.real && <p className="field__help">{profile.blurb}</p>}
+          <button
+            className="linkish"
+            onClick={() => {
+              if (!open && profile.real && !text) setText(formatBallots(profile))
+              setOpen(!open)
+            }}
+          >
             {open ? '▾' : '▸'} Edit ballots as text
           </button>
           {open && (
