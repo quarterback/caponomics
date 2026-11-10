@@ -23,7 +23,12 @@ export function cleanBallots(profile: Profile): Ballot[] {
   for (const b of profile.ballots) {
     const seen = new Set<string>()
     const ranks = b.ranks.filter((r) => known.has(r) && !seen.has(r) && (seen.add(r), true))
-    if (ranks.length && b.n > 0) out.push({ n: b.n, ranks })
+    if (!ranks.length || b.n <= 0) continue
+    if (b.scores) {
+      const scores: Record<string, number> = {}
+      for (const [k, v] of Object.entries(b.scores)) if (known.has(k) && Number.isFinite(v)) scores[k] = Math.max(0, Math.min(5, v))
+      out.push({ n: b.n, ranks, scores })
+    } else out.push({ n: b.n, ranks })
   }
   return out
 }
@@ -63,6 +68,7 @@ export function runCount(profile: Profile, system: System, seatsIn: number): Cou
   if (system.method === 'meek') return meekCount(ballots, ids, system, seats, total)
   if (system.method === 'mcpc') return mcpcCount(ballots, ids, system, seats, total)
   if (system.method === 'sntv') return sntvCount(ballots, ids, seats, total)
+  if (system.method === 'trv') return trvCount(ballots, ids, system, seats, total)
   return stvCount(ballots, ids, system, seats, total)
 }
 
@@ -572,6 +578,156 @@ function binom(n: number, k: number): number {
   let r = 1
   for (let i = 1; i <= k; i++) r = (r * (n - k + i)) / i
   return r
+}
+
+// ───────────────────────── Transferable Range Voting ─────────────────────────
+//
+// Bewley and Luchini, "A new method for approximating proportional
+// representation in multi-seat elections based on range or approval voting"
+// (January 2025), Algorithm 1. Each ballot holds C units of currency. Each
+// round, a ballot offers every remaining candidate the smaller of its score for
+// that candidate and its remaining currency. The largest total offer wins. The
+// seat costs q = C·n/m, paid by the winner's backers in proportion to their
+// offers. q is then lowered until the cost of every seat is the same.
+
+/** 0–5 scores for every ballot; ranked-only ballots are converted. */
+export function scoreRows(
+  ballots: Ballot[],
+  ids: string[],
+  system: System,
+): { rows: { n: number; s: number[] }[]; converted: number } {
+  const maxLen = Math.max(1, ...ballots.map((b) => b.ranks.length))
+  const depth = Math.max(1, system.consentDepth)
+  let converted = 0
+  const rows = ballots.map((b) => {
+    if (b.scores) return { n: b.n, s: ids.map((id) => b.scores![id] ?? 0) }
+    converted += b.n
+    const s = ids.map((id) => {
+      const r = b.ranks.indexOf(id)
+      if (r < 0) return 0
+      return system.rankToScore === 'approval' ? (r < depth ? 5 : 0) : (5 * (maxLen - r)) / maxLen
+    })
+    return { n: b.n, s }
+  })
+  return { rows, converted }
+}
+
+function trvCount(ballots: Ballot[], ids: string[], system: System, seats: number, total: number): CountResult {
+  const C = Math.max(1, Math.min(seats, system.trvC || 1))
+  const { rows, converted } = scoreRows(ballots, ids, system)
+  // Scale to [0, 1]. With rescaling on (the paper's default), each ballot's top
+  // score becomes 1 and its lowest 0; a ballot that scores everyone alike gets 0.5.
+  // Flat typed arrays: a real district has ~40,000 ballot groups and ~30 candidates.
+  const P = ids.length
+  const R = rows.length
+  const S = new Float64Array(R * P)
+  rows.forEach((r, j) => {
+    const lo = system.trvRescale ? Math.min(...r.s) : 0
+    const hi = system.trvRescale ? Math.max(...r.s) : 5
+    for (let i = 0; i < P; i++) S[j * P + i] = hi === lo ? 0.5 : (r.s[i]! - lo) / (hi - lo)
+  })
+  const n = Float64Array.from(rows, (r) => r.n)
+
+  let totalCost = C * total
+  let q = totalCost / seats
+  let winners: number[] = []
+  let costs: number[] = []
+  let offersByRound: number[][] = []
+  const c = new Float64Array(R)
+  let iterations = 0
+  for (; iterations < 200; iterations++) {
+    q = totalCost / seats
+    c.fill(C)
+    winners = []
+    costs = []
+    offersByRound = []
+    for (let k = 0; k < seats; k++) {
+      const offers = new Array<number>(P).fill(0)
+      for (let j = 0; j < R; j++) {
+        const cj = c[j]!
+        if (cj <= 0) continue
+        const nj = n[j]!
+        const base = j * P
+        for (let i = 0; i < P; i++) {
+          const v = S[base + i]!
+          offers[i]! += nj * (v < cj ? v : cj)
+        }
+      }
+      for (const w of winners) offers[w] = 0
+      offersByRound.push(offers)
+      let w = -1
+      for (let i = 0; i < P; i++) {
+        if (winners.includes(i)) continue
+        if (w < 0 || offers[i]! > offers[w]! + EPS) w = i
+      }
+      const r = offers[w]!
+      const cost = Math.min(q, r)
+      winners.push(w)
+      costs.push(cost)
+      if (r > EPS) {
+        const f = cost / r
+        for (let j = 0; j < R; j++) {
+          const v = S[j * P + w]!
+          const cj = c[j]!
+          c[j] = cj - (v < cj ? v : cj) * f
+        }
+      }
+    }
+    const prev = totalCost
+    totalCost = costs.reduce((a, b) => a + b, 0)
+    if (prev <= EPS || Math.abs(totalCost - prev) < 1e-5 * prev) break
+  }
+
+  let unspent = 0
+  for (let j = 0; j < R; j++) unspent += c[j]! * n[j]!
+  // Above C = 1 every ballot holds currency it can never spend, so only the
+  // first unit's worth counts as a vote that went to no winner.
+  const ranOut = Math.max(0, unspent - (C - 1) * total)
+  const rounds: Round[] = winners.map((w, k) => {
+    const status: Record<string, CandStatus> = Object.fromEntries(ids.map((id) => [id, 'hopeful']))
+    for (const e of winners.slice(0, k)) status[ids[e]!] = 'elected'
+    const offers = offersByRound[k]!
+    const tallies: Record<string, number> = Object.fromEntries(ids.map((id, i) => [id, status[id] === 'elected' ? 0 : offers[i]!]))
+    const r = offers[w]!
+    const kept = r - costs[k]!
+    return {
+      n: k + 1,
+      phase: 'TRV count',
+      tallies,
+      status,
+      exhausted: 0,
+      lost: 0,
+      elected: [ids[w]!],
+      eliminated: [],
+      note:
+        kept > 0.005
+          ? `${ids[w]} has the largest total offer (${fmt(r)}) and wins. Backers pay the seat price of ${fmt(costs[k]!)} and keep ${fmt(kept)}`
+          : `${ids[w]} has the largest total offer (${fmt(r)}) and wins. The offer is below the seat price, so backers pay all of it`,
+    }
+  })
+  const last = rounds[rounds.length - 1]
+  if (last) last.exhausted = ranOut
+
+  const notes = [
+    `Each ballot held ${fmt(C)} unit${C === 1 ? '' : 's'} of currency, and a seat cost ${fmt(q)} after adjustment (${fmt((C * total) / seats)} before). ${((unspent / (C * total)) * 100).toFixed(1)}% of all currency was left unspent.${C > 1 + EPS ? ' Above 1 unit per ballot, much of that could never be spent.' : ' The paper uses this as its measure of voters who backed no winner.'}`,
+  ]
+  if (C >= seats - EPS && seats > 1) notes.push('With as much currency as there are seats, no ballot runs short, so this is plain score voting: the highest score totals win.')
+  if (converted > 0)
+    notes.push(
+      system.rankToScore === 'approval'
+        ? `${converted === total ? 'These ballots have' : `${fmt(converted)} ballots have`} rankings, not scores. A ranked candidate in the top ${Math.max(1, system.consentDepth)} scores 5; the rest score 0.`
+        : `${converted === total ? 'These ballots have' : `${fmt(converted)} ballots have`} rankings, not scores. Scores come from rank: first choice scores 5, and each lower rank scores less.`,
+    )
+  if (iterations >= 199) notes.push('The seat price did not settle within 200 adjustments. The result shown uses the last one.')
+  return {
+    winners: winners.map((w, k) => ({ id: ids[w]!, how: 'price' as const, round: k + 1, tally: offersByRound[k]![w]! })),
+    rounds,
+    quota: q / C,
+    total,
+    exhausted: ranOut,
+    lost: 0,
+    notes,
+  }
 }
 
 // ───────────────────────── SNTV baseline ─────────────────────────

@@ -12,6 +12,8 @@ export interface Candidate {
 export interface Ballot {
   n: number
   ranks: string[]
+  /** Scores on a 0–5 scale, for score-ballot methods. Absent on ranked-only ballots. */
+  scores?: Record<string, number>
 }
 
 export interface GenParams {
@@ -41,7 +43,7 @@ export interface Profile {
   real?: boolean
 }
 
-export type Method = 'stv' | 'meek' | 'mcpc' | 'sntv'
+export type Method = 'stv' | 'meek' | 'mcpc' | 'sntv' | 'trv'
 
 export interface System {
   id: string
@@ -71,6 +73,14 @@ export interface System {
   // ── Meek / Warren ──
   meekVariant: 'meek' | 'warren'
 
+  // ── Transferable Range Voting (Bewley and Luchini, 2025) ──
+  /** Currency per ballot. 1 = proportional; the number of seats = plain score voting. */
+  trvC: number
+  /** Rescale each ballot so its top score is 1 and lowest is 0, as the paper does by default. */
+  trvRescale: boolean
+  /** How a ballot with rankings but no scores gets scores. */
+  rankToScore: 'points' | 'approval'
+
   // ── Mandate-Constrained Proportional Consent ──
   /** A voter "consents" to candidates in their top-N rankings. */
   consentDepth: number
@@ -78,7 +88,7 @@ export interface System {
   mandate: number
 }
 
-export type WinHow = 'quota' | 'remaining' | 'finisher' | 'committee' | 'plurality'
+export type WinHow = 'quota' | 'remaining' | 'finisher' | 'committee' | 'plurality' | 'price'
 
 export interface Winner {
   id: string

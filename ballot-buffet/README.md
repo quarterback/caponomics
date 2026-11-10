@@ -41,6 +41,25 @@ Seats are set on the contest, so any rule can be run as a 3-seat district or a s
 Portland 2024 · Meek · Warren · Last-parcel Gregory · BTR-WIGM · STV-B · Hare-Mandate STV ·
 2+1 Hybrid · Rank-decay transfers · MCPC · Sequential Mandate RCV · First-choice plurality.
 
+## Score ballots and Transferable Range Voting
+
+Transferable Range Voting (TRV) is from Thomas Bewley and Paolo Luchini, "A new method for
+approximating proportional representation in multi-seat elections based on range or approval
+voting" (working paper, January 2025; reference code at github.com/tbewley/TRV). Voters score
+candidates. Each ballot holds one unit of currency, a seat costs a third of all currency, and the
+winner's backers pay in proportion to what they offered. There are no eliminations.
+
+- **Currency per ballot** is the paper's C. At 1 the count is proportional; at the number of seats
+  it is plain score voting. Values in between trade one for the other.
+- **Rescale each ballot** follows the paper's default: each voter's top score counts as 1 and lowest
+  as 0. Turn it off to count scores as marked.
+- **Score ballots** come from the generator, which keeps each voter's score for every candidate
+  alongside the ranking, or from text lines like `3: A=5, B=2`. Ranked-only ballots, including the
+  real districts, are converted by a setting: points by rank, or approval of the top choices. The
+  result says when a conversion was used.
+
+The tests reproduce the five worked examples in section 2.1 of the paper.
+
 ## Ballot sets
 
 ### Real ballots: Portland, November 2024

@@ -22,6 +22,9 @@ const BASE: System = {
   resetSeats: 0,
   finisher: 'condorcet',
   meekVariant: 'meek',
+  trvC: 1,
+  trvRescale: true,
+  rankToScore: 'points',
   consentDepth: 3,
   mandate: 1 / 3,
 }
@@ -75,6 +78,24 @@ export const SYSTEM_GROUPS: SystemGroup[] = [
     ],
   },
   {
+    label: 'Score Ballots',
+    systems: [
+      sys({
+        id: 'trv',
+        name: 'Transferable Range Voting',
+        blurb: 'Voters score candidates. Each ballot has one unit of currency, and a seat costs a third of it. Bewley and Luchini, 2025.',
+        method: 'trv',
+      }),
+      sys({
+        id: 'trv-majority',
+        name: 'TRV, leaning majoritarian',
+        blurb: 'The same count with twice the currency per ballot, so a large bloc can win more seats.',
+        method: 'trv',
+        trvC: 2,
+      }),
+    ],
+  },
+  {
     label: 'Other Methods',
     systems: [
       sys({
@@ -121,6 +142,7 @@ export function charterFit(s: System): Fit {
   const charter: string[] = []
   const code: string[] = []
   if (s.method === 'mcpc') charter.push('The charter requires single transferable vote. This method does not transfer votes.')
+  if (s.method === 'trv') charter.push('The charter requires ranked choice voting counted by single transferable vote. This method uses score ballots.')
   if (s.method === 'sntv') charter.push('The charter requires ranked choice voting. This method ignores rankings.')
   if (s.method === 'meek') {
     code.push(

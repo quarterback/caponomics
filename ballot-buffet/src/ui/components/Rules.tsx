@@ -2,7 +2,8 @@ import { useStore } from '../store'
 import { Field, Range, Seg, pct } from './bits'
 
 export function Rules() {
-  const { system: s, patchSystem: set, seats } = useStore()
+  const { system: s, patchSystem: set, seats, profile } = useStore()
+  const hasScores = profile.ballots.some((b) => b.scores)
   return (
     <div className="card">
       <div className="card__head">
@@ -18,6 +19,7 @@ export function Rules() {
               { value: 'meek', label: 'Meek / Warren' },
               { value: 'mcpc', label: 'Most-supported group (MCPC)' },
               { value: 'sntv', label: 'First choices only' },
+              { value: 'trv', label: 'Score ballots (TRV)' },
             ]}
           />
         </Field>
@@ -217,6 +219,56 @@ export function Rules() {
               help="Set the share of all voters who must support each winner. The tool picks the group of winners that represents the most voters. If no group meets the share, the tool lowers it to the highest share these candidates can meet, and tells you."
             >
               <Range value={s.mandate} min={0} max={0.6} step={0.01} show={pct(s.mandate, 0)} onChange={(v) => set({ mandate: v })} />
+            </Field>
+          </>
+        )}
+
+        {s.method === 'trv' && (
+          <>
+            <Field
+              label="Currency per ballot"
+              help={`At 1 the count is proportional: a seat costs a third of all currency, so a group needs about a third of voters to win one. At ${seats} it is plain score voting, and a majority can win every seat.`}
+            >
+              <Range value={Math.min(s.trvC, seats)} min={1} max={Math.max(1, seats)} step={0.05} show={Math.min(s.trvC, seats).toFixed(2)} onChange={(v) => set({ trvC: v })} />
+            </Field>
+            <Field
+              label="Rescale each ballot"
+              help={
+                s.trvRescale
+                  ? 'Each voter’s top score counts as 1 and lowest as 0, as in the paper. A lukewarm favourite counts as much as an enthusiastic one.'
+                  : 'Scores count as marked on the 0 to 5 scale. A voter who gives no one a 5 has less influence.'
+              }
+            >
+              <Seg
+                value={s.trvRescale ? 'on' : 'off'}
+                onChange={(v) => set({ trvRescale: v === 'on' })}
+                options={[
+                  { value: 'on', label: 'On (paper)' },
+                  { value: 'off', label: 'Off' },
+                ]}
+              />
+            </Field>
+            <Field
+              label="Scores for ranked ballots"
+              help={
+                hasScores
+                  ? 'These ballots have scores, so this setting is not used.'
+                  : s.rankToScore === 'points'
+                    ? 'These ballots have rankings only. First choice scores 5, and each lower rank scores less.'
+                    : `These ballots have rankings only. A candidate in a voter’s top ${s.consentDepth} scores 5; the rest score 0.`
+              }
+            >
+              <Seg
+                value={s.rankToScore}
+                onChange={(v) => set({ rankToScore: v })}
+                options={[
+                  { value: 'points', label: 'Points by rank' },
+                  { value: 'approval', label: 'Top choices approved' },
+                ]}
+              />
+              {s.rankToScore === 'approval' && !hasScores && (
+                <Range value={s.consentDepth} min={1} max={6} step={1} show={`top ${s.consentDepth}`} onChange={(v) => set({ consentDepth: v })} />
+              )}
             </Field>
           </>
         )}

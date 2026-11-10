@@ -12,6 +12,7 @@ const HOW: Record<Winner['how'], string> = {
   finisher: 'separate count',
   committee: 'most-supported group',
   plurality: 'most first choices',
+  price: 'paid the seat price',
 }
 
 export function Results() {
@@ -55,7 +56,7 @@ export function Results() {
 
           <dl className="readouts">
             {result.quota !== null && system.method !== 'mcpc' && (
-              <Readout label="Threshold" value={num(result.quota)} note={`${pct(result.quota / result.total)} of ${num(result.total)} ballots`} />
+              <Readout label={system.method === 'trv' ? 'Seat price' : 'Threshold'} value={num(result.quota)} note={`${pct(result.quota / result.total)} of ${num(result.total)} ballots`} />
             )}
             <Readout
               label="Least-supported winner"
@@ -68,7 +69,7 @@ export function Results() {
             <Readout
               label="Votes that ran out"
               value={pct(metrics.inactive)}
-              note={result.lost / result.total > 0.002 ? `includes ${num(result.lost)} votes discarded by rule` : 'ballots with no choices left'}
+              note={system.method === 'trv' ? 'currency left unspent' : result.lost / result.total > 0.002 ? `includes ${num(result.lost)} votes discarded by rule` : 'ballots with no choices left'}
               tone={metrics.inactive > 0.2 ? 'warn' : undefined}
             />
             <Readout

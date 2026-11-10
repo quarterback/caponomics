@@ -113,7 +113,8 @@ export function Contest() {
               <textarea className="input mono" spellCheck={false} value={text} onChange={(e) => setText(e.target.value)} rows={10} />
               <div className="field__help">
                 Write one line for each group of identical ballots, like <span className="mono">26: A &gt; B &gt; C</span>. To put a
-                candidate in a camp, add a line like <span className="mono">A [Camp name]</span>.
+                candidate in a camp, add a line like <span className="mono">A [Camp name]</span>. For score ballots, write
+                scores from 0 to 5, like <span className="mono">3: A=5, B=2</span>.
               </div>
               {errors.map((e) => (
                 <div key={e} className="field__err">
