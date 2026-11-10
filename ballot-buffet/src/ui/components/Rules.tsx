@@ -7,17 +7,16 @@ export function Rules() {
     <div className="card">
       <div className="card__head">
         <span className="card__title">Counting rules</span>
-        <span className="card__meta">every preset is just a setting of these</span>
       </div>
       <div className="card__body form">
-        <Field label="Machine">
+        <Field label="Counting method">
           <Seg
             value={s.method}
             onChange={(v) => set({ method: v })}
             options={[
               { value: 'stv', label: 'Round-by-round STV' },
               { value: 'meek', label: 'Meek / Warren' },
-              { value: 'mcpc', label: 'Consent committee' },
+              { value: 'mcpc', label: 'Consent committee (MCPC)' },
               { value: 'sntv', label: 'First choices only' },
             ]}
           />

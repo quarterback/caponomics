@@ -35,14 +35,14 @@ export interface SystemGroup {
 
 export const SYSTEM_GROUPS: SystemGroup[] = [
   {
-    label: 'Baseline',
+    label: 'Current law',
     systems: [BASE],
   },
   {
-    label: 'Same family, different plumbing',
+    label: 'Other STV counts',
     systems: [
-      sys({ id: 'meek', name: 'Meek STV', blurb: 'Keep values · falling quota · no skipped winners', method: 'meek' }),
-      sys({ id: 'warren', name: 'Warren STV', blurb: 'Meek with additive portions', method: 'meek', meekVariant: 'warren' }),
+      sys({ id: 'meek', name: 'Meek STV', blurb: 'Winners keep a share of every ballot; the quota falls as ballots run out', method: 'meek' }),
+      sys({ id: 'warren', name: 'Warren STV', blurb: 'Like Meek, but winners take equal portions from each ballot', method: 'meek', meekVariant: 'warren' }),
       sys({
         id: 'last-parcel',
         name: 'Last-parcel Gregory',
@@ -54,14 +54,14 @@ export const SYSTEM_GROUPS: SystemGroup[] = [
     ],
   },
   {
-    label: 'Majority-aware experiments',
+    label: 'Majority-leaning variants',
     systems: [
       sys({ id: 'btr-wigm', name: 'BTR-WIGM', blurb: 'Bottom two face off head-to-head before anyone is cut', elimination: 'btr' }),
       sys({ id: 'stv-b', name: 'STV-B (Borda elimination)', blurb: 'Lowest Borda score is cut, not lowest tally', elimination: 'borda' }),
       sys({
         id: 'hare-mandate',
         name: 'Hare-Mandate STV',
-        blurb: 'Hare threshold (⅓ for 3 seats) · no back-door seats · open seats to a consensus count',
+        blurb: 'Higher threshold (⅓ for 3 seats); seats nobody reaches go to a districtwide count',
         quota: 'hare',
         completion: 'finisher',
       }),
@@ -71,16 +71,16 @@ export const SYSTEM_GROUPS: SystemGroup[] = [
         blurb: 'STV fills all but one seat; the last goes to a districtwide Condorcet count',
         resetSeats: 1,
       }),
-      sys({ id: 'rank-decay', name: 'Rank-decay transfers', blurb: 'Ballots keep 80% each time they move — a negative result', decay: 0.8, truncate: false }),
+      sys({ id: 'rank-decay', name: 'Rank-decay transfers', blurb: 'A ballot keeps 80% of its value each time it moves', decay: 0.8, truncate: false }),
     ],
   },
   {
-    label: 'Different machines',
+    label: 'Other methods',
     systems: [
       sys({
         id: 'mcpc',
         name: 'MCPC',
-        blurb: 'Mandate-constrained proportional consent — overlapping top-3 support',
+        blurb: 'Picks the committee most voters put in their top 3; every winner must clear a support bar',
         method: 'mcpc',
       }),
       sys({

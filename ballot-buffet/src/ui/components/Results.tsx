@@ -28,7 +28,7 @@ export function Results() {
     <section className="col">
       <div className="card">
         <div className="card__head">
-          <span className="card__title">Who wins</span>
+          <span className="card__title">Winners</span>
           <span className="card__meta">
             {result.quota !== null && system.method !== 'mcpc' && (
               <>
@@ -38,64 +38,64 @@ export function Results() {
           </span>
         </div>
         <div className="card__body stack">
-          <div className="winners">
+          <ol className="winlist">
             {result.winners.map((w, i) => (
-              <div className="winner" key={w.id} data-how={w.how} data-new={!baseSet.has(w.id)}>
-                <span className="winner__seat mono">{i + 1}</span>
-                <div>
-                  <strong>{name(w.id)}</strong>
-                  <span>
-                    {HOW[w.how]} · <span className="mono">{num(w.tally)}</span>
-                  </span>
-                </div>
-              </div>
+              <li key={w.id} data-how={w.how} data-new={!baseSet.has(w.id)}>
+                <span className="mono winlist__n">{i + 1}</span>
+                <strong>{name(w.id)}</strong>
+                <span className="winlist__how">{HOW[w.how]}</span>
+                <span className="mono winlist__v">{num(w.tally)}</span>
+              </li>
             ))}
-          </div>
+          </ol>
           {system.id !== 'portland' || forked ? (
-            <div className="delta" data-same={sameAsPortland}>
+            <p className="delta" data-same={sameAsPortland}>
               {sameAsPortland
                 ? 'Same winners as Portland’s current count on these ballots.'
-                : `Differs from Portland’s current count, which elects ${baseline.winners.map((w) => name(w.id)).join(', ')}.`}
-            </div>
+                : `Portland’s current count elects ${baseline.winners.map((w) => name(w.id)).join(', ')} on these ballots.`}
+            </p>
           ) : null}
 
-          <div className="lsummary">
-            <Tile
-              label="Weakest mandate"
+          <dl className="readouts">
+            <Readout
+              label="Least-supported winner"
               value={pct(metrics.minMandate)}
-              sub={metrics.weakest ? `${name(metrics.weakest)} — voters ranking them top 3` : ''}
+              note={metrics.weakest ? `of voters ranked ${name(metrics.weakest)} in their top 3` : ''}
               tone={metrics.minMandate < 0.25 ? 'warn' : undefined}
             />
-            <Tile label="Voters with a winner" value={pct(metrics.represented)} sub="ranked at least one winner" />
-            <Tile label="First choice won" value={pct(metrics.firstChoiceWon)} sub="of all voters" />
-            <Tile
-              label="Vote value behind no one"
+            <Readout label="Voters who ranked a winner" value={pct(metrics.represented)} note="anywhere on their ballot" />
+            <Readout label="Voters whose first choice won" value={pct(metrics.firstChoiceWon)} />
+            <Readout
+              label="Votes that ran out"
               value={pct(metrics.inactive)}
-              sub={result.lost / result.total > 0.002 ? `${num(result.lost)} votes destroyed by rule` : 'ran out of rankings'}
+              note={result.lost / result.total > 0.002 ? `includes ${num(result.lost)} votes discarded by rule` : 'no rankings left to count'}
               tone={metrics.inactive > 0.2 ? 'warn' : undefined}
             />
-            <Tile
-              label="Seated below threshold"
+            <Readout
+              label="Seated below the threshold"
               value={String(metrics.belowQuota.length)}
-              sub={metrics.belowQuota.map(name).join(', ') || 'none'}
-              tone={metrics.belowQuota.length ? 'warn' : 'good'}
+              note={metrics.belowQuota.map(name).join(', ')}
+              tone={metrics.belowQuota.length ? 'warn' : undefined}
             />
-            <Tile
-              label="Head-to-head upsets"
+            <Readout
+              label="Losers preferred to a winner"
               value={String(metrics.upsets.length)}
-              sub={
+              note={
                 metrics.upsets[0]
-                  ? `${name(metrics.upsets[0].loser)} beats ${name(metrics.upsets[0].winner)} ${num(metrics.upsets[0].forLoser)}–${num(metrics.upsets[0].forWinner)}`
-                  : 'no loser out-polls a winner'
+                  ? `${name(metrics.upsets[0].loser)} beats ${name(metrics.upsets[0].winner)} ${num(metrics.upsets[0].forLoser)}–${num(metrics.upsets[0].forWinner)} head-to-head`
+                  : ''
               }
             />
-          </div>
+          </dl>
 
           {metrics.camps.length > 0 && (
             <div className="camps-read">
               {metrics.camps.map((c) => (
                 <div className="camp-row" key={c.camp}>
-                  <span className="camp-row__name">{c.camp}</span>
+                  <span className="camp-row__name">
+                    <i className="swatch" />
+                    {c.camp}
+                  </span>
                   <div className="camp-row__bars">
                     <div className="bar" style={{ width: `${c.voteShare * 100}%` }} data-kind="votes" />
                     <div className="bar" style={{ width: `${(c.seats / seats) * 100}%` }} data-kind="seats" />
@@ -132,14 +132,14 @@ export function Results() {
   )
 }
 
-function Tile({ label, value, sub, tone }: { label: string; value: string; sub?: string; tone?: 'good' | 'warn' | 'bad' }) {
+function Readout({ label, value, note, tone }: { label: string; value: string; note?: string; tone?: 'warn' }) {
   return (
-    <div className="tile">
-      <div className="tile__label">{label}</div>
-      <div className="tile__value" data-tone={tone}>
+    <div className="readout">
+      <dt>{label}</dt>
+      <dd className="mono" data-tone={tone}>
         {value}
-      </div>
-      {sub && <div className="tile__sub">{sub}</div>}
+      </dd>
+      <dd className="readout__note">{note}</dd>
     </div>
   )
 }
@@ -169,8 +169,7 @@ function Compare({
   return (
     <div className="card">
       <div className="card__head">
-        <span className="card__title">Every system, these ballots</span>
-        <span className="card__meta">click a row to load it</span>
+        <span className="card__title">All systems on these ballots</span>
       </div>
       <div className="btable-wrap flush">
         <table className="btable cmp">
@@ -178,9 +177,9 @@ function Compare({
             <tr>
               <th data-align="l">System</th>
               <th data-align="l">Winners</th>
-              <th>Weakest mandate</th>
-              <th>With a winner</th>
-              <th>Behind no one</th>
+              <th>Weakest winner</th>
+              <th>Ranked a winner</th>
+              <th>Ran out</th>
               <th data-align="l">Change needs</th>
             </tr>
           </thead>
@@ -240,7 +239,7 @@ function RoundTable({ profile, result }: { profile: Profile; result: CountResult
   return (
     <div className="card">
       <div className="card__head">
-        <span className="card__title">The count, round by round</span>
+        <span className="card__title">Rounds</span>
         <span className="card__meta">{rounds.length} round{rounds.length === 1 ? '' : 's'}</span>
       </div>
       <div className="btable-wrap flush">
@@ -275,7 +274,7 @@ function RoundTable({ profile, result }: { profile: Profile; result: CountResult
               </tr>
             ))}
             <tr className="rounds__foot">
-              <td data-align="l">Out of rankings</td>
+              <td data-align="l">No rankings left</td>
               {rounds.map((r) => (
                 <td key={r.n} className="mono">
                   {r.exhausted > 0.005 ? num(r.exhausted) : ''}
@@ -284,7 +283,7 @@ function RoundTable({ profile, result }: { profile: Profile; result: CountResult
             </tr>
             {result.lost / result.total > 0.002 && (
               <tr className="rounds__foot">
-                <td data-align="l">Destroyed by rule</td>
+                <td data-align="l">Discarded by rule</td>
                 {rounds.map((r) => (
                   <td key={r.n} className="mono">
                     {r.lost > 0.005 ? num(r.lost) : ''}
@@ -325,8 +324,7 @@ function SupportTable({
   return (
     <div className="card">
       <div className="card__head">
-        <span className="card__title">Breadth of support</span>
-        <span className="card__meta">share of all voters ranking each candidate</span>
+        <span className="card__title">Share of voters ranking each candidate</span>
       </div>
       <div className="btable-wrap flush">
         <table className="btable">

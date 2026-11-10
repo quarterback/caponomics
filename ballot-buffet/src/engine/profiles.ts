@@ -137,16 +137,16 @@ export const PROFILES: Profile[] = [
   generateProfile(DEFAULT_GEN, {
     id: 'free-radicals',
     name: 'Free radicals',
-    blurb: '18 candidates, three camps, almost no slate discipline — the Portland worry',
+    blurb: '18 candidates in three camps; voters rarely stick to a slate',
   }),
   generateProfile(
     { ...DEFAULT_GEN, cohesion: 0.9, bullet: 0.05 },
-    { id: 'slates', name: 'Disciplined slates', blurb: 'Same district, same seed — voters rank down their camp' },
+    { id: 'slates', name: 'Disciplined slates', blurb: 'The same district, but voters rank candidates from their own camp' },
   ),
   fromText(
     'rank-decay',
     'Seven small candidates, one backup',
-    'D is everyone’s second choice. Does a 26–22 majority for the last seat survive?',
+    'Seven small candidates’ voters all rank D second. D leads C 26–22 for the last seat',
     3,
     `26: A
 26: B
@@ -163,7 +163,7 @@ export const PROFILES: Profile[] = [
   fromText(
     'sixty-forty',
     '60 / 40 blocs',
-    'A cohesive majority and a cohesive minority. How many seats does each deserve?',
+    '60 voters rank one slate, 40 rank another',
     3,
     `A [Majority]
 B [Majority]

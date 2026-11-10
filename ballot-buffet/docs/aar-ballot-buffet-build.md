@@ -87,6 +87,35 @@ Contrast of the text pairs (WCAG 2 ratio, APCA Lc):
 White on the red is used only for the "forked" chip. As with Cap Buffet, these are token pairs;
 the rendered-page audit has not been run.
 
+### Three review passes
+Ron linked three rule sets after the build: `no-slop-ui` (interface patterns), `red-pen-editor`
+(cut what adds nothing) and `plain-language-default` (federal plain-language guidelines), then
+added: *"no eyebrow text anywhere no descriptive language where slop exists."* Applied to both
+apps where the stylesheet or toolbar is shared, and to Ballot Buffet's own screens and copy.
+
+Interface:
+- **No eyebrow text.** The tagline beside each wordmark and the small "system" label before the
+  system name are gone from both apps. Card headers carry a title and, at most, a figure.
+- **Metric tile grid removed.** The six readouts are rows: label, figure, note.
+- **No boxes inside cards.** Winners are a list with rules between rows; the law reading sits
+  under a rule, not in a framed panel.
+- **No gradients.** The red / blue / green bar is three solid segments.
+- **Nothing moves on hover.** Buttons change colour and shadow only (both apps).
+- **Uppercase labels cut back** to card titles, rail groups and column heads (both apps).
+- **No pseudo-element swatches.**
+
+Copy:
+- Readout names say what they measure: "Least-supported winner", "Voters who ranked a winner",
+  "Votes that ran out", "Losers preferred to a winner".
+- Card titles name their contents: "Winners", "Rounds", "All systems on these ballots".
+- Group and preset descriptions state what the rule does. "Same family, different plumbing"
+  became "Other STV counts"; "Machine" became "Counting method".
+- The About text lost its slogan-style headings.
+
+Kept on purpose, where the checklist and the design system disagree: square corners and hard
+offset shadows are the Chromatic Editorial System's own rules. Not done: Cap Buffet's metric
+tiles, About text and module descriptions predate this work and were not rewritten.
+
 ---
 
 ## Validation

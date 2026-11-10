@@ -1,8 +1,8 @@
 # Ballot Buffet
 
-**Transferable-vote imagineering** — a fork of Cap Buffet's idea, pointed at ranked-choice voting.
-Compose a single-transferable-vote count out of interchangeable rules, load any set of ballots, and
-see who wins and what it cost. Portland's 2024 count is one preset among twelve.
+A ranked-choice counting lab, forked from Cap Buffet. Build a single-transferable-vote count from
+interchangeable rules, load any set of ballots, and see who wins. Portland's 2024 count is one of
+twelve presets.
 
 Live at **https://ballot.capbuffet.com/** (Vercel project with root directory `ballot-buffet/`).
 
@@ -55,10 +55,14 @@ Or paste your own: one line per group, `26: A > B > C`.
 
 ## Readouts
 
-Winners and how each was seated, weakest mandate (top-three support of the least-supported winner),
-voters with a winner on their ballot, vote value behind no one, winners seated below the threshold,
-head-to-head upsets, seats versus first-choice share by camp, the full round-by-round table, and every
-preset run on the same ballots side by side.
+- Winners, and how each was seated.
+- Least-supported winner: the share of voters who ranked that winner in their top three.
+- Voters who ranked a winner, and voters whose first choice won.
+- Votes that ran out: vote value that ended with no candidate.
+- Winners seated below the threshold.
+- Losers preferred to a winner in a head-to-head comparison.
+- Seats against first-choice share, by camp.
+- The round-by-round table, and every preset run on the same ballots.
 
 ## Charter or code
 

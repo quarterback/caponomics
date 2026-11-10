@@ -83,7 +83,6 @@ export function Toolbar({ onAbout }: { onAbout: () => void }) {
       <div className="toolbar__brand">
         <span className="dot" />
         Cap Buffet
-        <small>salary cap imagineering</small>
       </div>
 
       <div className="seg toolbar__tabs" role="tablist">
@@ -98,7 +97,6 @@ export function Toolbar({ onAbout }: { onAbout: () => void }) {
       <div className="toolbar__spacer" />
 
       <div className="toolbar__ruleset">
-        <span>{onCap ? 'system' : 'model'}</span>
         <strong>{onCap ? ruleset.name : model.name}</strong>
         {(onCap ? forked : modelForked) && (
           <span className="pchip" data-cur="tools" title="Edited from a preset">

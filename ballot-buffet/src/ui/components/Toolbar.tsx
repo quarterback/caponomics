@@ -3,7 +3,7 @@ import { charterFit } from '../../engine/systems'
 import { encodeState, useStore } from '../store'
 
 const FAMILY = [
-  { name: 'Ballot Buffet', blurb: 'Transferable-vote imagineering', url: '', current: true },
+  { name: 'Ballot Buffet', blurb: 'Ranked-choice counting lab', url: '', current: true },
   { name: 'Cap Buffet', blurb: 'Salary cap imagineering', url: 'https://capbuffet.com/' },
   { name: 'Lottery Lab', blurb: 'Draft-lottery simulator', url: 'https://lottery.capbuffet.com/' },
 ]
@@ -49,13 +49,15 @@ export function Toolbar({ onAbout }: { onAbout: () => void }) {
   return (
     <header className="toolbar">
       <div className="toolbar__brand">
-        <span className="dot" />
+        <span className="mark" aria-hidden="true">
+          <i />
+          <i />
+          <i />
+        </span>
         Ballot Buffet
-        <small>transferable-vote imagineering</small>
       </div>
       <div className="toolbar__spacer" />
       <div className="toolbar__ruleset">
-        <span>system</span>
         <strong>{system.name}</strong>
         {forked && (
           <span className="pchip" data-cur="tools" title="Edited from a preset">
@@ -96,6 +98,11 @@ export function Toolbar({ onAbout }: { onAbout: () => void }) {
       <button className="btn--icon" title={`Theme: ${theme}`} onClick={cycle} aria-label="Toggle theme">
         {theme === 'dark' ? '☾' : theme === 'light' ? '☀' : '◐'}
       </button>
+      <div className="tricolour" aria-hidden="true">
+        <i />
+        <i />
+        <i />
+      </div>
     </header>
   )
 }

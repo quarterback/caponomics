@@ -10,46 +10,45 @@ export function About({ onClose }: { onClose: () => void }) {
         </div>
         <div className="about__body">
           <p className="about__lede">
-            Ballot Buffet is a <strong>ranked-choice counting laboratory</strong>. Single transferable vote is a family of
-            rules, and two counts that both call themselves STV can seat different people. Pick the rules, pick the ballots,
-            and read who wins and what it cost.
+            Ballot Buffet counts ranked-choice ballots under different rules. Two counts that both call themselves single
+            transferable vote can seat different people. Pick the rules, pick the ballots, and see who wins.
           </p>
 
-          <h3>The counting rule is the subject</h3>
+          <h3>What you can change</h3>
           <p>
-            A count is a handful of interchangeable decisions: the threshold, how a winner’s surplus moves on, who gets cut,
-            what a transferred ballot is worth, and what happens when candidates run out before seats do. Portland’s 2024
-            count is one setting of those switches. Meek, bottom-two runoff, a Hare threshold, a 2+1 hybrid and the rest are
-            others.
+            The threshold, how a winner’s surplus votes move on, who is eliminated, what a transferred ballot is worth, and
+            what happens when candidates run out before seats do. Portland’s 2024 count is one setting of those rules. The
+            other presets change one or two of them.
           </p>
 
-          <h3>Ballots are separate from rules</h3>
+          <h3>Ballots</h3>
           <p>
-            Any set of ballots runs through any system. The generated district has a cohesion dial: at the low end voters
-            rank on personal pull and candidates behave like free radicals; at the high end they rank down a slate. The
-            hand-built sets each isolate one effect and can be edited as text.
+            Any set of ballots runs through any rules. The generated district has a cohesion slider: at the low end voters
+            rank candidates one by one, at the high end they rank a slate. Each hand-built set shows one effect, and you
+            can edit any set as text.
           </p>
 
-          <h3>The same yardsticks for every system</h3>
+          <h3>What the numbers mean</h3>
           <p>
-            Weakest mandate is the share of voters who put the least-supported winner in their top three. Vote value behind
-            no one is what ran out of rankings or was destroyed by a rule. A head-to-head upset is a loser whom more voters
-            ranked above a winner than below; proportional systems produce these by design, so read the number alongside the
-            seats each camp won.
+            <strong>Least-supported winner</strong> is the share of voters who ranked that winner in their top three.{' '}
+            <strong>Votes that ran out</strong> is vote value that ended with no candidate, because the ballot had no
+            rankings left or a rule discarded it. <strong>Losers preferred to a winner</strong> counts losing candidates
+            whom more voters ranked above a winner than below. Proportional counts produce these on purpose, so read that
+            number next to the seats each camp won.
           </p>
 
-          <h3>Charter or code</h3>
+          <h3>Charter and code tags</h3>
           <p>
-            Each rule is tagged by where it lives in Portland law. Charter §3-102 fixes single transferable vote, a threshold
-            tied to the number of seats, surplus transfers to next-ranked candidates, and elimination of the lowest-polling
-            candidates. City Code 2.08.030 holds the arithmetic and can be changed by ordinance. The tags are a plain
-            reading of those texts and are not legal advice.
+            Each rule is tagged by where Portland law sets it. Charter §3-102 requires single transferable vote, a
+            threshold tied to the number of seats, surplus transfers to next-ranked candidates, and elimination of the
+            lowest-polling candidates. City Code 2.08.030 sets the arithmetic, and Council can change it by ordinance. The
+            tags are one reading of those texts. They are not legal advice.
           </p>
 
-          <h3>A calculator</h3>
+          <h3>Limits</h3>
           <p>
-            It reports what a rule does to a set of ballots. Generated ballots are synthetic and are not Portland’s cast vote
-            record. Ties are broken deterministically here; Portland draws lots.
+            The generated ballots are synthetic. They are not Portland’s cast vote record. This tool breaks ties by a fixed
+            rule; Portland draws lots.
           </p>
         </div>
       </div>

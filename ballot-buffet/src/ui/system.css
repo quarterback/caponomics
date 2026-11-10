@@ -30,15 +30,6 @@
   font-size: 21px;
   letter-spacing: -0.04em;
 }
-.toolbar__brand small,
-.toolbar__ruleset span:first-child {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-weight: 500;
-  opacity: 0.85;
-}
 .toolbar__brand .dot {
   border-radius: 0;
   background: var(--lead);
@@ -49,7 +40,6 @@
 .toolbar .btn,
 .toolbar .btn:hover {
   box-shadow: none;
-  transform: none;
 }
 .toolbar .btn:hover,
 .toolbar .btn--icon:hover {
@@ -133,13 +123,13 @@
   border-bottom: var(--frame) solid var(--ink);
 }
 
-/* ── Labels: mono, uppercase, tracked ── */
+/* ── Labels: mono, uppercase, tracked — only for category labels (card
+      titles, rail groups, column heads). Field and tile labels stay sentence
+      case so long ones remain readable. ── */
 .card__title,
 .rail__label,
 .palette__cat h4,
-.tile__label,
 .ltable thead th,
-.field > label,
 .about__body h3 {
   font-family: var(--mono);
   text-transform: uppercase;
@@ -152,13 +142,13 @@
 }
 .rail__label,
 .palette__cat h4,
-.tile__label,
-.ltable thead th,
-.field > label {
+.ltable thead th {
   font-size: 10.5px;
 }
-.field > label {
-  letter-spacing: 0.06em;
+.field > label,
+.tile__label {
+  color: var(--ink);
+  font-weight: 600;
 }
 .about__body h3 {
   font-size: 12px;
@@ -178,16 +168,15 @@
   font-weight: 500;
   letter-spacing: 0.01em;
   box-shadow: 3px 3px 0 var(--ink);
-  transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+  transition: box-shadow var(--transition), background var(--transition);
 }
+/* Hover and press change colour and shadow only — nothing moves. */
 .btn:hover {
   background: var(--bg-deeper);
-  transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0 var(--ink);
 }
 .btn:active {
-  transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0 var(--ink);
+  transform: none;
+  box-shadow: none;
 }
 .btn--sm {
   box-shadow: 2px 2px 0 var(--ink);
@@ -212,7 +201,6 @@
 .btn--ghost:hover,
 .btn--icon:hover {
   box-shadow: none;
-  transform: none;
   background: var(--bg-deeper);
 }
 
@@ -309,4 +297,14 @@
 }
 .builder__empty {
   border: var(--frame) dashed var(--ink);
+}
+
+/* Honour the reader's motion setting: no transitions at all. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
 }
