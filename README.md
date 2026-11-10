@@ -66,6 +66,12 @@ NBA 1988–2004, NFL 2002, MLB 1992/1997) or invent your own. It renders the mod
 plain-language rulebook — with side-by-side comparison against any preset — and deliberately
 runs no "who would get picked" simulation. See `docs/expansion-draft-plan.md`.
 
+## Sibling: Ballot Buffet
+
+`ballot-buffet/` is a self-contained fork of the same idea for ranked-choice voting: compose a
+single-transferable-vote count from interchangeable rules and run any ballots through it. It has its
+own `package.json` and README and does not affect the Cap Buffet build.
+
 ## Status
 
 MVP: **construct a cap system + check roster compliance**, plus the expansion-draft rules

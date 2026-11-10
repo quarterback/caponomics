@@ -1,0 +1,14 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Single-page app: serve index.html for any path (static assets are matched
+# first, so this only catches app routes). Harmless here since the app is
+# hash-routed, but keeps deep links working if path routing is added later.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
