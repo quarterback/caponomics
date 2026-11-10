@@ -11,9 +11,6 @@ export function RulesetBuilder() {
     <div className="card">
       <div className="card__head">
         <span className="card__title">Ruleset</span>
-        <span style={{ marginLeft: 'auto', fontSize: 12, color: 'var(--text-3)' }}>
-          {ruleset.modules.filter((m) => m.enabled).length} active · {ruleset.modules.length} total
-        </span>
       </div>
       <div className="card__body">
         {ruleset.modules.length === 0 ? (

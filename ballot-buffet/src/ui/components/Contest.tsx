@@ -12,7 +12,6 @@ export function Contest() {
     setText(formatBallots(profile))
     setErrors([])
   }, [profile])
-  const voters = profile.ballots.reduce((s, b) => s + b.n, 0)
   const g = profile.gen
   const big = profile.ballots.length > 400
 
@@ -20,9 +19,6 @@ export function Contest() {
     <div className="card">
       <div className="card__head">
         <span className="card__title">Contest</span>
-        <span className="card__meta">
-          {profile.name} · {voters.toLocaleString()} ballots · {profile.candidates.length} candidates
-        </span>
       </div>
       <div className="card__body form">
         <Field label="Seats to fill" help="Portland districts elect 3. Set 1 to see the single-member version of any rule.">

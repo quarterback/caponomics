@@ -14,9 +14,6 @@ export function CompliancePanel() {
       <div className="card">
         <div className="card__head">
           <span className="card__title">Compliance</span>
-          <span style={{ marginLeft: 'auto', fontSize: 12, color: 'var(--text-3)' }}>
-            {league.name}
-          </span>
         </div>
         <div className="card__body" style={{ display: 'grid', gap: 'var(--s4)' }}>
           <TeamPicker />

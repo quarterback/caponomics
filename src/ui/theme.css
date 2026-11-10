@@ -24,7 +24,8 @@
   /* Type slots */
   --display: 'Outfit', 'General Sans', system-ui, sans-serif;
   --text-face: 'General Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --mono: 'Azeret Mono', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  /* No monospace face: figures use the text face with tabular numerals. */
+  --mono: var(--text-face);
   --ui: var(--mono);
   --font-sans: var(--text-face);
   --font-mono: var(--mono);
@@ -197,12 +198,9 @@ body {
 }
 
 .mono {
-  font-family: var(--font-mono);
+  font-family: var(--text-face);
   font-variant-numeric: tabular-nums;
   font-feature-settings: 'tnum' 1;
-  /* Azeret Mono is a true fixed-width face, so decimals/symbols read with a lot
-     of air. Pull the tracking in so figures like $63.2M sit tighter. */
-  letter-spacing: -0.05em;
 }
 
 button {

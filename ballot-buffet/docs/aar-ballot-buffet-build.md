@@ -103,6 +103,12 @@ Interface:
 - **Nothing moves on hover.** Buttons change colour and shadow only (both apps).
 - **Uppercase labels cut back** to card titles, rail groups and column heads (both apps).
 - **No pseudo-element swatches.**
+- **No captions in card headers.** Headers carry a title only, in both apps. Ballot Buffet's
+  threshold moved into the readout rows; the league-name and module-count captions in Cap Buffet
+  were removed.
+- **No monospace type.** Ron: *"monospace fonts are a big AI UI tell."* Figures and labels use
+  the text face with tabular numerals in both apps. Azeret Mono and JetBrains Mono are no longer
+  loaded. Custom fonts from Ron are still to come; the type slots in `theme.css` are where they go.
 
 Copy:
 - Readout names say what they measure: "Least-supported winner", "Voters who ranked a winner",

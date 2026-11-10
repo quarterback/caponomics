@@ -29,13 +29,6 @@ export function Results() {
       <div className="card">
         <div className="card__head">
           <span className="card__title">Winners</span>
-          <span className="card__meta">
-            {result.quota !== null && system.method !== 'mcpc' && (
-              <>
-                threshold <span className="mono">{num(result.quota)}</span> of <span className="mono">{num(result.total)}</span> ({pct(result.quota / result.total)})
-              </>
-            )}
-          </span>
         </div>
         <div className="card__body stack">
           <ol className="winlist">
@@ -57,6 +50,9 @@ export function Results() {
           ) : null}
 
           <dl className="readouts">
+            {result.quota !== null && system.method !== 'mcpc' && (
+              <Readout label="Threshold" value={num(result.quota)} note={`${pct(result.quota / result.total)} of ${num(result.total)} ballots`} />
+            )}
             <Readout
               label="Least-supported winner"
               value={pct(metrics.minMandate)}
@@ -240,7 +236,6 @@ function RoundTable({ profile, result }: { profile: Profile; result: CountResult
     <div className="card">
       <div className="card__head">
         <span className="card__title">Rounds</span>
-        <span className="card__meta">{rounds.length} round{rounds.length === 1 ? '' : 's'}</span>
       </div>
       <div className="btable-wrap flush">
         <table className="btable rounds">

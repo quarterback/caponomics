@@ -124,9 +124,6 @@ export function ModelSummary() {
       <div className="card">
         <div className="card__head">
           <span className="card__title">At a glance</span>
-          <span style={{ marginLeft: 'auto', fontSize: 12, color: 'var(--text-3)' }}>
-            vs {league.name}
-          </span>
         </div>
         <div className="card__body">
           <Tiles model={model} existingTeams={teams} />

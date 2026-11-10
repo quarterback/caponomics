@@ -11,9 +11,6 @@ export function ExpansionBuilder() {
     <div className="card">
       <div className="card__head">
         <span className="card__title">Expansion model</span>
-        <span style={{ marginLeft: 'auto', fontSize: 12, color: 'var(--text-3)' }}>
-          {model.modules.filter((m) => m.enabled).length} active · {model.modules.length} total
-        </span>
       </div>
       <div className="card__body">
         <div className="field" style={{ marginBottom: 'var(--s3)' }}>
