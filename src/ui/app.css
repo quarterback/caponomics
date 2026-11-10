@@ -1293,3 +1293,57 @@
   margin-left: 4px;
   vertical-align: middle;
 }
+
+/* Cup tab: plain rows for the arithmetic */
+.statrows {
+  margin: 0;
+  border-top: 2px solid var(--border-strong);
+}
+.statrow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--s4);
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.statrow dt {
+  font-weight: 600;
+}
+.statrow dd {
+  margin: 0;
+  font-size: 15px;
+  text-align: right;
+}
+
+/* Access list: a plain table that scrolls sideways on a phone */
+.access-wrap {
+  overflow-x: auto;
+}
+.access {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.access th,
+.access td {
+  padding: 7px 12px;
+  text-align: right;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border);
+}
+.access th {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--border-strong);
+  background: var(--surface-2);
+}
+.access [data-align='l'] {
+  text-align: left;
+}
+.shell__body[data-focus='true'] .access {
+  font-size: 16px;
+}

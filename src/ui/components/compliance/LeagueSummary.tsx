@@ -23,8 +23,8 @@ export function LeagueSummary({ s }: { s: Summary }) {
       {stat('Below floor', `${s.belowFloorCount}`, s.belowFloorCount ? 'warn' : undefined, `of ${s.teamCount}`)}
       {stat('In tax', `${s.inTaxCount}`, undefined, `owe ${fmtMoney(s.totalTax, cur)}`)}
       {apronTotal > 0 && stat('Over an apron', `${apronTotal}`, 'warn', apronDetail(s.apronCounts))}
-      {stat('Payroll spread', `${fmtMoney(s.payrollMin, cur)}–${fmtMoney(s.payrollMax, cur)}`, undefined, `avg ${fmtMoney(s.payrollAvg, cur)}`)}
-      {stat('Top vs bottom', s.disparityRatio ? `${s.disparityRatio.toFixed(1)}×` : '—', s.disparityRatio >= 3 ? 'warn' : undefined, 'richest ÷ poorest')}
+      {stat('Payroll spread', `${fmtMoney(s.payrollMin, cur)}–${fmtMoney(s.payrollMax, cur)}`, undefined, `average ${fmtMoney(s.payrollAvg, cur)}`)}
+      {stat('Top vs bottom', s.disparityRatio ? `${s.disparityRatio.toFixed(1)}×` : '—', s.disparityRatio >= 3 ? 'warn' : undefined, 'highest payroll to lowest')}
       {stat('Balance', `${Math.round(s.payrollCV * 100)}%`, undefined, 'payroll variation')}
     </div>
   )
@@ -33,6 +33,6 @@ export function LeagueSummary({ s }: { s: Summary }) {
 function apronDetail(counts: Record<number, number>): string {
   return Object.entries(counts)
     .sort(([a], [b]) => Number(a) - Number(b))
-    .map(([lvl, n]) => `${n} over A${lvl}`)
-    .join(' · ')
+    .map(([lvl, n]) => `${n} over apron ${lvl}`)
+    .join(', ')
 }

@@ -17,15 +17,15 @@ export type ApronRestriction = (typeof APRON_RESTRICTIONS)[number]['value']
 
 /** How a draft-pick / asset penalty bites. Informational in MVP. */
 export const ASSET_PENALTY_EFFECTS = [
-  { value: 'freeze', label: 'Freeze pick (untradeable)' },
-  { value: 'dropSpots', label: 'Drop pick N spots' },
+  { value: 'freeze', label: 'Freeze pick' },
+  { value: 'dropSpots', label: 'Drop pick' },
   { value: 'forfeit', label: 'Forfeit pick' },
 ] as const
 
 /** How a floor shortfall is handled. */
 export const FLOOR_PENALTIES = [
-  { value: 'payShortfall', label: 'Pay the shortfall (to players/league)' },
-  { value: 'redistribute', label: 'Redistribute to other clubs' },
+  { value: 'payShortfall', label: 'Pay the shortfall' },
+  { value: 'redistribute', label: 'Redistribute to clubs' },
   { value: 'draftPenalty', label: 'Lose a draft pick' },
-  { value: 'none', label: 'No penalty (advisory only)' },
+  { value: 'none', label: 'No penalty' },
 ] as const

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { serializeRuleset, encodeRulesetToHash } from '../../engine/serialize'
 import { serializeModel, encodeModelToHash } from '../../engine/expansion/serialize'
 import { CURRENCY_LIST, currencySymbol, type Currency } from '../../engine/format'
@@ -6,6 +7,8 @@ import { REMIXES } from '../remixes'
 import { FAMILY_TOOLS } from '../family'
 import { useStore } from '../state/store'
 import { useExpansion } from '../state/expansionStore'
+import { useCup } from '../state/cupStore'
+import { serializeCup, encodeCupToHash } from '../../engine/cup/serialize'
 
 function useTheme(): [string, () => void] {
   const [theme, setTheme] = useState<string>(() => localStorage.getItem('cap-theme') ?? 'auto')
@@ -19,7 +22,7 @@ function useTheme(): [string, () => void] {
   return [theme, cycle]
 }
 
-export function Toolbar({ onAbout }: { onAbout: () => void }) {
+export function Toolbar({ onAbout, focus, onFocus }: { onAbout: () => void; focus: boolean; onFocus: () => void }) {
   const { ruleset, forked, loadRulesetObject, loadRemix, setCurrency } = useStore()
   const { tab, setTab, model, forked: modelForked, loadModelObject } = useExpansion()
   const currency = ruleset.currency ?? 'USD'
@@ -29,7 +32,11 @@ export function Toolbar({ onAbout }: { onAbout: () => void }) {
   const [importText, setImportText] = useState('')
   const [copied, setCopied] = useState(false)
 
+  const cup = useCup()
   const onCap = tab === 'cap'
+  const onCup = tab === 'cup'
+  // What the current tab calls the thing being edited, for Save / Import text.
+  const thing = onCap ? 'cap system' : onCup ? 'cup format' : 'expansion draft'
 
   useEffect(() => {
     const close = (e: MouseEvent) => {
@@ -40,8 +47,8 @@ export function Toolbar({ onAbout }: { onAbout: () => void }) {
   }, [])
 
   const save = () => {
-    const json = onCap ? serializeRuleset(ruleset) : serializeModel(model)
-    const id = onCap ? ruleset.id || 'ruleset' : model.id || 'expansion-model'
+    const json = onCap ? serializeRuleset(ruleset) : onCup ? serializeCup(cup.model) : serializeModel(model)
+    const id = onCap ? ruleset.id || 'ruleset' : onCup ? cup.model.id || 'cup-format' : model.id || 'expansion-model'
     const blob = new Blob([json], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
@@ -52,7 +59,7 @@ export function Toolbar({ onAbout }: { onAbout: () => void }) {
   }
 
   const copyLink = async () => {
-    const frag = onCap ? `r=${encodeRulesetToHash(ruleset)}` : `x=${encodeModelToHash(model)}`
+    const frag = onCap ? `r=${encodeRulesetToHash(ruleset)}` : onCup ? `c=${encodeCupToHash(cup.model)}` : `x=${encodeModelToHash(model)}`
     const url = `${location.origin}${location.pathname}#${frag}`
     try {
       await navigator.clipboard.writeText(url)
@@ -67,11 +74,12 @@ export function Toolbar({ onAbout }: { onAbout: () => void }) {
     try {
       const parsed = JSON.parse(importText)
       if (onCap) loadRulesetObject(parsed)
+      else if (onCup) cup.loadModelObject(parsed)
       else loadModelObject(parsed)
       setImportOpen(false)
       setImportText('')
     } catch {
-      alert(onCap ? 'That doesn’t look like valid ruleset JSON.' : 'That doesn’t look like valid expansion-model JSON.')
+      alert(`That text is not a saved ${thing}. Check that you copied all of it.`)
     }
   }
 
@@ -82,26 +90,31 @@ export function Toolbar({ onAbout }: { onAbout: () => void }) {
       <div className="toolbar__brand">
         <span className="dot" />
         Cap Buffet
-        <small>salary cap imagineering</small>
       </div>
 
       <div className="seg toolbar__tabs" role="tablist">
         <button role="tab" data-active={onCap} onClick={() => setTab('cap')}>
           Cap System
         </button>
-        <button role="tab" data-active={!onCap} onClick={() => setTab('expansion')}>
+        <button role="tab" data-active={tab === 'expansion'} onClick={() => setTab('expansion')}>
           Expansion Draft
         </button>
+        <button role="tab" data-active={onCup} onClick={() => setTab('cup')}>
+          Cup Format
+        </button>
       </div>
+
+      <button className="btn btn--sm" aria-pressed={focus} onClick={onFocus}>
+        {focus ? 'Show setup' : 'Results only'}
+      </button>
 
       <div className="toolbar__spacer" />
 
       <div className="toolbar__ruleset">
-        <span>{onCap ? 'system' : 'model'}</span>
-        <strong>{onCap ? ruleset.name : model.name}</strong>
-        {(onCap ? forked : modelForked) && (
-          <span className="pchip" data-cur="tools" title="Edited from a preset">
-            forked
+        <strong>{onCap ? ruleset.name : onCup ? cup.model.name : model.name}</strong>
+        {(onCap ? forked : onCup ? cup.forked : modelForked) && (
+          <span className="pchip" data-cur="tools" title="You changed this from the version you loaded">
+            edited
           </span>
         )}
       </div>
@@ -191,23 +204,26 @@ export function Toolbar({ onAbout }: { onAbout: () => void }) {
         {theme === 'dark' ? '☾' : theme === 'light' ? '☀' : '◐'}
       </button>
 
-      {importOpen && (
+      {/* Portaled to <body>: a modal left inside the sticky toolbar is positioned
+          against the toolbar (any filter/transform there traps position:fixed)
+          and gets clipped to the header strip. */}
+      {importOpen &&
+        createPortal(
         <div className="modal-backdrop" onClick={() => setImportOpen(false)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <div className="card__head">
-              <span className="card__title">{onCap ? 'Import a ruleset' : 'Import an expansion model'}</span>
-              <button className="btn--icon" style={{ marginLeft: 'auto' }} onClick={() => setImportOpen(false)}>
+              <span className="card__title">Load a saved {thing}</span>
+              <button className="btn--icon" style={{ marginLeft: 'auto' }} onClick={() => setImportOpen(false)} aria-label="Close">
                 ✕
               </button>
             </div>
             <div className="card__body" style={{ display: 'grid', gap: 'var(--s3)' }}>
               <p style={{ margin: 0, fontSize: 13, color: 'var(--text-2)' }}>
-                {onCap
-                  ? 'Paste a cap system you saved with Save, or one shared with you as JSON, to load it here. Shared links open on their own.'
-                  : 'Paste an expansion model you saved with Save, or one shared with you as JSON, to load it here. Shared links open on their own.'}
+                Paste the text of a {thing} that you saved, or that someone sent you. You do not need this for a shared link. A
+                link opens the {thing} by itself.
               </p>
               <textarea
-                placeholder={onCap ? 'Paste ruleset JSON…' : 'Paste expansion-model JSON…'}
+                placeholder={`Paste the saved ${thing} here`}
                 value={importText}
                 onChange={(e) => setImportText(e.target.value)}
               />
@@ -221,8 +237,9 @@ export function Toolbar({ onAbout }: { onAbout: () => void }) {
               </div>
             </div>
           </div>
-        </div>
-      )}
+        </div>,
+          document.body,
+        )}
     </header>
   )
 }

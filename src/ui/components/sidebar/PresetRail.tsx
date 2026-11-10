@@ -9,7 +9,7 @@ export function PresetRail() {
   return (
     <div className="col" style={{ paddingRight: 2 }}>
       <div className="rail__group">
-        <div className="rail__label">Cap systems</div>
+        <div className="rail__label">Cap Systems</div>
         <div className="rail__items">
           {PRESETS.map((p) => (
             <button
@@ -26,7 +26,7 @@ export function PresetRail() {
       </div>
 
       <div className="rail__group">
-        <div className="rail__label">Leagues to test</div>
+        <div className="rail__label">Leagues</div>
         {ROSTER_GROUPS.map((group) => (
           <div className="rail__subgroup" key={group}>
             <div className="rail__sublabel">{group}</div>

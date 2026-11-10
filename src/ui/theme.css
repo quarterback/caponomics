@@ -1,18 +1,41 @@
 /* ─────────────────────────────────────────────────────────────────────────
-   caponomics — design tokens & base styles.
-   Polished modern SaaS (Linear / Stripe / Raycast), NOT a terminal.
-   Sans-serif everywhere; mono only for figures/JSON/ids. Brand accent #00B7E0.
-   Light default + dark via prefers-color-scheme and [data-theme].
+   Cap Buffet — colour roles, type slots and structure tokens.
+
+   Follows the Chromatic Editorial System used on the other sites
+   (dev-site/assets/core.css): a small set of colour ROLES filled from a
+   fixed pigment set, square 2px frames, hairline rules, hard offset
+   shadows, mono labels. Every text pair below was measured (WCAG 2 and
+   APCA Lc) before it was assigned — figures in docs/aar-design-refresh.md.
+
+   Pigments (Cap Buffet's own five):
+     Tangerine  #ff6b35   signal — fills, rules, focus; never small text
+     Peach      #f7c59f   soft fill
+     Beige      #efefd0   paper / light ink
+     Steel      #004e89   deep fill
+     Baltic     #1a659e   decorative rule
+
+   Roles   --bg --bg-deeper --ink --ink-soft --rule --accent
+           --lead --on-lead --deep --on-deep --on-ink
+   The older component tokens (--surface, --text, --border, --brand …) are
+   kept as aliases of the roles so every component follows the scheme.
    ───────────────────────────────────────────────────────────────────────── */
 
 :root {
-  --font-sans: 'General Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  /* Azeret Mono is the figures/mono face — a clean, readable monospace; JetBrains
-     Mono is a fallback for glyphs it lacks (e.g. CJK 억/万). */
-  --font-mono: 'Azeret Mono', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-  /* Outfit for the "Cap Buffet" wordmark; General Sans for section headers. */
-  --font-wordmark: 'Outfit', var(--font-sans);
-  --font-display: var(--font-sans);
+  /* Type slots */
+  --display: 'Outfit', 'General Sans', system-ui, sans-serif;
+  --text-face: 'General Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /* No monospace face: figures use the text face with tabular numerals. */
+  --mono: var(--text-face);
+  --ui: var(--mono);
+  --font-sans: var(--text-face);
+  --font-mono: var(--mono);
+  --font-wordmark: var(--display);
+  --font-display: var(--text-face);
+
+  /* Structure */
+  --frame: 2px;
+  --hair: 1px;
+  --frame-heavy: 3px;
 
   /* Spacing — 8px grid */
   --s1: 4px;
@@ -23,121 +46,144 @@
   --s6: 32px;
   --s7: 48px;
 
-  /* Radii */
-  --r-sm: 8px;
-  --r: 12px;
-  --r-lg: 16px;
-  --r-pill: 999px;
+  /* Square everywhere */
+  --r-sm: 0;
+  --r: 0;
+  --r-lg: 0;
+  --r-pill: 0;
 
-  /* Brand + semantics (stable across themes) */
-  --brand: #00b7e0;
-  --brand-2: #1a659e;
+  /* Pigments */
   --tangerine: #ff6b35;
   --peach: #f7c59f;
   --beige: #efefd0;
-  --steel: #004e89;
-  --baltic: #1a659e;
 
-  --transition: 180ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition: 120ms ease;
 }
 
-/* ── Light (default) ── */
+/* ── Light: Beige paper, Steel ink ── */
 :root,
 :root[data-theme='light'] {
   color-scheme: light;
-  --bg: #f5f7fa;
-  --bg-grad: radial-gradient(1200px 600px at 100% -10%, rgba(0, 183, 224, 0.06), transparent 60%);
-  --surface: #ffffff;
-  --surface-2: #f1f4f8;
-  --surface-3: #e9edf3;
-  --border: rgba(15, 23, 42, 0.09);
-  --border-strong: rgba(15, 23, 42, 0.16);
-  --text: #0f172a;
-  --text-2: #4b5563;
-  --text-3: #8a97a8;
-  --brand-ink: #0785a3;
-  --success: #059669;
-  --success-bg: rgba(5, 150, 105, 0.1);
-  --warning: #d97706;
-  --warning-bg: rgba(217, 119, 6, 0.12);
-  --error: #e11d48;
-  --error-bg: rgba(225, 29, 72, 0.1);
-  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.05);
-  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08), 0 2px 4px rgba(15, 23, 42, 0.04);
-  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
+  --bg: #f8f8ea; /* Beige 55% toward white */
+  --bg-deeper: #fad9c1; /* Peach 35% toward white */
+  --ink: #00233e; /* Steel 55% toward black — 14.97 on bg */
+  --ink-soft: #004579; /* 9.22 on bg, Lc 88 */
+  --rule: #1a659e;
+  --accent: #c75329; /* Tangerine 22% toward black — 4.17 on bg */
+  --lead: #ff6b35;
+  --on-lead: #001729;
+  --deep: #004e89;
+  --on-deep: #efefd0;
+  --steel: #004e89;
+  --baltic: #1a659e;
+  --success: #0a6b4d;
+  --warning: #8a4b00;
+  --error: #b3122f;
 }
 
-/* ── Dark ── */
+/* ── Dark: Steel night, Beige ink ── */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
     color-scheme: dark;
-    --bg: #0a0f1a;
-    --bg-grad: radial-gradient(1200px 600px at 100% -10%, rgba(0, 183, 224, 0.1), transparent 60%);
-    --surface: #121a2a;
-    --surface-2: #0f1626;
-    --surface-3: #1a2436;
-    --border: rgba(255, 255, 255, 0.08);
-    --border-strong: rgba(255, 255, 255, 0.16);
-    --text: #e6ecf5;
-    --text-2: #9fb0c6;
-    --text-3: #64748b;
-    --brand-ink: #4dd3f2;
-    --success: #34d399;
-    --success-bg: rgba(52, 211, 153, 0.14);
-    --warning: #fbbf24;
-    --warning-bg: rgba(251, 191, 36, 0.14);
-    --error: #fb7185;
-    --error-bg: rgba(251, 113, 133, 0.14);
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.5);
+    --bg: #001e34; /* Steel 62% toward black */
+    --bg-deeper: #003760;
+    --ink: #efefd0; /* 14.51 on bg */
+    --ink-soft: #f4d4b0; /* 12.05 on bg, Lc 82 */
+    --rule: #538cb6;
+    --accent: #ff6b35; /* 6.00 on bg — fills and rules */
+    --lead: #ff6b35;
+    --on-lead: #001729;
+    --deep: #f7c59f;
+    --on-deep: #001729;
+    --steel: #538cb6;
+    --baltic: #8fbbdb;
+    --success: #6fe0b5;
+    --warning: #ffc46b;
+    --error: #ff9aa8;
   }
 }
 :root[data-theme='dark'] {
   color-scheme: dark;
-  --bg: #0a0f1a;
-  --bg-grad: radial-gradient(1200px 600px at 100% -10%, rgba(0, 183, 224, 0.1), transparent 60%);
-  --surface: #121a2a;
-  --surface-2: #0f1626;
-  --surface-3: #1a2436;
-  --border: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.16);
-  --text: #e6ecf5;
-  --text-2: #9fb0c6;
-  --text-3: #64748b;
-  --brand-ink: #4dd3f2;
-  --success: #34d399;
-  --success-bg: rgba(52, 211, 153, 0.14);
-  --warning: #fbbf24;
-  --warning-bg: rgba(251, 191, 36, 0.14);
-  --error: #fb7185;
-  --error-bg: rgba(251, 113, 133, 0.14);
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.5);
+  --bg: #001e34;
+  --bg-deeper: #003760;
+  --ink: #efefd0;
+  --ink-soft: #f4d4b0;
+  --rule: #538cb6;
+  --accent: #ff6b35;
+  --lead: #ff6b35;
+  --on-lead: #001729;
+  --deep: #f7c59f;
+  --on-deep: #001729;
+  --steel: #538cb6;
+  --baltic: #8fbbdb;
+  --success: #6fe0b5;
+  --warning: #ffc46b;
+  --error: #ff9aa8;
+}
+
+/* Page-level copies of the roles, so a block that re-points the role names
+   (the ink top bar) can still reach the page colours. */
+:root {
+  --k-bg: var(--bg);
+  --k-bg-deeper: var(--bg-deeper);
+  --k-ink: var(--ink);
+  --k-ink-soft: var(--ink-soft);
+  --k-accent: var(--accent);
+  --on-ink: var(--bg);
+}
+
+/* Component aliases → roles */
+:root {
+  --bg-grad: none;
+  --surface: var(--bg);
+  --surface-2: color-mix(in srgb, var(--bg-deeper) 38%, var(--bg));
+  --surface-3: var(--bg-deeper);
+  --border: color-mix(in srgb, var(--ink) 24%, transparent);
+  --border-strong: var(--ink);
+  --text: var(--ink);
+  --text-2: var(--ink-soft);
+  --text-3: var(--ink-soft);
+  --brand: var(--accent);
+  --brand-2: var(--deep);
+  --brand-ink: var(--ink);
+  --success-bg: color-mix(in srgb, var(--success) 14%, transparent);
+  --warning-bg: color-mix(in srgb, var(--warning) 16%, transparent);
+  --error-bg: color-mix(in srgb, var(--error) 14%, transparent);
+  --shadow-sm: none;
+  --shadow-md: 4px 4px 0 var(--ink);
+  --shadow-lg: 6px 6px 0 var(--ink);
 }
 
 /* Category accents (module chips / cards) */
 :root {
   --cat-revenue: var(--baltic);
-  --cat-cap: var(--brand);
+  --cat-cap: var(--accent);
   --cat-floor: var(--steel);
-  --cat-tax: var(--tangerine);
-  --cat-apron: #b45309;
+  --cat-tax: var(--lead);
+  --cat-apron: var(--warning);
   --cat-contract: var(--success);
-  --cat-roster: #7c3aed;
+  --cat-roster: var(--ink-soft);
   --cat-penalty: var(--error);
-  --cat-exception: #0d9488;
-  --cat-misc: var(--text-3);
+  --cat-exception: var(--rule);
+  --cat-misc: var(--ink);
 
   /* Expansion-draft rule categories */
   --cat-protection: var(--steel);
   --cat-exemption: var(--success);
-  --cat-exposure: var(--tangerine);
-  --cat-selection: var(--brand);
-  --cat-rounds: #7c3aed;
+  --cat-exposure: var(--lead);
+  --cat-selection: var(--accent);
+  --cat-rounds: var(--ink-soft);
   --cat-financial: var(--baltic);
-  --cat-special: var(--text-3);
+  --cat-special: var(--ink);
+
+  /* Cup-format rule categories */
+  --cat-field: var(--steel);
+  --cat-groups: var(--accent);
+  --cat-advance: var(--success);
+  --cat-knockout: var(--lead);
+  --cat-tiers: var(--ink-soft);
+  --cat-schedule: var(--baltic);
+  --cat-prize: var(--warning);
 }
 
 * {
@@ -156,16 +202,14 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   font-size: 14px;
+  font-weight: 500;
   line-height: 1.45;
 }
 
 .mono {
-  font-family: var(--font-mono);
+  font-family: var(--text-face);
   font-variant-numeric: tabular-nums;
   font-feature-settings: 'tnum' 1;
-  /* Azeret Mono is a true fixed-width face, so decimals/symbols read with a lot
-     of air. Pull the tracking in so figures like $63.2M sit tighter. */
-  letter-spacing: -0.05em;
 }
 
 button {
@@ -178,10 +222,17 @@ button {
   height: 10px;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--border-strong);
-  border-radius: var(--r-pill);
+  background: var(--border);
   border: 2px solid transparent;
   background-clip: padding-box;
+}
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+:focus-visible {
+  outline: var(--frame) solid var(--accent);
+  outline-offset: 2px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;

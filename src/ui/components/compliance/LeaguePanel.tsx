@@ -18,8 +18,7 @@ export function LeaguePanel() {
     <div className="col">
       <div className="card">
         <div className="card__head">
-          <span className="card__title">League overview</span>
-          <span style={{ marginLeft: 'auto', fontSize: 12, color: 'var(--text-3)' }}>{league.name}</span>
+          <span className="card__title">Results</span>
         </div>
         <div className="card__body" style={{ display: 'grid', gap: 'var(--s4)' }}>
           <LeagueSummary s={summary} />

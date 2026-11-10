@@ -16,11 +16,11 @@ export const REMIXES: Remix[] = [
   {
     id: 'nba-under-nhl',
     label: 'NBA rosters under the NHL hard cap',
-    description: 'Take NBA payrolls and drop them under hockey’s ~$92M ceiling. Almost everyone breaks.',
+    description: 'Applies the NHL’s hard cap of about $92M to NBA payrolls. Almost every team is over it.',
     rosterId: 'nba-sample',
     build: () => {
       const r = structuredClone(PRESET_MAP['nhl']!)
-      r.name = 'NHL cap → NBA rosters'
+      r.name = 'NHL cap on NBA rosters'
       r.meta = { forkedFrom: 'NHL' }
       return r
     },
@@ -28,7 +28,7 @@ export const REMIXES: Remix[] = [
   {
     id: 'mlb-second-apron',
     label: 'MLB with an NBA-style second apron',
-    description: 'Graft basketball’s second apron (frozen picks, no aggregation) onto the baseball proposal.',
+    description: 'Adds the NBA’s second apron to the MLB proposal. Teams over that line face draft-pick and trade restrictions.',
     rosterId: 'mlb-sample',
     build: () => {
       const r = structuredClone(PRESET_MAP['mlb-2026']!)

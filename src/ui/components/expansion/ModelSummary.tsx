@@ -6,8 +6,8 @@ import { useStore } from '../../state/store'
 import { catColor } from '../catColor'
 
 const DISCLAIMER =
-  'A calculator, not a prescription: this describes the redistribution rules you designed. It ' +
-  "doesn't judge them — and deliberately doesn't simulate who would get picked."
+  'This page describes the rules you designed. It does not judge them, and it does not simulate ' +
+  'which players teams would pick.'
 
 function Tiles({ model, existingTeams }: { model: ExpansionModel; existingTeams: number }) {
   const summary = summarizeModel(model, existingTeams)
@@ -29,7 +29,7 @@ function Rulebook({ model, existingTeams }: { model: ExpansionModel; existingTea
     return (
       <div className="builder__empty">
         <strong>No rules yet.</strong>
-        Whatever you stack on the left reads back here as a plain-language rulebook.
+        The rules you add on the left appear here as a plain-language rulebook.
       </div>
     )
   }
@@ -85,7 +85,7 @@ export function ModelSummary() {
       <div className="col">
         <div className="card">
           <div className="card__head">
-            <span className="card__title">Side by side</span>
+            <span className="card__title">Comparison</span>
             <span style={{ marginLeft: 'auto', display: 'flex', gap: 8, alignItems: 'center' }}>
               {selector}
               <button className="btn--icon" title="Close comparison" onClick={() => setCompareId(null)}>
@@ -111,7 +111,7 @@ export function ModelSummary() {
               </div>
             </div>
             <div className="field__help" style={{ marginTop: 'var(--s3)' }}>
-              {DISCLAIMER} Quick math for both columns uses the loaded league ({teams} existing teams).
+              {DISCLAIMER} The totals in both columns use the loaded league, which has {teams} existing teams.
             </div>
           </div>
         </div>
@@ -123,10 +123,7 @@ export function ModelSummary() {
     <div className="col">
       <div className="card">
         <div className="card__head">
-          <span className="card__title">At a glance</span>
-          <span style={{ marginLeft: 'auto', fontSize: 12, color: 'var(--text-3)' }}>
-            vs {league.name}
-          </span>
+          <span className="card__title">Final Draft Options</span>
         </div>
         <div className="card__body">
           <Tiles model={model} existingTeams={teams} />
@@ -135,7 +132,7 @@ export function ModelSummary() {
 
       <div className="card">
         <div className="card__head">
-          <span className="card__title">The rulebook</span>
+          <span className="card__title">Rulebook</span>
           <span style={{ marginLeft: 'auto' }}>{selector}</span>
         </div>
         <div className="card__body">

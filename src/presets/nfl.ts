@@ -9,7 +9,7 @@ export const nfl = preset('nfl', 'NFL', 'football', [
   m('minimumSalary', { mode: 'flat', flat: 795_000 }),
   m('rosterLimits', { min: 0, max: 53 }),
   m('passThrough', {
-    title: 'Signing-bonus proration & void years',
-    note: 'Cap hits here are already-prorated input data; dead-money derivation arrives with the transaction sandbox.',
+    title: 'Signing-bonus proration and void years',
+    note: 'The cap hits in this roster are already prorated. This app does not yet work out dead money from transactions.',
   }),
 ])

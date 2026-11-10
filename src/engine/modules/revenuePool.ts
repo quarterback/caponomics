@@ -8,7 +8,7 @@ export const revenuePool: CapModuleDef = {
   category: 'revenue',
   phase: 'environment',
   blurb:
-    'A pool of league revenue and the players’ share of it. Feeds a cap formula that divides the share across teams.',
+    'Sets league revenue and the players’ share of it. The Cap Formula can divide that share among the teams.',
   paramSchema: [
     { key: 'leagueRevenue', label: 'League revenue', type: 'money', default: 12_000_000_000, min: 0 },
     { key: 'playerSharePct', label: 'Players’ share', type: 'percent', default: 50, min: 0, max: 100 },

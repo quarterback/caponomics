@@ -10,17 +10,13 @@ export function RulesetBuilder() {
   return (
     <div className="card">
       <div className="card__head">
-        <span className="card__title">Ruleset</span>
-        <span style={{ marginLeft: 'auto', fontSize: 12, color: 'var(--text-3)' }}>
-          {ruleset.modules.filter((m) => m.enabled).length} active · {ruleset.modules.length} total
-        </span>
+        <span className="card__title">Rules</span>
       </div>
       <div className="card__body">
         {ruleset.modules.length === 0 ? (
           <div className="builder__empty">
-            <strong>An empty cap system.</strong>
-            Add mechanics from the palette on the left — or keep it blank and just read the cap sheet.
-            Every roster still produces a cap sheet with no rules at all.
+            <strong>This cap system has no rules.</strong>
+            Add mechanics from the list on the left. With no rules, each team still gets a cap sheet.
           </div>
         ) : (
           <div className="builder">

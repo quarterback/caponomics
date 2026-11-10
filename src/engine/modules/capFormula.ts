@@ -9,15 +9,15 @@ export const capFormula: CapModuleDef = {
   label: 'Cap Formula',
   category: 'cap',
   phase: 'environment',
-  blurb: 'Sets the season’s cap number — a fixed value, or the players’ revenue share divided across teams.',
+  blurb: 'Sets the season’s cap. Use a fixed amount, or divide the players’ share of revenue evenly among the teams.',
   paramSchema: [
     {
       key: 'mode',
-      label: 'Mode',
+      label: 'Method',
       type: 'enum',
       options: [
         { value: 'fixed', label: 'Fixed cap' },
-        { value: 'shareDivided', label: 'Revenue share ÷ teams' },
+        { value: 'shareDivided', label: 'Players’ share divided by teams' },
       ],
       default: 'fixed',
     },

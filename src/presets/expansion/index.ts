@@ -53,7 +53,7 @@ const wnba2024 = model('exp-wnba-2024', 'WNBA 2024 — Golden State', 'basketbal
   x('specialStatusRules', {
     maxSpecial: 1,
     cappedStatus: 'pending unrestricted free agent',
-    offLimits: 'players who have been on a Core contract for 2+ seasons',
+    offLimits: 'players who have been on a Core contract for 2 or more seasons',
   }),
 ])
 
@@ -77,8 +77,8 @@ const nba2004 = model('exp-nba-2004', 'NBA 2004 — Charlotte', 'basketball', 1,
   x('rosterTargets', { minSize: 14, maxSize: 29 }),
   x('specialStatusRules', {
     maxSpecial: 0,
-    offLimits: 'unrestricted free agents (they can be neither protected nor selected)',
-    conversion: 'a selected pending restricted free agent immediately becomes unrestricted',
+    offLimits: 'unrestricted free agents, and no team may protect them',
+    conversion: 'a selected pending restricted free agent immediately becomes an unrestricted free agent',
   }),
   x('expansionCapRamp', { year1Pct: 66, year2Pct: 75 }),
 ])
@@ -94,7 +94,7 @@ const nfl2002 = model('exp-nfl-2002', 'NFL 2002 — Houston', 'football', 1, [
   x('pickRights', { tradable: true, renegotiation: false, noTradeBack: true }),
   x('houseRule', {
     title: 'Pool exclusions',
-    note: 'No kickers or punters; no pending unrestricted or restricted free agents; no players who went on IR during training camp.',
+    note: 'Teams may not expose kickers, punters, pending unrestricted or restricted free agents, or players who went on injured reserve during training camp.',
   }),
 ])
 
@@ -131,7 +131,7 @@ const mlb1992 = model('exp-mlb-1992', 'MLB 1992 — Colorado & Florida', 'baseba
   x('multiTeamFormat', { pool: 'shared', firstPickRotates: true }),
   x('houseRule', {
     title: 'One pooled draft',
-    note: 'All 26 existing clubs from both leagues exposed players into a single pool — the first MLB expansion draft to do so.',
+    note: 'All 26 existing clubs from both leagues exposed players into one pool. This was the first MLB expansion draft to do so.',
   }),
 ])
 
@@ -146,8 +146,8 @@ const nba1995 = model('exp-nba-1995', 'NBA 1995 — Toronto & Vancouver', 'baske
   x('multiTeamFormat', { pool: 'shared', firstPickRotates: true }),
   x('expansionCapRamp', { year1Pct: 66, year2Pct: 75 }),
   x('houseRule', {
-    title: 'Lottery handicap',
-    note: 'The expansion franchises were barred from winning the No. 1 overall lottery pick in their early seasons — a concession outside the draft itself.',
+    title: 'Lottery restriction',
+    note: 'The expansion teams could not win the No. 1 overall lottery pick in their early seasons. This rule sat outside the expansion draft.',
   }),
 ])
 
@@ -162,7 +162,7 @@ const nba1988 = model('exp-nba-1988', 'NBA 1988–89 — the four-team wave', 'b
   x('multiTeamFormat', { pool: 'sequential', firstPickRotates: false }),
   x('houseRule', {
     title: 'Staggered entry',
-    note: 'Run as two separate two-team drafts a year apart — Charlotte & Miami in 1988, Orlando & Minnesota in 1989 — with protection lists redone between them.',
+    note: 'The league ran two separate two-team drafts a year apart: Charlotte and Miami in 1988, then Orlando and Minnesota in 1989. Existing teams made new protection lists between the drafts.',
   }),
 ])
 

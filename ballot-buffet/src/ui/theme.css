@@ -1,0 +1,201 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   Ballot Buffet — colour roles, type slots and structure tokens.
+
+   Same Chromatic Editorial structure as Cap Buffet (square 2px frames,
+   hairline rules, hard offset shadows, mono labels) with its own colourway:
+   three party colours instead of two, on a neutral ground.
+
+   Pigments:
+     Strawberry Red  #ff0035   party colour 1 · signal fills
+     Ocean Blue      #2589bd   party colour 2 · rules, links
+     Verdigris       #18a999   party colour 3 · soft fill
+     Taupe Grey      #54494b   ink
+     Mint Cream      #f1f7ed   paper
+
+   The three party pigments are mid tones: none carries small text. Text
+   uses darkened (light scheme) or lightened (dark scheme) shades, each
+   measured in WCAG 2 and APCA — figures in docs/aar-ballot-buffet-build.md.
+   ───────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Type slots */
+  --display: 'GC North Sans', system-ui, sans-serif;
+  --text-face: 'GC North Sans', system-ui, -apple-system, sans-serif;
+  /* No monospace face: figures use the text face with tabular numerals. */
+  --mono: var(--text-face);
+  --ui: var(--mono);
+  --font-sans: var(--text-face);
+  --font-mono: var(--mono);
+  --font-wordmark: var(--display);
+  --font-display: var(--text-face);
+
+  /* Structure */
+  --frame: 2px;
+  --hair: 1px;
+  --frame-heavy: 3px;
+
+  /* Spacing — 8px grid */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 24px;
+  --s6: 32px;
+  --s7: 48px;
+
+  /* Square everywhere */
+  --r-sm: 0;
+  --r: 0;
+  --r-lg: 0;
+  --r-pill: 0;
+
+  /* The three party pigments, used as fills only */
+  --party-1: #ff0035;
+  --party-2: #2589bd;
+  --party-3: #18a999;
+
+  --transition: 120ms ease;
+}
+
+/* ── Light: Mint Cream paper, Taupe ink ── */
+:root,
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg: #f6faf3; /* Mint Cream 35% toward white */
+  --bg-deeper: #c1e6db; /* Verdigris 78% toward Mint Cream */
+  --ink: #221d1e; /* Taupe 60% toward black — 15.75 on bg */
+  --ink-soft: #54494b; /* Taupe — 8.18 on bg, Lc 86 */
+  --rule: #2589bd;
+  --accent: #1c678e; /* Ocean Blue 25% toward black — 5.88 on bg */
+  --lead: #ff0035;
+  --on-lead: #ffffff; /* Lc 69 on red; dark ink is only Lc 39 */
+  --deep: #154f6e;
+  --on-deep: #f1f7ed;
+  --success: #0d5d54; /* Verdigris toward black — 7.34 on bg */
+  --warning: #154f6e; /* Ocean Blue toward black — 8.37 on bg */
+  --error: #b30025; /* Strawberry toward black — 6.76 on bg */
+  --party-4: #54494b;
+}
+
+/* ── Dark: Taupe night, Mint Cream ink ── */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --bg: #201c1d; /* Taupe 62% toward black */
+    --bg-deeper: #3b3335;
+    --ink: #f1f7ed; /* 15.47 on bg */
+    --ink-soft: #caccc5; /* 10.40 on bg, Lc 73 */
+    --rule: #2589bd;
+    --accent: #5ca7ce;
+    --lead: #ff0035;
+    --on-lead: #ffffff;
+    --deep: #18a999;
+    --on-deep: #151213;
+    --success: #69c7bd;
+    --warning: #92c4de;
+    --error: #ff99ae;
+    --party-4: #caccc5;
+  }
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #201c1d; /* Taupe 62% toward black */
+  --bg-deeper: #3b3335;
+  --ink: #f1f7ed; /* 15.47 on bg */
+  --ink-soft: #caccc5; /* 10.40 on bg, Lc 73 */
+  --rule: #2589bd;
+  --accent: #5ca7ce;
+  --lead: #ff0035;
+  --on-lead: #ffffff;
+  --deep: #18a999;
+  --on-deep: #151213;
+  --success: #69c7bd;
+  --warning: #92c4de;
+  --error: #ff99ae;
+  --party-4: #caccc5;
+}
+
+/* Page-level copies of the roles, so a block that re-points the role names
+   (the ink top bar) can still reach the page colours. */
+:root {
+  --k-bg: var(--bg);
+  --k-bg-deeper: var(--bg-deeper);
+  --k-ink: var(--ink);
+  --k-ink-soft: var(--ink-soft);
+  --k-accent: var(--accent);
+  --on-ink: var(--bg);
+}
+
+/* Component aliases → roles */
+:root {
+  --bg-grad: none;
+  --surface: var(--bg);
+  --surface-2: color-mix(in srgb, var(--bg-deeper) 38%, var(--bg));
+  --surface-3: var(--bg-deeper);
+  --border: color-mix(in srgb, var(--ink) 24%, transparent);
+  --border-strong: var(--ink);
+  --text: var(--ink);
+  --text-2: var(--ink-soft);
+  --text-3: var(--ink-soft);
+  --brand: var(--accent);
+  --brand-2: var(--deep);
+  --brand-ink: var(--ink);
+  --success-bg: color-mix(in srgb, var(--success) 14%, transparent);
+  --warning-bg: color-mix(in srgb, var(--warning) 16%, transparent);
+  --error-bg: color-mix(in srgb, var(--error) 14%, transparent);
+  --shadow-sm: none;
+  --shadow-md: 4px 4px 0 var(--ink);
+  --shadow-lg: 6px 6px 0 var(--ink);
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body,
+#root {
+  margin: 0;
+  height: 100%;
+}
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.mono {
+  font-family: var(--text-face);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+:focus-visible {
+  outline: var(--frame) solid var(--accent);
+  outline-offset: 2px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}

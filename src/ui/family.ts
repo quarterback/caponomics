@@ -14,8 +14,9 @@ export interface FamilyTool {
 }
 
 export const FAMILY_TOOLS: FamilyTool[] = [
-  { id: 'cap-buffet', name: 'Cap Buffet', blurb: 'Salary cap imagineering', url: 'https://capbuffet.com/', current: true },
+  { id: 'cap-buffet', name: 'Cap Buffet', blurb: 'Salary-cap system builder', url: 'https://capbuffet.com/', current: true },
   { id: 'lottery-lab', name: 'Lottery Lab', blurb: 'Draft-lottery simulator', url: 'https://lottery.capbuffet.com/' },
+  { id: 'ballot-buffet', name: 'Ballot Buffet', blurb: 'Ranked-choice counting lab', url: 'https://ballot.capbuffet.com/' },
   // Expansion Draft — add the URL when it's live (ideally a capbuffet.com subdomain):
   // { id: 'expansion-draft', name: 'Expansion Draft', blurb: 'Build an expansion roster', url: '' },
 ]

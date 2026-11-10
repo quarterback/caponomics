@@ -11,12 +11,12 @@ export const apron: CapModuleDef = {
   label: 'Apron',
   category: 'apron',
   phase: 'validate',
-  blurb: 'A line above the tax that unlocks roster-building restrictions when crossed (informational in this build).',
+  blurb: 'A spending line above the tax line. A team over it faces roster restrictions. This version only reports them.',
   paramSchema: [
     { key: 'level', label: 'Apron level', type: 'number', default: 1, min: 1, max: 5 },
     {
       key: 'thresholdMode',
-      label: 'Threshold basis',
+      label: 'Based on',
       type: 'enum',
       options: [
         { value: 'fixed', label: 'Fixed amount' },
@@ -51,7 +51,7 @@ export const apron: CapModuleDef = {
           : Math.round((cap * num(p, 'thresholdPercent', 115)) / 100)
         : num(p, 'threshold')
     if (line === null) {
-      return result({ reasons: [{ severity: 'warning', module: 'apron', message: `No cap value set — apron ${level} not evaluated.` }] })
+      return result({ reasons: [{ severity: 'warning', module: 'apron', message: `No cap value is set, so apron ${level} was not checked.` }] })
     }
     const distance = line - ctx.totals.capSalary
     const readouts = [{ label: `Apron ${level} distance`, value: distance, format: 'money' as const, module: 'apron' }]
@@ -63,8 +63,8 @@ export const apron: CapModuleDef = {
         .join(', ')
       return result({
         readouts,
-        reasons: [{ severity: 'warning', module: 'apron', message: `Over apron ${level} by ${fmtMoney(-distance, (ctx.ruleset.currency ?? 'USD'))}. Active restrictions: ${labels || 'none'}.` }],
-        penalties: active.length ? [{ currency: 'tools', description: `Apron ${level}: ${labels}`, module: 'apron' }] : [],
+        reasons: [{ severity: 'warning', module: 'apron', message: `Team salary is ${fmtMoney(-distance, (ctx.ruleset.currency ?? 'USD'))} over apron ${level}. Restrictions that apply: ${labels || 'none'}.` }],
+        penalties: active.length ? [{ currency: 'tools', description: `Apron ${level} restrictions: ${labels}.`, module: 'apron' }] : [],
       })
     }
     return result({ readouts })

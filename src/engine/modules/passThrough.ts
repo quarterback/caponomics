@@ -5,18 +5,18 @@ import { str } from '../params'
  *  so a preset can acknowledge it without faking enforcement. Always legal. */
 export const passThrough: CapModuleDef = {
   kind: 'passThrough',
-  label: 'Note / Unmodeled Mechanic',
+  label: 'Note',
   category: 'misc',
   phase: 'validate',
-  blurb: 'A documented placeholder for a mechanic not yet modeled. Never affects legality.',
+  blurb: 'A note about a rule this app does not model yet. The note never changes whether a team is legal.',
   paramSchema: [
-    { key: 'title', label: 'Title', type: 'text', default: 'Unmodeled mechanic', placeholder: 'e.g. Signing-bonus proration' },
-    { key: 'note', label: 'Note', type: 'text', default: '', placeholder: 'What this stands in for' },
+    { key: 'title', label: 'Title', type: 'text', default: 'Rule not modeled', placeholder: 'e.g. Signing-bonus proration' },
+    { key: 'note', label: 'Note', type: 'text', default: '', placeholder: 'Describe the rule this note covers' },
   ],
-  defaultParams: { title: 'Unmodeled mechanic', note: '' },
+  defaultParams: { title: 'Rule not modeled', note: '' },
   validate(p) {
-    const title = str(p, 'title', 'Unmodeled mechanic')
+    const title = str(p, 'title', 'Rule not modeled')
     const note = str(p, 'note', '')
-    return result({ reasons: [{ severity: 'info', module: 'passThrough', message: note ? `${title} — ${note}` : title }] })
+    return result({ reasons: [{ severity: 'info', module: 'passThrough', message: note ? `${title}: ${note}` : title }] })
   },
 }

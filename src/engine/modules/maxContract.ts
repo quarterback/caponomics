@@ -11,14 +11,14 @@ export const maxContract: CapModuleDef = {
   label: 'Max Contract',
   category: 'contract',
   phase: 'validate',
-  blurb: 'Caps any single player’s salary at a percentage of the cap, tiered by service. Cornerstone players are exempt.',
+  blurb: 'Limits each player’s salary to a percent of the cap, set by years of service. Players marked in Retained Rights are exempt.',
   paramSchema: [
     {
       key: 'tiers',
-      label: 'Tiers (% of cap by service)',
+      label: 'Maximum by years of service',
       type: 'bracketList',
       itemSchema: [
-        { key: 'minService', label: 'Min service years', type: 'number', default: 0, min: 0 },
+        { key: 'minService', label: 'Min years of service', type: 'number', default: 0, min: 0 },
         { key: 'pctOfCap', label: 'Max % of cap', type: 'percent', default: 25, min: 0, max: 100 },
       ],
       default: [
@@ -38,7 +38,7 @@ export const maxContract: CapModuleDef = {
   validate(p, ctx: EvalContext) {
     const cap = ctx.env.capValue
     if (cap === null) {
-      return result({ reasons: [{ severity: 'warning', module: 'maxContract', message: 'No cap value set — max contract not evaluated.' }] })
+      return result({ reasons: [{ severity: 'warning', module: 'maxContract', message: 'No cap value is set, so the max contract was not checked.' }] })
     }
     const tiers = objList(p, 'tiers')
       .map((t) => ({ minService: num(t, 'minService', 0), pctOfCap: num(t, 'pctOfCap', 0) }))
@@ -61,7 +61,7 @@ export const maxContract: CapModuleDef = {
       if (salary > maxAllowed) {
         legal = false
         const name = ctx.league.players[c.playerId]?.name ?? c.playerId
-        reasons.push({ severity: 'error', module: 'maxContract', message: `${name} at ${fmtMoney(salary, (ctx.ruleset.currency ?? 'USD'))} exceeds the ${pct}%-of-cap max (${fmtMoney(maxAllowed, (ctx.ruleset.currency ?? 'USD'))}).` })
+        reasons.push({ severity: 'error', module: 'maxContract', message: `${name} is paid ${fmtMoney(salary, (ctx.ruleset.currency ?? 'USD'))}. The maximum is ${fmtMoney(maxAllowed, (ctx.ruleset.currency ?? 'USD'))}, which is ${pct}% of the cap.` })
       }
     }
     return result({ legal, reasons })

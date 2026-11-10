@@ -63,11 +63,11 @@ describe('expansion presets', () => {
     expect(categories).toContain('exposure')
     expect(categories).toContain('financial')
     const all = s.sections.flatMap((x) => x.lines).join(' ')
-    expect(all).toMatch(/7 F \/ 3 D \/ 1 G/)
+    expect(all).toMatch(/7 F, 3 D, 1 G/)
     expect(all).toMatch(/60% and 100%/)
     // Quick math sees the loaded league.
     expect(all).toMatch(/32 existing teams/)
-    expect(s.stats.find((x) => x.label === 'Protected / team')?.value).toBe('11 or 9')
+    expect(s.stats.find((x) => x.label === 'Protected per team')?.value).toBe('11 or 9')
   })
 
   it('the old drafts are presets too, with their signature mechanics', () => {

@@ -1,0 +1,117 @@
+/* GC North Sans is the one typeface in Ballot Buffet: text, labels, figures and
+   wordmark. Each face keeps the foundry's licence notice, as the licence requires. */
+
+/*
+Font: 		GC North Sans
+Style: 		Regular
+URL: 		https://youworkforthem.com/font/T31795/gc-north-sans
+Foundry: 	Glyphonic
+Foundry: 	https://youworkforthem.com/designer/2170/glyphonic
+Copyright:	
+Version: 	18
+Created:	April 02, 2026
+License: 	https://www.youworkforthem.com/font-license 
+License: 	The WebFont(s) listed in this document must follow the YouWorkForThem
+			WebFont license rules. All other parties are strictly restricted 
+			from using the WebFonts(s) listed without a purchased license. 
+			All details above must always remain unaltered and visible in your CSS.
+*/
+@font-face {
+  font-family: 'GC North Sans';
+  src: url('./fonts/gc-north-sans-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/*
+Font: 		GC North Sans Med
+Style: 		Regular
+URL: 		https://youworkforthem.com/font/T31795/gc-north-sans
+Foundry: 	Glyphonic
+Foundry: 	https://youworkforthem.com/designer/2170/glyphonic
+Copyright:	
+Version: 	18
+Created:	April 02, 2026
+License: 	https://www.youworkforthem.com/font-license 
+License: 	The WebFont(s) listed in this document must follow the YouWorkForThem
+			WebFont license rules. All other parties are strictly restricted 
+			from using the WebFonts(s) listed without a purchased license. 
+			All details above must always remain unaltered and visible in your CSS.
+*/
+@font-face {
+  font-family: 'GC North Sans';
+  src: url('./fonts/gc-north-sans-medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/*
+Font: 		GC North Sans SemBd
+Style: 		Regular
+URL: 		https://youworkforthem.com/font/T31795/gc-north-sans
+Foundry: 	Glyphonic
+Foundry: 	https://youworkforthem.com/designer/2170/glyphonic
+Copyright:	
+Version: 	18
+Created:	April 02, 2026
+License: 	https://www.youworkforthem.com/font-license 
+License: 	The WebFont(s) listed in this document must follow the YouWorkForThem
+			WebFont license rules. All other parties are strictly restricted 
+			from using the WebFonts(s) listed without a purchased license. 
+			All details above must always remain unaltered and visible in your CSS.
+*/
+@font-face {
+  font-family: 'GC North Sans';
+  src: url('./fonts/gc-north-sans-semi-bold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/*
+Font: 		GC North Sans
+Style: 		Bold
+URL: 		https://youworkforthem.com/font/T31795/gc-north-sans
+Foundry: 	Glyphonic
+Foundry: 	https://youworkforthem.com/designer/2170/glyphonic
+Copyright:	
+Version: 	18
+Created:	April 02, 2026
+License: 	https://www.youworkforthem.com/font-license 
+License: 	The WebFont(s) listed in this document must follow the YouWorkForThem
+			WebFont license rules. All other parties are strictly restricted 
+			from using the WebFonts(s) listed without a purchased license. 
+			All details above must always remain unaltered and visible in your CSS.
+*/
+@font-face {
+  font-family: 'GC North Sans';
+  src: url('./fonts/gc-north-sans-bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/*
+Font: 		GC North Sans ExtBd
+Style: 		Regular
+URL: 		https://youworkforthem.com/font/T31795/gc-north-sans
+Foundry: 	Glyphonic
+Foundry: 	https://youworkforthem.com/designer/2170/glyphonic
+Copyright:	
+Version: 	18
+Created:	April 02, 2026
+License: 	https://www.youworkforthem.com/font-license 
+License: 	The WebFont(s) listed in this document must follow the YouWorkForThem
+			WebFont license rules. All other parties are strictly restricted 
+			from using the WebFonts(s) listed without a purchased license. 
+			All details above must always remain unaltered and visible in your CSS.
+*/
+@font-face {
+  font-family: 'GC North Sans';
+  src: url('./fonts/gc-north-sans-extra-bold.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}

@@ -66,6 +66,18 @@ NBA 1988–2004, NFL 2002, MLB 1992/1997) or invent your own. It renders the mod
 plain-language rulebook — with side-by-side comparison against any preset — and deliberately
 runs no "who would get picked" simulation. See `docs/expansion-draft-plan.md`.
 
+A third surface, the **Cup Format** tab (`src/engine/cup/`), builds an in-season cup from rules:
+groups, standings, tiebreakers, who advances, knockout rounds, which games count in the standings,
+and prizes. It ships the NBA Cup as played plus invented MLB and NHL cups, and writes the format
+out as a rulebook. It has no schedules or results, so it does not say who would win. See
+`docs/aar-cup-format-tab.md`.
+
+## Sibling: Ballot Buffet
+
+`ballot-buffet/` is a self-contained fork of the same idea for ranked-choice voting: compose a
+single-transferable-vote count from interchangeable rules and run any ballots through it. It has its
+own `package.json` and README and does not affect the Cap Buffet build.
+
 ## Status
 
 MVP: **construct a cap system + check roster compliance**, plus the expansion-draft rules

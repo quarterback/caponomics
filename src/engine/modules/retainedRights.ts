@@ -11,9 +11,9 @@ export const retainedRights: CapModuleDef = {
   label: 'Retained Rights',
   category: 'contract',
   phase: 'charge',
-  blurb: 'Lets a team keep designated “cornerstone” players above the normal max (Bird-rights style).',
+  blurb: 'Lets a team pay its designated players more than the max contract. It is modeled on NBA Bird rights.',
   paramSchema: [
-    { key: 'label', label: 'Label', type: 'text', default: 'Cornerstone', placeholder: 'Cornerstone / Bird' },
+    { key: 'label', label: 'Label', type: 'text', default: 'Cornerstone', placeholder: 'e.g. Cornerstone' },
     // Options are injected by the UI from the loaded roster (see ParamForm).
     { key: 'designatedPlayerIds', label: 'Designated players', type: 'enumMulti', options: [], default: [] },
     {

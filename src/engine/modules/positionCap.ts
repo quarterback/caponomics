@@ -8,16 +8,16 @@ import { num, str } from '../params'
  *  player's `pos`. */
 export const positionCap: CapModuleDef = {
   kind: 'positionCap',
-  label: 'Position Sub-Cap',
+  label: 'Position Cap',
   category: 'roster',
   phase: 'validate',
-  blurb: 'Limits how much a team can spend on one group of positions (forces roster balance).',
+  blurb: 'Limits what a team can spend on one group of positions, such as pitchers or quarterbacks.',
   paramSchema: [
     { key: 'label', label: 'Label', type: 'text', default: 'Position cap', placeholder: 'e.g. Pitching cap' },
-    { key: 'positions', label: 'Positions (comma-separated)', type: 'text', default: 'SP,RP', placeholder: 'SP,RP  or  QB' },
+    { key: 'positions', label: 'Positions', type: 'text', default: 'SP,RP', placeholder: 'SP,RP  or  QB' },
     {
       key: 'mode',
-      label: 'Limit basis',
+      label: 'Based on',
       type: 'enum',
       options: [
         { value: 'percentOfCap', label: 'Percent of cap' },
@@ -54,7 +54,7 @@ export const positionCap: CapModuleDef = {
       return result({
         legal: false,
         readouts,
-        reasons: [{ severity: 'error', module: 'positionCap', message: `${label}: ${fmtMoney(spend, cur)} on ${[...set].join('/')} exceeds the ${fmtMoney(limit, cur)} limit.` }],
+        reasons: [{ severity: 'error', module: 'positionCap', message: `${label}: the team spends ${fmtMoney(spend, cur)} on ${[...set].join(', ')}. The limit is ${fmtMoney(limit, cur)}.` }],
       })
     }
     return result({ readouts })

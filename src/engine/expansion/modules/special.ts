@@ -5,7 +5,7 @@ import type { ExpansionModuleDef } from '../types'
  *  before the draft, with a signing counting as that team's selection. */
 export const preDraftWindow: ExpansionModuleDef = {
   kind: 'preDraftWindow',
-  label: 'Pre-Draft FA Window',
+  label: 'Free-Agent Window',
   category: 'special',
   blurb: 'The new team may sign unprotected pending free agents before the draft.',
   paramSchema: [
@@ -16,7 +16,7 @@ export const preDraftWindow: ExpansionModuleDef = {
   defaultParams: { days: 3, countsAsPick: true, maxPerTeam: 1 },
   describe(p) {
     const lines = [
-      `For ${num(p, 'days', 3)} days before the draft, each expansion team may negotiate with and sign unprotected pending free agents (up to ${num(p, 'maxPerTeam', 1)} per existing team).`,
+      `For ${num(p, 'days', 3)} days before the draft, each expansion team may negotiate with and sign unprotected pending free agents. It may sign up to ${num(p, 'maxPerTeam', 1)} from each existing team.`,
     ]
     if (bool(p, 'countsAsPick', true)) lines.push('A signing counts as the expansion team’s selection from that club.')
     return lines
@@ -29,15 +29,15 @@ export const sideDeals: ExpansionModuleDef = {
   kind: 'sideDeals',
   label: 'Side Deals',
   category: 'special',
-  blurb: 'May existing teams pay the new team to steer its selections?',
-  paramSchema: [{ key: 'allowed', label: 'Side deals permitted', type: 'boolean', default: true }],
+  blurb: 'Sets whether existing teams may pay the new team to select or pass over a player.',
+  paramSchema: [{ key: 'allowed', label: 'Allow side deals', type: 'boolean', default: true }],
   defaultParams: { allowed: true },
   describe(p) {
     return bool(p, 'allowed', true)
       ? [
-          'Side deals are permitted: existing teams may send picks, players, or cash to steer the expansion team toward — or away from — specific selections (the Vegas 2017 playbook).',
+          'Side deals are allowed. An existing team may give the expansion team picks, players or cash to select or pass over a specific player. Teams made such deals with Vegas in 2017.',
         ]
-      : ['Side deals are prohibited: no consideration may change hands to influence selections.']
+      : ['Side deals are prohibited. No team may give the expansion team anything of value to influence its selections.']
   },
 }
 
@@ -47,28 +47,28 @@ export const pickRights: ExpansionModuleDef = {
   kind: 'pickRights',
   label: 'Post-Pick Rights',
   category: 'special',
-  blurb: 'What the new team may do with a drafted player afterward.',
+  blurb: 'Sets what the new team may do with a player it drafts.',
   paramSchema: [
-    { key: 'tradable', label: 'Drafted players/picks are tradable', type: 'boolean', default: true },
+    { key: 'tradable', label: 'Players and picks tradable', type: 'boolean', default: true },
     {
       key: 'renegotiation',
-      label: 'Salary unilaterally renegotiable',
+      label: 'New team may reset salary',
       type: 'boolean',
       default: false,
-      help: 'The MLS rule: the expansion club may re-set a drafted player’s salary.',
+      help: 'MLS uses this rule. The expansion club may set a new salary for a player it drafts.',
     },
-    { key: 'noTradeBack', label: 'No trading a player back to his old team', type: 'boolean', default: false },
+    { key: 'noTradeBack', label: 'No trade back to old team', type: 'boolean', default: false },
   ],
   defaultParams: { tradable: true, renegotiation: false, noTradeBack: false },
   describe(p) {
     const lines: string[] = []
     lines.push(
       bool(p, 'tradable', true)
-        ? 'Drafted players (and unspent picks) are tradable assets.'
-        : 'Drafted players may not be flipped — selections are keeps.',
+        ? 'The expansion team may trade drafted players and unused picks.'
+        : 'The expansion team may not trade drafted players.',
     )
-    if (bool(p, 'renegotiation', false)) lines.push('The expansion team may unilaterally renegotiate a drafted player’s salary, up or down.')
-    if (bool(p, 'noTradeBack', false)) lines.push('A drafted player may not be traded back to the team that exposed him.')
+    if (bool(p, 'renegotiation', false)) lines.push('The expansion team may raise or lower a drafted player’s salary without the player’s agreement.')
+    if (bool(p, 'noTradeBack', false)) lines.push('A drafted player may not be traded back to the team that exposed that player.')
     return lines
   },
 }
@@ -79,7 +79,7 @@ export const houseRule: ExpansionModuleDef = {
   kind: 'houseRule',
   label: 'House Rule',
   category: 'special',
-  blurb: 'Write any rule in plain language.',
+  blurb: 'Write any rule in your own words.',
   paramSchema: [
     { key: 'title', label: 'Rule name', type: 'text', default: 'House rule' },
     {
@@ -94,6 +94,6 @@ export const houseRule: ExpansionModuleDef = {
   describe(p) {
     const note = str(p, 'note', '')
     const title = str(p, 'title', 'House rule')
-    return [note ? `${title}: ${note}` : `${title}: (write the rule in the module’s settings).`]
+    return [note ? `${title}: ${note}` : `${title}: write the rule in this module’s settings.`]
   },
 }

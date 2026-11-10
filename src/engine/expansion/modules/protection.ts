@@ -8,7 +8,7 @@ function slotList(p: Record<string, unknown>, key: string): Slot[] {
 }
 
 function slotText(slots: Slot[]): string {
-  return slots.map((s) => `${s.count} ${s.pos}`).join(' / ')
+  return slots.map((s) => `${s.count} ${s.pos}`).join(', ')
 }
 
 export function slotTotal(slots: Slot[]): number {
@@ -22,20 +22,20 @@ export const protectionScheme: ExpansionModuleDef = {
   kind: 'protectionScheme',
   label: 'Protection Scheme',
   category: 'protection',
-  blurb: 'How many players each existing team protects — flat count, positional slots, or a choice of schemes.',
+  blurb: 'Sets how many players each existing team protects: a flat count, slots by position, or a choice of two schemes.',
   paramSchema: [
     {
       key: 'mode',
-      label: 'Mode',
+      label: 'Method',
       type: 'enum',
       options: [
         { value: 'flat', label: 'Flat count' },
-        { value: 'slots', label: 'Positional slots' },
+        { value: 'slots', label: 'Slots by position' },
         { value: 'choice', label: 'Choice of A or B' },
       ],
       default: 'flat',
     },
-    { key: 'flatCount', label: 'Players protected (flat)', type: 'number', default: 6, min: 0 },
+    { key: 'flatCount', label: 'Players protected', type: 'number', default: 6, min: 0 },
     {
       key: 'slotsA',
       label: 'Scheme A slots',
@@ -49,7 +49,7 @@ export const protectionScheme: ExpansionModuleDef = {
         { pos: 'D', count: 3 },
         { pos: 'G', count: 1 },
       ],
-      help: 'Used in slots and choice modes.',
+      help: 'Used for “Slots by position” and “Choice of A or B”.',
     },
     {
       key: 'slotsB',
@@ -63,7 +63,7 @@ export const protectionScheme: ExpansionModuleDef = {
         { pos: 'Skater', count: 8 },
         { pos: 'G', count: 1 },
       ],
-      help: 'Only used in choice mode.',
+      help: 'Used only for “Choice of A or B”.',
     },
   ],
   defaultParams: {
@@ -82,15 +82,15 @@ export const protectionScheme: ExpansionModuleDef = {
   describe(p) {
     const mode = str(p, 'mode', 'flat')
     if (mode === 'flat') {
-      return [`Each existing team protects up to ${num(p, 'flatCount', 6)} players — no positional slots.`]
+      return [`Each existing team protects up to ${num(p, 'flatCount', 6)} players at any position.`]
     }
     const a = slotList(p, 'slotsA')
     if (mode === 'slots') {
-      return [`Each existing team protects by position: ${slotText(a)} (${slotTotal(a)} players).`]
+      return [`Each existing team protects by position: ${slotText(a)}, for ${slotTotal(a)} players in total.`]
     }
     const b = slotList(p, 'slotsB')
     return [
-      `Each existing team chooses its protection scheme: (A) ${slotText(a)} — ${slotTotal(a)} players, or (B) ${slotText(b)} — ${slotTotal(b)} players.`,
+      `Each existing team chooses one of two protection schemes. Scheme A protects ${slotText(a)}, for ${slotTotal(a)} players. Scheme B protects ${slotText(b)}, for ${slotTotal(b)} players.`,
     ]
   },
 }
@@ -101,19 +101,19 @@ export const mustProtect: ExpansionModuleDef = {
   kind: 'mustProtect',
   label: 'Must-Protect Clauses',
   category: 'protection',
-  blurb: 'Players with a movement clause must be protected, consuming a slot.',
+  blurb: 'A team must protect players who have a set contract clause, such as a no-movement clause.',
   paramSchema: [
     { key: 'clause', label: 'Clause', type: 'text', default: 'no-movement clause' },
-    { key: 'consumesSlot', label: 'Consumes a protection slot', type: 'boolean', default: true },
+    { key: 'consumesSlot', label: 'Uses a protection slot', type: 'boolean', default: true },
     { key: 'waivable', label: 'Player may waive it', type: 'boolean', default: true },
   ],
   defaultParams: { clause: 'no-movement clause', consumesSlot: true, waivable: true },
   describe(p) {
     const lines = [
-      `Players with a ${str(p, 'clause', 'no-movement clause')} must be protected` +
-        (bool(p, 'consumesSlot', true) ? ' and consume a protection slot.' : ' but do not consume a slot.'),
+      `Each team must protect its players who have a ${str(p, 'clause', 'no-movement clause')}.` +
+        (bool(p, 'consumesSlot', true) ? ' These players use a protection slot.' : ' These players do not use a protection slot.'),
     ]
-    if (bool(p, 'waivable', true)) lines.push('A player may waive the clause to become exposable.')
+    if (bool(p, 'waivable', true)) lines.push('A player may waive the clause. The team may then expose that player.')
     return lines
   },
 }

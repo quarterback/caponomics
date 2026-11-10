@@ -10,11 +10,11 @@ export const salaryFloor: CapModuleDef = {
   label: 'Salary Floor',
   category: 'floor',
   phase: 'validate',
-  blurb: 'A minimum team spend. Falling below carries a shortfall penalty (or is advisory only).',
+  blurb: 'The least a team must spend on salary. You choose what happens to a team that spends less.',
   paramSchema: [
     {
       key: 'mode',
-      label: 'Floor basis',
+      label: 'Based on',
       type: 'enum',
       options: [
         { value: 'fixed', label: 'Fixed amount' },
@@ -33,7 +33,7 @@ export const salaryFloor: CapModuleDef = {
     },
     {
       key: 'hardFloor',
-      label: 'Treat as illegal (not just penalized)',
+      label: 'Below floor is illegal',
       type: 'boolean',
       default: false,
     },
@@ -46,7 +46,7 @@ export const salaryFloor: CapModuleDef = {
     if (mode === 'percentOfCap') floor = cap === null ? null : Math.round((cap * num(p, 'percent', 90)) / 100)
     else floor = num(p, 'value')
     if (floor === null) {
-      return result({ reasons: [{ severity: 'warning', module: 'salaryFloor', message: 'No cap value set — floor not evaluated.' }] })
+      return result({ reasons: [{ severity: 'warning', module: 'salaryFloor', message: 'No cap value is set, so the salary floor was not checked.' }] })
     }
     const spend = ctx.totals.capSalary
     const shortfall = floor - spend
@@ -55,13 +55,13 @@ export const salaryFloor: CapModuleDef = {
       const penalty = str(p, 'penalty', 'payShortfall')
       const hard = p['hardFloor'] === true
       const cur = (ctx.ruleset.currency ?? 'USD')
-      const reasons = [{ severity: (hard ? 'error' : 'warning') as 'error' | 'warning', module: 'salaryFloor', message: `Below the floor by ${fmtMoney(shortfall, cur)} (${fmtMoney(spend, cur)} / ${fmtMoney(floor, cur)}).` }]
+      const reasons = [{ severity: (hard ? 'error' : 'warning') as 'error' | 'warning', module: 'salaryFloor', message: `Team salary of ${fmtMoney(spend, cur)} is ${fmtMoney(shortfall, cur)} below the floor of ${fmtMoney(floor, cur)}.` }]
       const penalties =
         penalty === 'none'
           ? []
           : penalty === 'draftPenalty'
-            ? [{ currency: 'assets' as const, description: 'Loses a draft pick for missing the floor.', module: 'salaryFloor' }]
-            : [{ currency: 'money' as const, amount: shortfall, description: penalty === 'redistribute' ? 'Shortfall redistributed to other clubs.' : 'Must pay the shortfall.', module: 'salaryFloor' }]
+            ? [{ currency: 'assets' as const, description: 'The team loses a draft pick because it is below the floor.', module: 'salaryFloor' }]
+            : [{ currency: 'money' as const, amount: shortfall, description: penalty === 'redistribute' ? 'The team pays the shortfall to the other clubs.' : 'The team must pay the shortfall.', module: 'salaryFloor' }]
       return result({ legal: !hard, readouts, reasons, penalties })
     }
     return result({ readouts })

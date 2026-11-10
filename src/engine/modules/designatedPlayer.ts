@@ -11,11 +11,11 @@ export const designatedPlayer: CapModuleDef = {
   label: 'Designated Player',
   category: 'exception',
   phase: 'charge',
-  blurb: 'Each team’s N biggest salaries count only a fixed “budget charge” against the cap, not their full pay (the MLS DP rule).',
+  blurb: 'Each team counts a set number of its largest salaries at a fixed budget charge in place of full pay. MLS uses this rule.',
   paramSchema: [
     { key: 'count', label: 'Designated players per team', type: 'number', default: 3, min: 0, max: 10 },
-    { key: 'budgetCharge', label: 'Budget charge (per DP)', type: 'money', default: 743_000, min: 0 },
-    { key: 'label', label: 'Label', type: 'text', default: 'Designated Player', placeholder: 'DP / marquee' },
+    { key: 'budgetCharge', label: 'Budget charge', type: 'money', default: 743_000, min: 0 },
+    { key: 'label', label: 'Label', type: 'text', default: 'Designated Player', placeholder: 'e.g. Marquee player' },
   ],
   defaultParams: { count: 3, budgetCharge: 743_000, label: 'Designated Player' },
   contributes(p, ctx) {
@@ -51,7 +51,7 @@ export const designatedPlayer: CapModuleDef = {
     const cur = ctx.ruleset.currency ?? 'USD'
     return result({
       readouts: [{ label: 'DP cap relief', value: saved, format: 'money', module: 'designatedPlayer' }],
-      reasons: [{ severity: 'info', module: 'designatedPlayer', message: `${str(_p, 'label', 'Designated Player')}s move ${fmtMoney(saved, cur)} off the cap.` }],
+      reasons: [{ severity: 'info', module: 'designatedPlayer', message: `The ${str(_p, 'label', 'Designated Player')} rule removes ${fmtMoney(saved, cur)} from this team’s cap.` }],
     })
   },
 }
