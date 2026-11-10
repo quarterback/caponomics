@@ -59,7 +59,33 @@ higher threshold, 2+1, MCPC, sequential RCV) as needing a charter amendment.
 
 ### Look
 Started as a copy of Cap Buffet's stylesheet; later the same day both apps moved to the Chromatic
-Editorial tokens (see `../docs/aar-design-refresh.md`).
+Editorial structure (see `../docs/aar-design-refresh.md`). Ballot Buffet then took its own
+colourway, supplied by Ron: Strawberry Red `#ff0035`, Ocean Blue `#2589bd`, Verdigris `#18a999`,
+Taupe Grey `#54494b`, Mint Cream `#f1f7ed` — three party colours instead of two, on a neutral
+ground.
+
+- The top bar carries a red / blue / green rule in equal thirds, and the wordmark mark repeats it.
+- Each camp of voters takes one party colour: a pale bar for its share of first choices, a solid
+  bar for its share of seats.
+- The three law readings map onto the same hues: current law green, ordinance blue, charter red.
+- The three party pigments are mid tones, so none carries small text. Text uses darkened shades
+  on the light scheme and lightened shades on the dark one. A changed winner is flagged with a
+  red frame, not a red fill.
+
+Contrast of the text pairs (WCAG 2 ratio, APCA Lc):
+
+| Pair | Light | Dark |
+| --- | --- | --- |
+| ink on ground | 15.75, Lc 100 | 15.47, Lc 100 |
+| soft text on ground | 8.18, Lc 86 | 10.40, Lc 73 |
+| green text on ground | 7.34, Lc 83 | 8.44, Lc 62 |
+| blue text on ground | 8.37, Lc 86 | 8.97, Lc 65 |
+| red text on ground | 6.76, Lc 78 | lightened to `#ff99ae` (not re-measured; the `#ff809a` it replaced was 7.07, Lc 54) |
+| ink on soft fill | 12.36, Lc 84 | 11.26, Lc 95 |
+| white on Strawberry Red | 3.96, Lc 69 | 3.96, Lc 69 |
+
+White on the red is used only for the "forked" chip. As with Cap Buffet, these are token pairs;
+the rendered-page audit has not been run.
 
 ---
 

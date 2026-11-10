@@ -580,3 +580,70 @@
   color: var(--bg);
   font-size: 12px;
 }
+
+/* ── Three-party colourway ── */
+.toolbar {
+  border-bottom: 6px solid;
+  border-image: linear-gradient(90deg, var(--party-1) 0 33.33%, var(--party-2) 33.33% 66.66%, var(--party-3) 66.66% 100%) 1;
+}
+.toolbar__brand .dot {
+  background: linear-gradient(90deg, var(--party-1) 0 33.33%, var(--party-2) 33.33% 66.66%, var(--party-3) 66.66% 100%);
+  width: 18px;
+}
+/* Camps take a party colour each: pale bar = share of votes, solid = share of seats. */
+.camp-row {
+  --camp: var(--party-4);
+}
+.camp-row:nth-child(1) {
+  --camp: var(--party-1);
+}
+.camp-row:nth-child(2) {
+  --camp: var(--party-2);
+}
+.camp-row:nth-child(3) {
+  --camp: var(--party-3);
+}
+.bar[data-kind='votes'] {
+  background: color-mix(in srgb, var(--camp) 40%, var(--bg));
+  height: 8px;
+}
+.bar[data-kind='seats'] {
+  background: var(--camp);
+  height: 8px;
+}
+.camp-row__name::before {
+  content: '';
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  margin-right: 7px;
+  background: var(--camp);
+}
+/* No small text on the red: flag changed winners with a red frame instead. */
+.wchip[data-new='true'] {
+  background: var(--bg);
+  color: var(--ink);
+  border: var(--frame) solid var(--lead);
+  font-weight: 600;
+}
+.winner[data-new='true'] {
+  box-shadow: 4px 4px 0 var(--lead);
+}
+.spark__first {
+  background: var(--party-2);
+}
+.spark__top {
+  background: color-mix(in srgb, var(--party-2) 50%, var(--bg));
+}
+.spark__any {
+  background: color-mix(in srgb, var(--party-2) 20%, var(--bg));
+}
+.switch[data-on='true'] {
+  background: var(--party-3);
+}
+.switch[data-on='true']::after {
+  background: var(--ink);
+}
+.range {
+  accent-color: var(--accent);
+}

@@ -1,23 +1,20 @@
 /* ─────────────────────────────────────────────────────────────────────────
-   Cap Buffet — colour roles, type slots and structure tokens.
+   Ballot Buffet — colour roles, type slots and structure tokens.
 
-   Follows the Chromatic Editorial System used on the other sites
-   (dev-site/assets/core.css): a small set of colour ROLES filled from a
-   fixed pigment set, square 2px frames, hairline rules, hard offset
-   shadows, mono labels. Every text pair below was measured (WCAG 2 and
-   APCA Lc) before it was assigned — figures in docs/aar-design-refresh.md.
+   Same Chromatic Editorial structure as Cap Buffet (square 2px frames,
+   hairline rules, hard offset shadows, mono labels) with its own colourway:
+   three party colours instead of two, on a neutral ground.
 
-   Pigments (Cap Buffet's own five):
-     Tangerine  #ff6b35   signal — fills, rules, focus; never small text
-     Peach      #f7c59f   soft fill
-     Beige      #efefd0   paper / light ink
-     Steel      #004e89   deep fill
-     Baltic     #1a659e   decorative rule
+   Pigments:
+     Strawberry Red  #ff0035   party colour 1 · signal fills
+     Ocean Blue      #2589bd   party colour 2 · rules, links
+     Verdigris       #18a999   party colour 3 · soft fill
+     Taupe Grey      #54494b   ink
+     Mint Cream      #f1f7ed   paper
 
-   Roles   --bg --bg-deeper --ink --ink-soft --rule --accent
-           --lead --on-lead --deep --on-deep --on-ink
-   The older component tokens (--surface, --text, --border, --brand …) are
-   kept as aliases of the roles so every component follows the scheme.
+   The three party pigments are mid tones: none carries small text. Text
+   uses darkened (light scheme) or lightened (dark scheme) shades, each
+   measured in WCAG 2 and APCA — figures in docs/aar-ballot-buffet-build.md.
    ───────────────────────────────────────────────────────────────────────── */
 
 :root {
@@ -51,73 +48,70 @@
   --r-lg: 0;
   --r-pill: 0;
 
-  /* Pigments */
-  --tangerine: #ff6b35;
-  --peach: #f7c59f;
-  --beige: #efefd0;
+  /* The three party pigments, used as fills only */
+  --party-1: #ff0035;
+  --party-2: #2589bd;
+  --party-3: #18a999;
 
   --transition: 120ms ease;
 }
 
-/* ── Light: Beige paper, Steel ink ── */
+/* ── Light: Mint Cream paper, Taupe ink ── */
 :root,
 :root[data-theme='light'] {
   color-scheme: light;
-  --bg: #f8f8ea; /* Beige 55% toward white */
-  --bg-deeper: #fad9c1; /* Peach 35% toward white */
-  --ink: #00233e; /* Steel 55% toward black — 14.97 on bg */
-  --ink-soft: #004579; /* 9.22 on bg, Lc 88 */
-  --rule: #1a659e;
-  --accent: #c75329; /* Tangerine 22% toward black — 4.17 on bg */
-  --lead: #ff6b35;
-  --on-lead: #001729;
-  --deep: #004e89;
-  --on-deep: #efefd0;
-  --steel: #004e89;
-  --baltic: #1a659e;
-  --success: #0a6b4d;
-  --warning: #8a4b00;
-  --error: #b3122f;
+  --bg: #f6faf3; /* Mint Cream 35% toward white */
+  --bg-deeper: #c1e6db; /* Verdigris 78% toward Mint Cream */
+  --ink: #221d1e; /* Taupe 60% toward black — 15.75 on bg */
+  --ink-soft: #54494b; /* Taupe — 8.18 on bg, Lc 86 */
+  --rule: #2589bd;
+  --accent: #1c678e; /* Ocean Blue 25% toward black — 5.88 on bg */
+  --lead: #ff0035;
+  --on-lead: #ffffff; /* Lc 69 on red; dark ink is only Lc 39 */
+  --deep: #154f6e;
+  --on-deep: #f1f7ed;
+  --success: #0d5d54; /* Verdigris toward black — 7.34 on bg */
+  --warning: #154f6e; /* Ocean Blue toward black — 8.37 on bg */
+  --error: #b30025; /* Strawberry toward black — 6.76 on bg */
+  --party-4: #54494b;
 }
 
-/* ── Dark: Steel night, Beige ink ── */
+/* ── Dark: Taupe night, Mint Cream ink ── */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
     color-scheme: dark;
-    --bg: #001e34; /* Steel 62% toward black */
-    --bg-deeper: #003760;
-    --ink: #efefd0; /* 14.51 on bg */
-    --ink-soft: #f4d4b0; /* 12.05 on bg, Lc 82 */
-    --rule: #538cb6;
-    --accent: #ff6b35; /* 6.00 on bg — fills and rules */
-    --lead: #ff6b35;
-    --on-lead: #001729;
-    --deep: #f7c59f;
-    --on-deep: #001729;
-    --steel: #538cb6;
-    --baltic: #8fbbdb;
-    --success: #6fe0b5;
-    --warning: #ffc46b;
-    --error: #ff9aa8;
+    --bg: #201c1d; /* Taupe 62% toward black */
+    --bg-deeper: #3b3335;
+    --ink: #f1f7ed; /* 15.47 on bg */
+    --ink-soft: #caccc5; /* 10.40 on bg, Lc 73 */
+    --rule: #2589bd;
+    --accent: #5ca7ce;
+    --lead: #ff0035;
+    --on-lead: #ffffff;
+    --deep: #18a999;
+    --on-deep: #151213;
+    --success: #69c7bd;
+    --warning: #92c4de;
+    --error: #ff99ae;
+    --party-4: #caccc5;
   }
 }
 :root[data-theme='dark'] {
   color-scheme: dark;
-  --bg: #001e34;
-  --bg-deeper: #003760;
-  --ink: #efefd0;
-  --ink-soft: #f4d4b0;
-  --rule: #538cb6;
-  --accent: #ff6b35;
-  --lead: #ff6b35;
-  --on-lead: #001729;
-  --deep: #f7c59f;
-  --on-deep: #001729;
-  --steel: #538cb6;
-  --baltic: #8fbbdb;
-  --success: #6fe0b5;
-  --warning: #ffc46b;
-  --error: #ff9aa8;
+  --bg: #201c1d; /* Taupe 62% toward black */
+  --bg-deeper: #3b3335;
+  --ink: #f1f7ed; /* 15.47 on bg */
+  --ink-soft: #caccc5; /* 10.40 on bg, Lc 73 */
+  --rule: #2589bd;
+  --accent: #5ca7ce;
+  --lead: #ff0035;
+  --on-lead: #ffffff;
+  --deep: #18a999;
+  --on-deep: #151213;
+  --success: #69c7bd;
+  --warning: #92c4de;
+  --error: #ff99ae;
+  --party-4: #caccc5;
 }
 
 /* Page-level copies of the roles, so a block that re-points the role names
@@ -151,29 +145,6 @@
   --shadow-sm: none;
   --shadow-md: 4px 4px 0 var(--ink);
   --shadow-lg: 6px 6px 0 var(--ink);
-}
-
-/* Category accents (module chips / cards) */
-:root {
-  --cat-revenue: var(--baltic);
-  --cat-cap: var(--accent);
-  --cat-floor: var(--steel);
-  --cat-tax: var(--lead);
-  --cat-apron: var(--warning);
-  --cat-contract: var(--success);
-  --cat-roster: var(--ink-soft);
-  --cat-penalty: var(--error);
-  --cat-exception: var(--rule);
-  --cat-misc: var(--ink);
-
-  /* Expansion-draft rule categories */
-  --cat-protection: var(--steel);
-  --cat-exemption: var(--success);
-  --cat-exposure: var(--lead);
-  --cat-selection: var(--accent);
-  --cat-rounds: var(--ink-soft);
-  --cat-financial: var(--baltic);
-  --cat-special: var(--ink);
 }
 
 * {
