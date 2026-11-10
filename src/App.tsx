@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import './ui/app.css'
+import './ui/system.css'
 import { AppShell } from './ui/components/AppShell'
 import { decodeRulesetFromHash } from './engine/serialize'
 import { decodeModelFromHash } from './engine/expansion/serialize'

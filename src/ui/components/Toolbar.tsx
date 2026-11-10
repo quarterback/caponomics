@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { serializeRuleset, encodeRulesetToHash } from '../../engine/serialize'
 import { serializeModel, encodeModelToHash } from '../../engine/expansion/serialize'
 import { CURRENCY_LIST, currencySymbol, type Currency } from '../../engine/format'
@@ -191,7 +192,11 @@ export function Toolbar({ onAbout }: { onAbout: () => void }) {
         {theme === 'dark' ? '☾' : theme === 'light' ? '☀' : '◐'}
       </button>
 
-      {importOpen && (
+      {/* Portaled to <body>: a modal left inside the sticky toolbar is positioned
+          against the toolbar (any filter/transform there traps position:fixed)
+          and gets clipped to the header strip. */}
+      {importOpen &&
+        createPortal(
         <div className="modal-backdrop" onClick={() => setImportOpen(false)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <div className="card__head">
@@ -221,8 +226,9 @@ export function Toolbar({ onAbout }: { onAbout: () => void }) {
               </div>
             </div>
           </div>
-        </div>
-      )}
+        </div>,
+          document.body,
+        )}
     </header>
   )
 }

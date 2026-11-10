@@ -471,3 +471,112 @@
 .btable .dim {
   color: var(--text-3);
 }
+
+/* ── Chromatic Editorial structure for the Ballot Buffet additions ── */
+.btable-wrap {
+  border: var(--hair) solid var(--ink);
+}
+.btable-wrap.flush {
+  border: none;
+}
+.btable thead th {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  color: var(--ink);
+  border-bottom: var(--frame) solid var(--ink);
+}
+.card__meta {
+  color: var(--ink-soft);
+}
+.winner {
+  border: var(--frame) solid var(--ink);
+  background: color-mix(in srgb, var(--success) 14%, var(--bg));
+}
+.winner[data-how='remaining'] {
+  border-color: var(--ink);
+  border-style: dashed;
+  background: color-mix(in srgb, var(--warning) 16%, var(--bg));
+}
+.winner[data-new='true'] {
+  box-shadow: 4px 4px 0 var(--lead);
+}
+.winner__seat {
+  border-radius: 0;
+  background: var(--ink);
+  color: var(--bg);
+}
+.delta {
+  border: var(--hair) solid var(--ink);
+  background: var(--bg-deeper);
+}
+.delta[data-same='true'] {
+  background: var(--surface-2);
+}
+.wchip {
+  border-radius: 0;
+  border: var(--hair) solid var(--ink);
+  background: var(--bg);
+}
+.wchip[data-new='true'] {
+  background: var(--lead);
+  border-color: var(--ink);
+  color: var(--on-lead);
+}
+.wchip[data-weak='true'] {
+  border-color: var(--ink);
+}
+.fit-chip,
+.law-tag,
+.fit strong {
+  font-family: var(--ui);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 10.5px;
+  border: var(--hair) solid currentColor;
+}
+.toolbar .fit-chip {
+  background: var(--k-bg) !important;
+}
+.linkish {
+  color: var(--ink);
+  border-bottom: var(--frame) solid var(--accent);
+}
+.bar,
+.spark,
+.spark > div {
+  border-radius: 0;
+}
+.bar[data-kind='votes'] {
+  background: var(--ink-soft);
+}
+.bar[data-kind='seats'],
+.spark__first {
+  background: var(--lead);
+}
+.spark__top {
+  background: color-mix(in srgb, var(--lead) 55%, var(--bg));
+}
+.spark__any {
+  background: color-mix(in srgb, var(--lead) 22%, var(--bg));
+}
+.cmp tbody tr[data-current='true'] {
+  background: var(--bg-deeper);
+}
+.rounds tbody td:first-child,
+.rounds thead th:first-child {
+  background: var(--bg);
+}
+.rounds thead th:first-child {
+  background: var(--surface-2);
+}
+.steps {
+  border-top: var(--hair) solid var(--ink);
+}
+.legend {
+  border-top: var(--hair) solid var(--ink);
+}
+.winner .winner__seat {
+  color: var(--bg);
+  font-size: 12px;
+}
