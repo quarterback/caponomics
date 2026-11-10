@@ -22,7 +22,7 @@ function useTheme(): [string, () => void] {
   return [theme, cycle]
 }
 
-export function Toolbar({ onAbout }: { onAbout: () => void }) {
+export function Toolbar({ onAbout, focus, onFocus }: { onAbout: () => void; focus: boolean; onFocus: () => void }) {
   const { ruleset, forked, loadRulesetObject, loadRemix, setCurrency } = useStore()
   const { tab, setTab, model, forked: modelForked, loadModelObject } = useExpansion()
   const currency = ruleset.currency ?? 'USD'
@@ -103,6 +103,10 @@ export function Toolbar({ onAbout }: { onAbout: () => void }) {
           Cup Format
         </button>
       </div>
+
+      <button className="btn btn--sm" aria-pressed={focus} onClick={onFocus}>
+        {focus ? 'Show setup' : 'Results only'}
+      </button>
 
       <div className="toolbar__spacer" />
 

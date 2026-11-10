@@ -80,11 +80,36 @@ New presets: the **Leagues Cup** and the **Concacaf Champions Cup** as played in
 **MLS in-season cup**, an invented **NWSL in-season cup**, and an invented **Concacaf in three
 tiers** (a 24-club league phase with two lower competitions).
 
+### Correction: a coefficient system for every Concacaf member
+The first three-tier preset took 24 clubs "from several leagues" and stopped there. Ron: *"i think
+you got my CONCACAF IDEA wrong, i said every CONCACAF MEMBER League not just NWSL or MLS … truly
+in the spirit of European football with coefficients."* The model was rebuilt around that:
+
+- **Coefficient** rule: points for wins and draws, a bonus for each knockout round reached, lower
+  weights for the second and third competitions, an option to divide by clubs entered, and the
+  number of seasons counted.
+- **Places by association** rule: all 41 member associations with a coefficient each, and ranking
+  bands that set how many clubs an association sends to each competition.
+- **Access List** card: the associations ranked by coefficient with their places in each
+  competition. Changing a coefficient re-ranks the list and moves the places.
+
+With the starting bands the three competitions have 24, 30 and 41 clubs, and all 41 associations
+have at least one club.
+
+**The coefficients are placeholders.** They set a plausible starting order and nothing more. They
+are not Concacaf's club ranking, and the tool has no results to compute real ones from.
+
+### Results only
+Ron sent a screenshot of the three-column layout: the output took a fifth of the page and the
+text was too small to screenshot. Both apps now have a **Results only** button in the toolbar. It
+hides the setup columns, lets the output fill the page at a larger text size, and remembers the
+choice. **Show setup** brings the columns back.
+
 ---
 
 ## Validation
 
-- 12 engine tests for the tab; the full suite passes. Typecheck and build are clean.
+- 14 engine tests for the tab; the full suite is 78 tests and passes. Typecheck and build are clean.
 - NBA Cup on 30 teams gives 6 groups of 5, 4 group games, 8 teams advancing, 3 knockout rounds and
   1 added game, which matches the published format.
 - Checked in a headless browser at 1500px and 390px: all three presets, the comparison view, no

@@ -313,3 +313,60 @@
     animation: none !important;
   }
 }
+
+/* ── Results only: hide the setup columns so the output fills the page and
+      the text is large enough to read in a screenshot. ── */
+.shell__body[data-focus='true'] {
+  grid-template-columns: minmax(0, 1fr);
+  overflow: auto;
+  font-size: 16px;
+}
+.shell__body[data-focus='true'] > :not(:last-child) {
+  display: none;
+}
+.shell__body[data-focus='true'] > :last-child {
+  overflow: visible;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.shell__body[data-focus='true'] .ltable,
+.shell__body[data-focus='true'] .btable,
+.shell__body[data-focus='true'] .statrow,
+.shell__body[data-focus='true'] .readout,
+.shell__body[data-focus='true'] .rulebook li,
+.shell__body[data-focus='true'] .steps {
+  font-size: 16px;
+}
+.shell__body[data-focus='true'] .ltable tbody td,
+.shell__body[data-focus='true'] .btable tbody td {
+  padding-top: 11px;
+  padding-bottom: 11px;
+}
+.shell__body[data-focus='true'] .ltable thead th,
+.shell__body[data-focus='true'] .btable thead th {
+  font-size: 12px;
+}
+.shell__body[data-focus='true'] .card__title {
+  font-size: 17px;
+}
+.shell__body[data-focus='true'] .tile__label,
+.shell__body[data-focus='true'] .tile__sub,
+.shell__body[data-focus='true'] .readout__note,
+.shell__body[data-focus='true'] .camp-row,
+.shell__body[data-focus='true'] .winlist__how {
+  font-size: 14px;
+}
+.shell__body[data-focus='true'] .tile__value,
+.shell__body[data-focus='true'] .statrow dd,
+.shell__body[data-focus='true'] .readout dd.mono {
+  font-size: 22px;
+}
+.shell__body[data-focus='true'] .steps {
+  max-height: none;
+}
+.toolbar .btn[aria-pressed='true'] {
+  background: var(--lead);
+  border-color: var(--lead);
+  color: var(--on-lead);
+}

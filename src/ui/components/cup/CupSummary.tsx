@@ -1,4 +1,4 @@
-import { summarizeCup } from '../../../engine/cup/summary'
+import { cupAccessList, summarizeCup } from '../../../engine/cup/summary'
 import type { CupModel } from '../../../engine/cup/types'
 import { CUP_PRESETS, CUP_PRESET_MAP } from '../../../presets/cup'
 import { useCup } from '../../state/cupStore'
@@ -47,6 +47,44 @@ function Rulebook({ model, teams }: { model: CupModel; teams: number }) {
         </div>
       ))}
       {model.meta?.notes && <p className="field__help">{model.meta.notes}</p>}
+    </div>
+  )
+}
+
+function AccessList({ model }: { model: CupModel }) {
+  const rows = cupAccessList(model)
+  if (!rows) return null
+  return (
+    <div className="card">
+      <div className="card__head">
+        <span className="card__title">Access List</span>
+      </div>
+      <div className="access-wrap">
+        <table className="access">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th data-align="l">Association</th>
+              <th>Coefficient</th>
+              <th>Top</th>
+              <th>Second</th>
+              <th>Third</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r) => (
+              <tr key={r.name}>
+                <td className="mono">{r.rank}</td>
+                <td data-align="l">{r.name}</td>
+                <td className="mono">{r.coefficient.toFixed(1)}</td>
+                <td className="mono">{r.top || ''}</td>
+                <td className="mono">{r.second || ''}</td>
+                <td className="mono">{r.third || ''}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }
@@ -114,6 +152,7 @@ export function CupSummary() {
           <Numbers model={model} teams={teams} />
         </div>
       </div>
+      <AccessList model={model} />
       <div className="card">
         <div className="card__head">
           <span className="card__title">Rulebook</span>

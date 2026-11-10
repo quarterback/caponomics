@@ -180,27 +180,26 @@ const championsCup = model(
 )
 
 // ─── Concacaf in three tiers (invented) ──────────────────────────────────────
-// The European shape applied to the region: a league phase in place of a pure
-// knockout, and two lower competitions so more clubs play meaningful matches.
+// The European shape applied to the whole confederation. Every one of the 41
+// member associations sends at least one club, so the lower competitions are
+// where most associations play. Stronger associations get more places and
+// places higher up. The top competition is a 24-club league phase.
 const concacafTiers = model(
   'cup-concacaf-tiers',
   'Concacaf in three tiers (invented)',
   'soccer',
   [
-    c('cupField', {
-      mode: 'open',
-      count: 24,
-      qualify: 'by league finish and domestic cup results in each country, with more places for higher-ranked leagues',
-    }),
+    c('coefficientRule', {}),
+    c('associationPlaces', {}),
     c('leaguePhase', { matches: 6, opponents: 'drawn', tables: 'one' }),
     c('standings', { system: 'points310' }),
     c('tiebreakers', { steps: ['differential', 'scored', 'random'], excludeOvertime: false }),
     c('advancement', { perGroup: 8, wildCards: 0, wildScope: 'league' }),
     c('knockout', { earlyFormat: 'twoLegs', semiFormat: 'twoLegs', finalFormat: 'single', lateSite: 'neutral' }),
-    c('tiers', { count: 2, size: 24, names: 'Champions Cup, Shield, Conference Cup', dropDown: true, promote: true }),
+    c('tiers', { count: 2, size: 0, names: 'Champions Cup, Shield, Conference Cup', dropDown: true, promote: true }),
     c('seasonCount', { group: false, knockout: false, final: false }),
   ],
-  'Invented for this tool.',
+  'Invented for this tool. The coefficients are placeholders that set a starting order. They are not Concacaf’s ranking. Edit them and the places for each ranking band.',
 )
 
 const blankCup = model('cup-blank', 'Blank cup', 'any', [])

@@ -4,7 +4,7 @@
 import { fmtMoney } from '../format'
 import { bool, num, str } from '../params'
 import { CUP_MAP } from './catalog'
-import { entered, formatGames } from './modules'
+import { accessList, entered, formatGames, placeTotals, type AccessRow } from './modules'
 import type { CupCategory, CupContext, CupModel, CupSection, CupStat, CupSummary } from './types'
 
 export const CUP_CATEGORY_ORDER: CupCategory[] = ['field', 'groups', 'advance', 'knockout', 'tiers', 'schedule', 'prize', 'special']
@@ -33,7 +33,9 @@ export interface CupNumbers {
 }
 
 export function cupNumbers(model: CupModel, leagueTeams: number): CupNumbers {
-  const field = entered(leagueTeams, find(model, 'cupField'))
+  const places = find(model, 'associationPlaces')
+  // Places by association, when present, set the size of the top competition.
+  const field = places ? Math.max(2, placeTotals(places).top) : entered(leagueTeams, find(model, 'cupField'))
   const gs = find(model, 'groupStage')
   const adv = find(model, 'advancement')
   const ko = find(model, 'knockout')
@@ -63,6 +65,12 @@ export function cupNumbers(model: CupModel, leagueTeams: number): CupNumbers {
 function statList(model: CupModel, leagueTeams: number, ctx: CupContext): CupStat[] {
   const n = cupNumbers(model, leagueTeams)
   const stats: CupStat[] = [{ label: 'Teams in the cup', value: String(n.field) }]
+  const places = find(model, 'associationPlaces')
+  if (places) {
+    const t = placeTotals(places)
+    stats.push({ label: 'Clubs in each competition', value: [t.top, t.second, t.third].filter((x) => x > 0).join(', ') })
+    stats.push({ label: 'Associations with a club', value: `${t.covered} of ${t.members}` })
+  }
   const hasGroups = !!find(model, 'groupStage')
   if (n.groups !== null && !hasGroups) stats.push({ label: 'Tables', value: String(n.groups) })
   if (n.groups !== null && hasGroups) {
@@ -82,8 +90,14 @@ function statList(model: CupModel, leagueTeams: number, ctx: CupContext): CupSta
   return stats
 }
 
+/** The access list, when the model has places by association. */
+export function cupAccessList(model: CupModel): AccessRow[] | null {
+  const places = find(model, 'associationPlaces')
+  return places ? accessList(places) : null
+}
+
 export function summarizeCup(model: CupModel, leagueTeams: number): CupSummary {
-  const ctx: CupContext = { teams: entered(leagueTeams, find(model, 'cupField')), currency: model.currency ?? 'USD' }
+  const ctx: CupContext = { teams: cupNumbers(model, leagueTeams).field, currency: model.currency ?? 'USD' }
   const fieldCtx: CupContext = { ...ctx, teams: leagueTeams }
   const sections: CupSection[] = []
   for (const category of CUP_CATEGORY_ORDER) {

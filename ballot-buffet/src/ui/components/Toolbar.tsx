@@ -19,7 +19,7 @@ function useTheme(): [string, () => void] {
   return [theme, () => setTheme((t) => (t === 'auto' ? 'light' : t === 'light' ? 'dark' : 'auto'))]
 }
 
-export function Toolbar({ onAbout }: { onAbout: () => void }) {
+export function Toolbar({ onAbout, focus, onFocus }: { onAbout: () => void; focus: boolean; onFocus: () => void }) {
   const system = useStore((s) => s.system)
   const forked = useStore((s) => s.forked)
   const [theme, cycle] = useTheme()
@@ -56,6 +56,9 @@ export function Toolbar({ onAbout }: { onAbout: () => void }) {
         </span>
         Ballot Buffet
       </div>
+      <button className="btn btn--sm" aria-pressed={focus} onClick={onFocus}>
+        {focus ? 'Show setup' : 'Results only'}
+      </button>
       <div className="toolbar__spacer" />
       <div className="toolbar__ruleset">
         <strong>{system.name}</strong>

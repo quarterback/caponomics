@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { CUP_PRESETS, CUP_PRESET_MAP } from '../../../presets/cup'
 import { CUP_CATALOG } from '../catalog'
 import { decodeCupFromHash, deserializeCup, encodeCupToHash, serializeCup } from '../serialize'
-import { cupNumbers, summarizeCup } from '../summary'
+import { cupAccessList, cupNumbers, summarizeCup } from '../summary'
 
 const nba = CUP_PRESET_MAP['cup-nba-2026']!
 const mlb = CUP_PRESET_MAP['cup-mlb']!
@@ -44,6 +44,26 @@ describe('competitions with clubs from several leagues', () => {
   it('three-tier model reports three competitions', () => {
     const s = summarizeCup(CUP_PRESET_MAP['cup-concacaf-tiers']!, 30)
     expect(s.stats.find((x) => x.label === 'Competitions')!.value).toBe('3')
+  })
+  it('three-tier model gives every one of the 41 member associations a club', () => {
+    const s = summarizeCup(CUP_PRESET_MAP['cup-concacaf-tiers']!, 30)
+    expect(s.stats.find((x) => x.label === 'Associations with a club')!.value).toBe('41 of 41')
+    expect(s.stats.find((x) => x.label === 'Clubs in each competition')!.value).toBe('24, 30, 41')
+    expect(cupNumbers(CUP_PRESET_MAP['cup-concacaf-tiers']!, 30).field).toBe(24)
+    const lines = s.sections.find((x) => x.category === 'field')!.lines.join(' ')
+    expect(lines).toContain('Every member association has at least one club')
+  })
+  it('access list ranks by coefficient and follows an edited coefficient', () => {
+    const model = structuredClone(CUP_PRESET_MAP['cup-concacaf-tiers']!)
+    const list = cupAccessList(model)!
+    expect(list).toHaveLength(41)
+    expect(list[0]).toMatchObject({ rank: 1, name: 'Mexico', top: 5 })
+    expect(list[40]).toMatchObject({ rank: 41, top: 0, second: 0, third: 1 })
+    // Lift the lowest association to the top: it should take rank 1 and its places.
+    const rule = model.modules.find((m) => m.kind === 'associationPlaces')!
+    const assoc = rule.params.associations as { name: string; coefficient: number }[]
+    assoc.find((a) => a.name === 'Anguilla')!.coefficient = 200
+    expect(cupAccessList(model)![0]).toMatchObject({ rank: 1, name: 'Anguilla', top: 5 })
   })
 })
 

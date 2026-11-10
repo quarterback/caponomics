@@ -123,6 +123,10 @@ ballots counted?"). Ron replaced question headings with short names in Cap Buffe
 style now applies here: "Results", "Rules", "Rounds", "Counting Systems". The reasoning and the
 lesson for future agents are in `../docs/aar-design-refresh.md`, section 4.
 
+A **Results only** button in the toolbar hides the setup columns so the output fills the page at
+a larger text size, for screenshots. It was added to both apps after Ron showed that the output
+took a fifth of the screen.
+
 Kept on purpose, where the checklist and the design system disagree: square corners and hard
 offset shadows are the Chromatic Editorial System's own rules. Not done: Cap Buffet's metric
 tiles, About text and module descriptions predate this work and were not rewritten.
