@@ -10,7 +10,7 @@ export const youngPlayerExemption: ExpansionModuleDef = {
   blurb: 'Players with few pro seasons are exempt. They cannot be selected and use no protection slot.',
   paramSchema: [
     { key: 'maxYears', label: 'Max pro seasons to qualify', type: 'number', default: 2, min: 0 },
-    { key: 'unsignedPicks', label: 'Unsigned draft picks are also exempt', type: 'boolean', default: true },
+    { key: 'unsignedPicks', label: 'Unsigned picks exempt', type: 'boolean', default: true },
   ],
   defaultParams: { maxYears: 2, unsignedPicks: true },
   describe(p) {

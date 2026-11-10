@@ -15,7 +15,7 @@ export const deadMoney: CapModuleDef = {
   paramSchema: [
     {
       key: 'mode',
-      label: 'Set the amount as',
+      label: 'Based on',
       type: 'enum',
       options: [
         { value: 'percentOfPayroll', label: 'Percent of payroll' },

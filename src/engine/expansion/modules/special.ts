@@ -5,7 +5,7 @@ import type { ExpansionModuleDef } from '../types'
  *  before the draft, with a signing counting as that team's selection. */
 export const preDraftWindow: ExpansionModuleDef = {
   kind: 'preDraftWindow',
-  label: 'Pre-Draft Free-Agent Window',
+  label: 'Free-Agent Window',
   category: 'special',
   blurb: 'The new team may sign unprotected pending free agents before the draft.',
   paramSchema: [
@@ -49,15 +49,15 @@ export const pickRights: ExpansionModuleDef = {
   category: 'special',
   blurb: 'Sets what the new team may do with a player it drafts.',
   paramSchema: [
-    { key: 'tradable', label: 'Drafted players and unused picks can be traded', type: 'boolean', default: true },
+    { key: 'tradable', label: 'Players and picks tradable', type: 'boolean', default: true },
     {
       key: 'renegotiation',
-      label: 'New team may reset the salary on its own',
+      label: 'New team may reset salary',
       type: 'boolean',
       default: false,
       help: 'MLS uses this rule. The expansion club may set a new salary for a player it drafts.',
     },
-    { key: 'noTradeBack', label: 'No trading a player back to the former team', type: 'boolean', default: false },
+    { key: 'noTradeBack', label: 'No trade back to old team', type: 'boolean', default: false },
   ],
   defaultParams: { tradable: true, renegotiation: false, noTradeBack: false },
   describe(p) {

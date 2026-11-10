@@ -61,7 +61,7 @@ export const kbo = preset('kbo', 'KBO (soft cap)', 'baseball', [
   m('minimumSalary', { mode: 'flat', flat: 30_000_000 }),
   m('rosterLimits', { min: 0, max: 28 }),
   m('passThrough', {
-    title: 'Penalties for repeat overages',
+    title: 'Repeat-overage penalties',
     note: 'A team over the cap in repeat years pays 100%, then 150%, of the excess, and its draft pick moves down. This preset uses only the first-year rate of 50%.',
   }),
 ], 'KRW')

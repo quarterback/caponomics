@@ -16,7 +16,7 @@ export const apron: CapModuleDef = {
     { key: 'level', label: 'Apron level', type: 'number', default: 1, min: 1, max: 5 },
     {
       key: 'thresholdMode',
-      label: 'Set the line as',
+      label: 'Based on',
       type: 'enum',
       options: [
         { value: 'fixed', label: 'Fixed amount' },
@@ -28,7 +28,7 @@ export const apron: CapModuleDef = {
     { key: 'thresholdPercent', label: 'Percent of cap', type: 'percent', default: 115, min: 0, max: 300 },
     {
       key: 'restrictions',
-      label: 'Restrictions for teams over the line',
+      label: 'Restrictions when over',
       type: 'enumMulti',
       options: APRON_RESTRICTIONS.map((r) => ({ value: r.value, label: r.label })),
       default: ['noSignAndTrade'],

@@ -14,7 +14,7 @@ export const designatedPlayer: CapModuleDef = {
   blurb: 'Each team counts a set number of its largest salaries at a fixed budget charge in place of full pay. MLS uses this rule.',
   paramSchema: [
     { key: 'count', label: 'Designated players per team', type: 'number', default: 3, min: 0, max: 10 },
-    { key: 'budgetCharge', label: 'Budget charge per designated player', type: 'money', default: 743_000, min: 0 },
+    { key: 'budgetCharge', label: 'Budget charge', type: 'money', default: 743_000, min: 0 },
     { key: 'label', label: 'Label', type: 'text', default: 'Designated Player', placeholder: 'e.g. Marquee player' },
   ],
   defaultParams: { count: 3, budgetCharge: 743_000, label: 'Designated Player' },

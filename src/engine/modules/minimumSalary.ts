@@ -13,7 +13,7 @@ export const minimumSalary: CapModuleDef = {
   paramSchema: [
     {
       key: 'mode',
-      label: 'How the minimum is set',
+      label: 'Method',
       type: 'enum',
       options: [
         { value: 'flat', label: 'Flat minimum' },

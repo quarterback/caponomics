@@ -26,7 +26,7 @@ export const protectionScheme: ExpansionModuleDef = {
   paramSchema: [
     {
       key: 'mode',
-      label: 'How teams protect',
+      label: 'Method',
       type: 'enum',
       options: [
         { value: 'flat', label: 'Flat count' },
@@ -35,7 +35,7 @@ export const protectionScheme: ExpansionModuleDef = {
       ],
       default: 'flat',
     },
-    { key: 'flatCount', label: 'Players protected (flat count)', type: 'number', default: 6, min: 0 },
+    { key: 'flatCount', label: 'Players protected', type: 'number', default: 6, min: 0 },
     {
       key: 'slotsA',
       label: 'Scheme A slots',
@@ -105,7 +105,7 @@ export const mustProtect: ExpansionModuleDef = {
   paramSchema: [
     { key: 'clause', label: 'Clause', type: 'text', default: 'no-movement clause' },
     { key: 'consumesSlot', label: 'Uses a protection slot', type: 'boolean', default: true },
-    { key: 'waivable', label: 'The player may waive the clause', type: 'boolean', default: true },
+    { key: 'waivable', label: 'Player may waive it', type: 'boolean', default: true },
   ],
   defaultParams: { clause: 'no-movement clause', consumesSlot: true, waivable: true },
   describe(p) {

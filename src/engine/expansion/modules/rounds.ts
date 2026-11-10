@@ -23,9 +23,9 @@ export const rounds: ExpansionModuleDef = {
       label: 'Pick order',
       type: 'enum',
       options: [
-        { value: 'alternating', label: 'New first pick each round' },
-        { value: 'snake', label: 'Reverses each round' },
-        { value: 'fixed', label: 'Same every round' },
+        { value: 'alternating', label: 'Alternating' },
+        { value: 'snake', label: 'Snake' },
+        { value: 'fixed', label: 'Fixed' },
       ],
       default: 'alternating',
     },
@@ -64,11 +64,11 @@ export const multiTeamFormat: ExpansionModuleDef = {
       type: 'enum',
       options: [
         { value: 'shared', label: 'Shared pool, alternating picks' },
-        { value: 'sequential', label: 'Separate drafts, one after another' },
+        { value: 'sequential', label: 'Separate drafts' },
       ],
       default: 'shared',
     },
-    { key: 'firstPickRotates', label: 'A different new team picks first each round', type: 'boolean', default: true },
+    { key: 'firstPickRotates', label: 'First pick rotates', type: 'boolean', default: true },
   ],
   defaultParams: { pool: 'shared', firstPickRotates: true },
   describe(p, ctx) {

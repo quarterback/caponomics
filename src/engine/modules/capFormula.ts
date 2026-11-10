@@ -13,7 +13,7 @@ export const capFormula: CapModuleDef = {
   paramSchema: [
     {
       key: 'mode',
-      label: 'How the cap is set',
+      label: 'Method',
       type: 'enum',
       options: [
         { value: 'fixed', label: 'Fixed cap' },

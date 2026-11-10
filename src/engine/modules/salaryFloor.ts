@@ -14,7 +14,7 @@ export const salaryFloor: CapModuleDef = {
   paramSchema: [
     {
       key: 'mode',
-      label: 'Set the floor as',
+      label: 'Based on',
       type: 'enum',
       options: [
         { value: 'fixed', label: 'Fixed amount' },
@@ -26,14 +26,14 @@ export const salaryFloor: CapModuleDef = {
     { key: 'percent', label: 'Percent of cap', type: 'percent', default: 90, min: 0, max: 100 },
     {
       key: 'penalty',
-      label: 'If a team is below the floor',
+      label: 'If below floor',
       type: 'enum',
       options: FLOOR_PENALTIES.map((f) => ({ value: f.value, label: f.label })),
       default: 'payShortfall',
     },
     {
       key: 'hardFloor',
-      label: 'Make a team below the floor illegal',
+      label: 'Below floor is illegal',
       type: 'boolean',
       default: false,
     },

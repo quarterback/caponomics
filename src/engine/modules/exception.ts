@@ -17,7 +17,7 @@ export const exception: CapModuleDef = {
     { key: 'label', label: 'Label', type: 'text', default: 'Exception', placeholder: 'e.g. Bird rights' },
     {
       key: 'mode',
-      label: 'Set the allowance as',
+      label: 'Based on',
       type: 'enum',
       options: [
         { value: 'fixed', label: 'Fixed amount' },

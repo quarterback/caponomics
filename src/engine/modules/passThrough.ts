@@ -5,7 +5,7 @@ import { str } from '../params'
  *  so a preset can acknowledge it without faking enforcement. Always legal. */
 export const passThrough: CapModuleDef = {
   kind: 'passThrough',
-  label: 'Note on a Rule Not Modeled',
+  label: 'Note',
   category: 'misc',
   phase: 'validate',
   blurb: 'A note about a rule this app does not model yet. The note never changes whether a team is legal.',

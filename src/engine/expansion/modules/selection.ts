@@ -19,7 +19,7 @@ export const selectionQuota: ExpansionModuleDef = {
       ],
       default: 'exactly',
     },
-    { key: 'count', label: 'Selections per team in each round', type: 'number', default: 1, min: 0 },
+    { key: 'count', label: 'Selections per team, per round', type: 'number', default: 1, min: 0 },
   ],
   defaultParams: { perTeam: 'exactly', count: 1 },
   describe(p, ctx) {
@@ -49,7 +49,7 @@ export const lossLimit: ExpansionModuleDef = {
     { key: 'maxLost', label: 'Max players lost per team', type: 'number', default: 2, min: 0 },
     {
       key: 'elimination',
-      label: 'A team leaves the pool after one loss',
+      label: 'Team exits after one loss',
       type: 'boolean',
       default: false,
       help: 'MLS uses this rule. After a club loses a player, no team can select from it again.',
@@ -71,8 +71,8 @@ export const pullback: ExpansionModuleDef = {
   category: 'selection',
   blurb: 'A team that loses a player may take other players off its exposure list.',
   paramSchema: [
-    { key: 'afterFirst', label: 'Players pulled back after first loss', type: 'number', default: 1, min: 0 },
-    { key: 'allAfterSecond', label: 'Pull back everyone after second loss', type: 'boolean', default: true },
+    { key: 'afterFirst', label: 'Pulled back after first loss', type: 'number', default: 1, min: 0 },
+    { key: 'allAfterSecond', label: 'Pull back all after second loss', type: 'boolean', default: true },
   ],
   defaultParams: { afterFirst: 1, allAfterSecond: true },
   describe(p) {
@@ -104,7 +104,7 @@ export const rosterTargets: ExpansionModuleDef = {
       ],
       default: [],
     },
-    { key: 'minUnderContract', label: 'Min under contract for next season (0 = off)', type: 'number', default: 0, min: 0 },
+    { key: 'minUnderContract', label: 'Min under contract (0 = off)', type: 'number', default: 0, min: 0 },
   ],
   defaultParams: { minSize: 14, maxSize: 30, positionalMins: [], minUnderContract: 0 },
   describe(p) {
@@ -131,18 +131,18 @@ export const specialStatusRules: ExpansionModuleDef = {
   category: 'selection',
   blurb: 'Limits and changes tied to contract status, such as pending free agents.',
   paramSchema: [
-    { key: 'maxSpecial', label: 'Max picks with the limited status (0 = off)', type: 'number', default: 1, min: 0 },
+    { key: 'maxSpecial', label: 'Max picks of that status (0 = off)', type: 'number', default: 1, min: 0 },
     { key: 'cappedStatus', label: 'Limited status', type: 'text', default: 'pending unrestricted free agent' },
     {
       key: 'offLimits',
-      label: 'Players no team may select (blank = none)',
+      label: 'Off-limits players (blank = none)',
       type: 'text',
       default: '',
       placeholder: 'e.g. players on a Core contract for 2 or more seasons',
     },
     {
       key: 'conversion',
-      label: 'Status change when selected (blank = none)',
+      label: 'Status change on selection (blank = none)',
       type: 'text',
       default: '',
       placeholder: 'e.g. a pending restricted free agent becomes unrestricted',

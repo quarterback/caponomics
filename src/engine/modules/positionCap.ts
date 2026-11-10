@@ -14,10 +14,10 @@ export const positionCap: CapModuleDef = {
   blurb: 'Limits what a team can spend on one group of positions, such as pitchers or quarterbacks.',
   paramSchema: [
     { key: 'label', label: 'Label', type: 'text', default: 'Position cap', placeholder: 'e.g. Pitching cap' },
-    { key: 'positions', label: 'Positions, separated by commas', type: 'text', default: 'SP,RP', placeholder: 'SP,RP  or  QB' },
+    { key: 'positions', label: 'Positions', type: 'text', default: 'SP,RP', placeholder: 'SP,RP  or  QB' },
     {
       key: 'mode',
-      label: 'Set the limit as',
+      label: 'Based on',
       type: 'enum',
       options: [
         { value: 'percentOfCap', label: 'Percent of cap' },

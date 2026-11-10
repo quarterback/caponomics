@@ -14,7 +14,7 @@ export const luxuryTax: CapModuleDef = {
   paramSchema: [
     {
       key: 'thresholdMode',
-      label: 'Set the threshold as',
+      label: 'Based on',
       type: 'enum',
       options: [
         { value: 'fixed', label: 'Fixed amount' },
@@ -29,7 +29,7 @@ export const luxuryTax: CapModuleDef = {
       label: 'Tax brackets',
       type: 'bracketList',
       itemSchema: [
-        { key: 'upTo', label: 'Up to this much over (0 = no limit)', type: 'money', default: 0, min: 0 },
+        { key: 'upTo', label: 'Up to (0 = no limit)', type: 'money', default: 0, min: 0 },
         { key: 'rate', label: 'Rate', type: 'percent', default: 20, min: 0, max: 500 },
       ],
       default: [
@@ -38,7 +38,7 @@ export const luxuryTax: CapModuleDef = {
         { upTo: 0, rate: 50 },
       ],
     },
-    { key: 'isRepeater', label: 'Team is a repeat taxpayer', type: 'boolean', default: false },
+    { key: 'isRepeater', label: 'Repeat taxpayer', type: 'boolean', default: false },
     { key: 'repeaterSurchargePct', label: 'Repeat-taxpayer surcharge', type: 'percent', default: 0, min: 0, max: 200 },
   ],
   defaultParams: {

@@ -9,7 +9,7 @@ export const nhl = preset('nhl', 'NHL', 'hockey', [
   m('minimumSalary', { mode: 'flat', flat: 775_000 }),
   m('rosterLimits', { min: 0, max: 23 }),
   m('passThrough', {
-    title: 'Long-term injury relief and performance bonuses',
+    title: 'Injury relief and bonuses',
     note: 'This version does not model long-term injury relief (LTIR) or performance-bonus overages.',
   }),
 ])

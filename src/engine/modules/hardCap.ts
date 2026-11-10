@@ -13,20 +13,20 @@ export const hardCap: CapModuleDef = {
   paramSchema: [
     {
       key: 'source',
-      label: 'Set the ceiling as',
+      label: 'Based on',
       type: 'enum',
       options: [
         { value: 'fixed', label: 'Fixed amount' },
         { value: 'useCapValue', label: 'The cap value' },
-        { value: 'multipleOfCap', label: 'Percent of the cap value' },
+        { value: 'multipleOfCap', label: 'Percent of cap' },
       ],
       default: 'useCapValue',
     },
     { key: 'ceiling', label: 'Fixed ceiling', type: 'money', default: 100_000_000, min: 0 },
-    { key: 'capMultiplePct', label: 'Percent of the cap value', type: 'percent', default: 100, min: 0, max: 500 },
+    { key: 'capMultiplePct', label: 'Percent of cap', type: 'percent', default: 100, min: 0, max: 500 },
     {
       key: 'basis',
-      label: 'What counts toward the ceiling',
+      label: 'Measure',
       type: 'enum',
       options: [
         { value: 'cap', label: 'Cap salary' },

@@ -63,12 +63,12 @@ export const exposureMinimums: ExpansionModuleDef = {
  *  stuff into its exposure list (so the pool isn't all poison pills). */
 export const expensiveListingCap: ExpansionModuleDef = {
   kind: 'expensiveListingCap',
-  label: 'Expensive-Contract Exposure Limit',
+  label: 'Expensive-Contract Limit',
   category: 'exposure',
   blurb: 'Limits how many high-salary players a team may expose.',
   paramSchema: [
     { key: 'maxCount', label: 'Max expensive players exposed', type: 'number', default: 2, min: 0 },
-    { key: 'raisePct', label: 'Raise that counts as expensive', type: 'percent', default: 75, min: 0, max: 300 },
+    { key: 'raisePct', label: 'Raise threshold', type: 'percent', default: 75, min: 0, max: 300 },
   ],
   defaultParams: { maxCount: 2, raisePct: 75 },
   describe(p) {

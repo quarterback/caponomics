@@ -13,10 +13,10 @@ export const draftPickPenalty: CapModuleDef = {
   phase: 'validate',
   blurb: 'A team over a set spending line has a first-round pick frozen, moved down or forfeited.',
   paramSchema: [
-    { key: 'threshold', label: 'Applies when salary is over', type: 'money', default: 220_000_000, min: 0 },
+    { key: 'threshold', label: 'Applies over', type: 'money', default: 220_000_000, min: 0 },
     {
       key: 'thresholdMode',
-      label: 'Set the line as',
+      label: 'Based on',
       type: 'enum',
       options: [
         { value: 'fixed', label: 'Fixed amount' },
@@ -32,8 +32,8 @@ export const draftPickPenalty: CapModuleDef = {
       options: ASSET_PENALTY_EFFECTS.map((e) => ({ value: e.value, label: e.label })),
       default: 'freeze',
     },
-    { key: 'yearsOut', label: 'Freeze the pick this many drafts ahead', type: 'number', default: 7, min: 0 },
-    { key: 'dropSpots', label: 'Spots the pick moves down', type: 'number', default: 10, min: 0 },
+    { key: 'yearsOut', label: 'Drafts ahead', type: 'number', default: 7, min: 0 },
+    { key: 'dropSpots', label: 'Spots dropped', type: 'number', default: 10, min: 0 },
   ],
   defaultParams: {
     threshold: 220_000_000,

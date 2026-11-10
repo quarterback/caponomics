@@ -12,7 +12,7 @@ export const financialWindow: ExpansionModuleDef = {
   paramSchema: [
     {
       key: 'mode',
-      label: 'Type of requirement',
+      label: 'Method',
       type: 'enum',
       options: [
         { value: 'pctWindow', label: 'Percent-of-cap range' },
@@ -23,7 +23,7 @@ export const financialWindow: ExpansionModuleDef = {
     { key: 'floorPct', label: 'Minimum (% of cap)', type: 'percent', default: 60, min: 0, max: 200 },
     { key: 'ceilingPct', label: 'Maximum (% of cap)', type: 'percent', default: 100, min: 0, max: 200 },
     { key: 'countFloor', label: 'Minimum players', type: 'number', default: 30, min: 0 },
-    { key: 'dollarFloor', label: 'Minimum salary total', type: 'money', default: 27_200_000, min: 0 },
+    { key: 'dollarFloor', label: 'Minimum salary', type: 'money', default: 27_200_000, min: 0 },
   ],
   defaultParams: { mode: 'pctWindow', floorPct: 60, ceilingPct: 100, countFloor: 30, dollarFloor: 27_200_000 },
   describe(p, ctx) {
